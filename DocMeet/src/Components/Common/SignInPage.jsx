@@ -1,20 +1,13 @@
 import React from 'react'
 
 
-function SignupPage() {
+function SignInPage() {
     return (
         <form className='min-h-[80vh] flex items-center'>
             <div className='flex flex-col gap-2 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg'>
                 <div>
-                    <p className='text-2xl font-semibold'>Create Account</p>
-                    <p className='text-sm text-zinc-500'>Please sign up to book appointment</p>
-                </div>
-                <div className='w-full'>
-                    <label className='block text-sm font-medium text-zinc-700'>Full Name</label>
-                    <input
-                        className='border border-zinc-300 rounded w-full p-2 mt-1'
-                        type='text'
-                    />
+                    <p className='text-2xl font-semibold'>SignIn</p>
+                    <p className='text-sm text-zinc-500'>Please sign in to book appointment</p>
                 </div>
 
                 <div className='w-full mt-3'>
@@ -32,11 +25,11 @@ function SignupPage() {
                     >
                     </input>
                 </div>
-                <button className='bg-[#5D6BFF] text-white w-full py-2 !rounded-lg text-base mt-3'>Create Account</button>
-                <p>Already have an account ? <span className='text-[#5D6BFF] underline cursor-pointer'>Login Here</span></p>
+                <button className='bg-[#5D6BFF] text-white w-full py-2 !rounded-lg text-base mt-3'>SignIn</button>
+                <p>Don't have an account ? <span className='text-[#5D6BFF] underline cursor-pointer'>SignUp Here</span></p>
             </div>
         </form>
     );
 }
 
-export default SignupPage
+export default SignInPage
