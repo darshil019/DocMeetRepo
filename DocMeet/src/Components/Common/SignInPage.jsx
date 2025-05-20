@@ -1,7 +1,8 @@
 import React from 'react'
-
+import { useNavigate,Link } from 'react-router-dom'
 
 function SignInPage() {
+    let navigate = useNavigate()
     return (
         <form className='min-h-[80vh] flex items-center'>
             <div className='flex flex-col gap-2 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg'>
@@ -26,7 +27,7 @@ function SignInPage() {
                     </input>
                 </div>
                 <button className='bg-[#5D6BFF] text-white w-full py-2 !rounded-lg text-base mt-3'>SignIn</button>
-                <p>Don't have an account ? <span className='text-[#5D6BFF] underline cursor-pointer'>SignUp Here</span></p>
+                <p>Don't have an account ? <Link to="/user/signup"><span className='text-[#5D6BFF] underline cursor-pointer'>SignUp Here</span></Link></p>
             </div>
         </form>
     );
