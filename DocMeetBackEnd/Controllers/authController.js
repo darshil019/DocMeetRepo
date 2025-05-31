@@ -1,5 +1,6 @@
-const { userSignUpModel , userSignUpValidation } = require('../Models/authModel')
+const { userSignUpModel, userSignUpValidation, userSigninValidation } = require('../Models/authModel')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 
 const userSignUp = (req, res) => {
@@ -8,8 +9,8 @@ const userSignUp = (req, res) => {
 
     let storedSignUpData = new userSignUpModel({
         fullname: req.body.fullname,
-        birthday : req.body.birthday,
-        email:req.body.email,
+        birthday: req.body.birthday,
+        email: req.body.email,
         password: req.body.password,
     })
 
@@ -17,12 +18,12 @@ const userSignUp = (req, res) => {
     if (!error) {
         storedSignUpData.password = securePass
         storedSignUpData.save()
-        .then(() => {
-            res.send({ isSuccess: true, msg: "Added User Data Succssfully" })
-        })
-        .catch((err) => {
-            res.send({ isSuccess: false, msg: "Added in creating user" })
-        })
+            .then(() => {
+                res.send({ isSuccess: true, msg: "Added User Data Succssfully" })
+            })
+            .catch((err) => {
+                res.send({ isSuccess: false, msg: "Added in creating user" })
+            })
     }
     else {
         res.send({
@@ -31,5 +32,44 @@ const userSignUp = (req, res) => {
     }
 }
 
+const userSignin = async (req, res) => {
+    const { email, password } = req.body
 
-module.exports = { userSignUp }
+
+    if (email && password) {
+        const { error } = userSigninValidation.validate({ email: email, password: password }, { allowUnknown: true })
+        if(!error){
+            const getUserData = await userSignUpModel.findOne({
+                email:email
+            })
+            try{
+                if(Object.keys(getUserData).length > 0){
+                    const checkPass = await bcrypt.compareSync(password,getUserData.password)
+
+                    if(checkPass){
+                        const token = jwt.sign({email:getUserData.email},
+                            process.env.secretKey,{ expiresIn:'1h'}
+                        )
+                        res.status(200).send({
+                            token:token
+                        })
+                    }
+                    else{
+                        res.status(404).send({
+                            msg:"Password Error"
+                        })
+                    }
+                }
+            }
+            catch{
+                res.status(404).send({
+                    "msg":"Email & Password Not Found"
+                })
+            }
+        }
+    }
+    else {
+        res.send({ "msg": "All Fields Must Be Filled" })
+    }
+}
+module.exports = { userSignUp, userSignin }

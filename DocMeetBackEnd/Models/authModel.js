@@ -39,6 +39,11 @@ const userSignUpValidation = Joi.object({
     })
 })
 
+const userSigninValidation = Joi.object({
+    email : Joi.string().email().required(),
+    password: Joi.string().pattern(new RegExp("^[a-z0-9]{3,30}$")).required(),
+})
+
 const userSignUpModel = mongoose.model('userSignUpModel',userSignUpDataSchema)
 
-module.exports = {userSignUpModel,userSignUpValidation}
+module.exports = {userSignUpModel,userSignUpValidation,userSigninValidation}

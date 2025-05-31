@@ -45,6 +45,7 @@ function Navbar() {
         </div>
         <div className="flex items-center space-x-6">
   <button
+   onClick={() => window.location.href = '/user/signup'}
     className="bg-[#5D6BFF] text-white px-3 py-1 rounded-xl text-xs hover:bg-blue-700 transition-colors duration-300 shadow-md hover:shadow-lg"
   >
     SignUp
