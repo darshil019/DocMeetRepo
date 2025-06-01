@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <nav className="bg-gray-100 shadow-lg py-3 px-5 font-['Poppins']">
+    <nav className="bg-gray-100 shadow-lg py-1.5 px-5 font-['Poppins']">
       <div className="container mx-auto flex items-center justify-between relative">
         <a href="/" className="flex items-center no-underline" style={{ textDecoration: "none" }}>
           <img
