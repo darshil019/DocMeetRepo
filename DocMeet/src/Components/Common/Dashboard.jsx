@@ -7,6 +7,19 @@ import filUploadImg from '../../assets/images/upload.png';
 import MAImg from '../../assets/images/MA.png';
 import congrats from '../../assets/images/firework.png'
 import doctorImg1 from '../../assets/images/doctor.jpg'
+import cat1 from '../../assets/images/cat1.svg'
+import cat2 from '../../assets/images/cat2.svg'
+import cat3 from '../../assets/images/cat3.svg'
+import cat4 from '../../assets/images/cat4.svg'
+import cat5 from '../../assets/images/cat5.svg'
+import cat6 from '../../assets/images/cat6.svg'
+import doc1 from '../../assets/images/doc1.png'
+import doc2 from '../../assets/images/doc2.png'
+import doc3 from '../../assets/images/doc3.png'
+import doc5 from '../../assets/images/doc5.png'
+import doc6 from '../../assets/images/doc6.png'
+import img from "../../assets/images/image.png";
+import { motion } from 'framer-motion';
 
 function UserDashboard() {
   useEffect(() => {
@@ -19,7 +32,7 @@ function UserDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8" >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center" >
-      
+
           <div className="space-y-6" data-aos="fade-right">
             <div className="flex items-center gap-2 text-indigo-600">
               <Heart className="w-5 h-5 mb-2" />
@@ -41,7 +54,7 @@ function UserDashboard() {
               of your wellness journey with advanced health monitoring tools.
             </p>
 
- 
+
             <div className="flex flex-wrap gap-6 py-4">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
@@ -116,50 +129,270 @@ function UserDashboard() {
         </div>
       </div>
       <div className='flex flex-col items-center justify-center py-5'>
-          <div><p className='text-2xl font-bold'>- Fastest Solution</p></div>
-          <div><p className='text-2xl md:text-4xl font bold'><span className='text-primary'>4 Easy Steps</span> And Get Your</p></div>
-          <div><p className='text-2xl md:text-4xl font bold'>Solution</p></div>
+        <div><p className='text-2xl font-bold'>- Fastest Solution</p></div>
+        <div><p className='text-2xl md:text-4xl font bold'><span className='text-primary'>4 Easy Steps</span> And Get Your</p></div>
+        <div><p className='text-2xl md:text-4xl font bold'>Solution</p></div>
       </div>
       <div className='grid mx-auto grid-cols-1 lg:grid-cols-4 md:grid-cols-2 2xl:grid-cols-2 gap-5 px-20 justify-items-center'>
-          <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
-            <img src={doctorImg} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
-            <h2 className='py-3 font-bold'>Check Doctor Profile</h2>
-              <p className=''>
-              Browse through detailed doctor profiles to learn about their qualifications, areas of expertise, experience, and patient feedback — helping you make confident and informed healthcare choices tailored to your needs.
-              </p>
-          </div>
-          <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
-            <img src={MAImg} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
-            <h2 className='py-3'>Book Doctor Appointment</h2>
-              <p>
-              Easily schedule a visit with just a few clicks. 
-              Choose your preferred doctor, select a suitable time, 
-              and book your appointment instantly — no long calls or waiting lines required.
-              </p>
-          </div>
-          <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
-            <img src={filUploadImg} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
-            <h2 className='py-3'>Upload Your Record</h2>
-              <p>
-              Share your medical history securely by uploading test results, 
-              prescriptions, or reports. This allows your doctor to review your health background in advance 
-              and offer more precise, personalized care.
-              </p>
-          </div>
-          <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
-            <img src={congrats} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
-            <h2 className='py-3'>Congrats! Booked</h2>
-            <p>
+        <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
+          <img src={doctorImg} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
+          <h2 className='py-3 font-bold'>Check Doctor Profile</h2>
+          <p className=''>
+            Browse through detailed doctor profiles to learn about their qualifications, areas of expertise, experience, and patient feedback — helping you make confident and informed healthcare choices tailored to your needs.
+          </p>
+        </div>
+        <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
+          <img src={MAImg} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
+          <h2 className='py-3'>Book Doctor Appointment</h2>
+          <p>
+            Easily schedule a visit with just a few clicks.
+            Choose your preferred doctor, select a suitable time,
+            and book your appointment instantly — no long calls or waiting lines required.
+          </p>
+        </div>
+        <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
+          <img src={filUploadImg} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
+          <h2 className='py-3'>Upload Your Record</h2>
+          <p>
+            Share your medical history securely by uploading test results,
+            prescriptions, or reports. This allows your doctor to review your health background in advance
+            and offer more precise, personalized care.
+          </p>
+        </div>
+        <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
+          <img src={congrats} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
+          <h2 className='py-3'>Congrats! Booked</h2>
+          <p>
             You're all set! Your appointment has been confirmed.
-            We'll handle the rest — just show up on time and let our healthcare team 
+            We'll handle the rest — just show up on time and let our healthcare team
             take care of you with the attention and expertise you deserve.
-            </p>
-          </div>
+          </p>
+        </div>
       </div>
-      <div className='flex flex-col items-center justify-center py-5 mt-8'>
-          <div><p className='text-3xl font-bold py-2'>Find By Speciality</p></div>
-          <div><p className='text-xs md:text-xs font bold m-0'>Simply browse through our extensive list of trusted doctors,</p></div>
-          <div><p className='text-xs md:text-xs font bold m-0'>schedule your appointment hassle-free.</p></div>
+      <div className='flex flex-col items-center justify-center py-5 mt-12'>
+        <div><p className='text-3xl font-bold py-2'>Find By Speciality</p></div>
+        <div><p className='text-xs md:text-xs font-bold m-0 lg:line-clamp-3'>Simply browse through our extensive list of trusted doctors,<br/><center> schedule your appointment hassle-free. </center></p></div>
+      </div>
+      <div className='grid grid-cols-3 lg:grid-cols-6 gap-2 max-w-6xl mx-auto '>
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+          className='flex flex-col items-center space-y-2'
+        >
+          <img src={cat1} className='w-20 h-20 rounded-full object-cover shadow-md' />
+          <span className='text-sm text-center'>General physician</span>
+        </motion.div>
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+          className='flex flex-col items-center space-y-2'
+        >
+          <img src={cat2} className='w-20 h-20 rounded-full object-cover shadow-md' />
+          <span className='text-sm text-center'>Gynecologist</span>
+        </motion.div>
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+          className='flex flex-col items-center space-y-2'
+        >
+          <img src={cat3} className='w-20 h-20 rounded-full object-cover shadow-md' />
+          <span className='text-sm text-center'>Dermatologist</span>
+        </motion.div>
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+          className='flex flex-col items-center space-y-2'
+        >
+          <img src={cat4} className='w-20 h-20 rounded-full object-cover shadow-md' />
+          <span className='text-sm text-center'>Pediatricians</span>
+        </motion.div>
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+          className='flex flex-col items-center space-y-2'
+        >
+          <img src={cat5} className='w-20 h-20 rounded-full object-cover shadow-md' />
+          <span className='text-sm text-center'>Neurologist</span>
+        </motion.div>
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: 'spring', stiffness: 300 }}
+          className='flex flex-col items-center space-y-2'
+        >
+          <img src={cat6} className='w-20 h-20 rounded-full object-cover shadow-md' />
+          <span className='text-sm text-center'>Gastroenterologist</span>
+        </motion.div>
+      </div>
+      <div className='flex flex-col items-center justify-center py-5 mt-13'>
+        <div><p className='text-3xl font-bold py-2'>Top Doctors to Book</p></div>
+        <div><p className='text-xs md:text-xs font-bold m-0 lg:line-clamp-3'>Simply browse through our extensive list of trusted doctors.</p></div>
+      </div>
+      <div className='grid grid-cols-1 lg:grid-cols-5 gap-6 px-4 max-w-6xl mx-auto mt-6'>
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
+              >
+                <img src={doc1} className='bg-[#5D6BFF]'/>
+                <div className='flex items-center space-x-2'>
+                <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                  <span className='text-green-500 font-medium text-sm'>Available</span>
+                </div>
+                <span className='font-bold'>Dr. Richard James</span>
+                <span className='font-semibold'>General physician</span>
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
+              >
+              <img src={doc2} className='bg-[#5D6BFF]'/>
+              <div className='flex items-center space-x-2'>
+                  <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                  <span className='text-green-500 font-medium text-sm'>Available</span>
+              </div>
+              <span className='font-bold'>Dr. Emily Larson</span>
+              <span className='font-semibold'>Gynecologist</span>
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
+              >
+                <img src={doc3} className='bg-[#5D6BFF]'/>
+                <div className='flex items-center space-x-2'>
+                    <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                    <span className='text-green-500 font-medium text-sm'>Available</span>
+                </div>
+                <span className='font-bold'>Dr. Sarah Patel</span>
+                <span className='font-semibold'>Dermatologist</span>
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
+              >
+                  <img src={doc5} className='bg-[#5D6BFF]'/>
+                  <div className='flex items-center space-x-2'>
+                    <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                    <span className='text-green-500 font-medium text-sm'>Available</span>
+                  </div>
+                  <span className='font-bold'>Dr. Jennifer Garcia</span>
+                  <span className='font-semibold'>Neurologist</span>
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
+              >
+                  <img src={doc6} className='bg-[#5D6BFF]'/>
+                <div className='flex items-center space-x-2'>
+                    <div className='w-2 h-2 bg-red-500 rounded-full'></div>
+                    <span className='text-red-500 font-medium text-sm'>Not Available</span>
+                </div>
+                  <span className='font-bold'>Dr. Andrew Williams</span>
+                  <span className='font-semibold'>Gastroenterologist</span>
+              </motion.div>
+      </div>
+      <div className='grid grid-cols-1 lg:grid-cols-5 gap-6 px-4 max-w-6xl mx-auto mt-6'>
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
+              >
+                <img src={doc1} className='bg-[#5D6BFF]'/>
+                <div className='flex items-center space-x-2'>
+                <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                  <span className='text-green-500 font-medium text-sm'>Available</span>
+                </div>
+                <span className='font-bold'>Dr. Richard James</span>
+                <span className='font-semibold'>General physician</span>
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
+              >
+              <img src={doc2} className='bg-[#5D6BFF]'/>
+              <div className='flex items-center space-x-2'>
+                  <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                  <span className='text-green-500 font-medium text-sm'>Available</span>
+              </div>
+              <span className='font-bold'>Dr. Emily Larson</span>
+              <span className='font-semibold'>Gynecologist</span>
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
+              >
+                <img src={doc3} className='bg-[#5D6BFF]'/>
+                <div className='flex items-center space-x-2'>
+                    <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                    <span className='text-green-500 font-medium text-sm'>Available</span>
+                </div>
+                <span className='font-bold'>Dr. Sarah Patel</span>
+                <span className='font-semibold'>Dermatologist</span>
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
+              >
+                  <img src={doc5} className='bg-[#5D6BFF]'/>
+                  <div className='flex items-center space-x-2'>
+                    <div className='w-2 h-2 bg-green-500 rounded-full'></div>
+                    <span className='text-green-500 font-medium text-sm'>Available</span>
+                  </div>
+                  <span className='font-bold'>Dr. Jennifer Garcia</span>
+                  <span className='font-semibold'>Neurologist</span>
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
+              >
+                  <img src={doc6} className='bg-[#5D6BFF]'/>
+                <div className='flex items-center space-x-2'>
+                    <div className='w-2 h-2 bg-red-500 rounded-full'></div>
+                    <span className='text-red-500 font-medium text-sm'>Not Available</span>
+                </div>
+                  <span className='font-bold'>Dr. Andrew Williams</span>
+                  <span className='font-semibold'>Gastroenterologist</span>
+              </motion.div>
+      </div>
+
+      <div className='flex flex-row justify-center gap-100 items-center mt-40 max-w-6xl mx-auto'>
+        <div className='flex flex-col space-y-1'>
+          <a href="/" className="flex items-center no-underline" style={{ textDecoration: "none" }}>
+              <img
+                src={img}
+                alt="Logo"
+                className="h-9 w-9 rounded-full mr-3 border-2 border-white mb-2"
+              />
+              <h3 className="text-black font-semibold tracking-wider">
+                D<span className="text-[#5D6BFF]">o</span>cM
+                <span className="text-[#5D6BFF]">ee</span>t
+              </h3>
+          </a>
+          <span className="text-sm text-gray-600 leading-relaxed mt-2">
+          DocMeet connects patients with certified medical professionals instantly. Book appointments, get consultations, and manage your health – all in one place.
+          </span>
+        </div>
+        <div className='flex flex-col space-y-1 ml-10'>
+          <span className='font-bold text-lg'>Company</span>
+          <span>Home</span>
+          <span>About</span>
+          <span>Privacy</span>
+        </div>
+        <div className='flex flex-col space-y-1'>
+        <span className='font-bold text-lg'>GET IN TOUCH</span>
+          <span>+917993229000</span>
+          <span>docmeet@gmail.com</span>
+        </div>
+      </div>
+      <div className="text-center text-sm text-gray-500 mt-6 pb-1 border-t pt-4 max-w-6xl mx-auto">
+        Copyright 2025 © DocMeet.io – All Rights Reserved.
       </div>
     </div>
   )
