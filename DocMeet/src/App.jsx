@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./Components/Common/Navbar";
 import SignupPage from "./Components/Common/SignupPage";
 import SignInPage from "./Components/Common/SignInPage";
-import UserDashboard from "./Components/Common/Dashboard";
+import UserDashboard from "./Pages/user/Dashboard";
 import { Routes,Route } from "react-router-dom";
 
 function App() {
