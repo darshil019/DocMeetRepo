@@ -1,10 +1,11 @@
 import React from "react";
 import img from "../../assets/images/image.png";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars,faTimes } from '@fortawesome/free-solid-svg-icons';
 
 function Navbar() {
+  let navigate = useNavigate()
   const [isOpen,setIsOpen] = React.useState(false)
   return (
     <nav className="bg-gray-100 shadow-lg py-1.5 px-5 font-['Poppins']">
@@ -47,7 +48,7 @@ function Navbar() {
             SignUp
           </button>
           <button
-            onClick={() => window.location.href = '/login'}
+            onClick={() => window.location.href = '/user/signin'}
             className="bg-gray-300 text-black px-3 py-1 rounded-xl text-xs hover:bg-[#5D6BFF] hover:text-white transition-colors duration-300 shadow-md hover:shadow-lg"
           >
             SignIn
@@ -88,7 +89,7 @@ function Navbar() {
                     <Link to="/contact" className="text-gray-800 font-semibold hover:text-[#5D6BFF]" style={{ textDecoration: "none" }}>CONTACT</Link>
                     <div className="flex flex-col space-y-3 p-3">
                       <button onClick={() => window.location.href = '/user/signup'} className="bg-[#5D6BFF] text-white px-3 py-2 rounded-lg text-sm">SignUp</button>
-                      <button onClick={() => window.location.href = '/login'} className="bg-gray-300 text-black px-3 py-2 rounded-lg text-sm hover:bg-[#5D6BFF] hover:text-white">SignIn</button>
+                      <button onClick={(()=>{navigate('/user/signin')})} className="bg-gray-300 text-black px-3 py-2 rounded-lg text-sm hover:bg-[#5D6BFF] hover:text-white">SignIn</button>
                     </div>
               </div>
             </div>
