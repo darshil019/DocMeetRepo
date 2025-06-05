@@ -7,7 +7,7 @@ const adminSignin = (req, res) => {
     });
 
     
-
+    
     res.send(adminSignInData); 
 };
 
