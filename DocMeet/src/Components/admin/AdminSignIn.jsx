@@ -1,35 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-
-function AdminLogin() {
+function AdminSignIn() {
     const navigate = useNavigate();
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [showAdminLogin, setShowAdminLogin] = React.useState(false);
-    const [isAdminLoggedIn, setIsAdminLoggedIn] = React.useState(false);
     const [adminUser, setAdminUser] = React.useState({ username: '', password: '' });
     const [error, setError] = React.useState('');
+    //const [adminIsOn,setadminIsOn] = React.useState(false)
 
-    const handleAdminLogin = (e) => {
+    const handleAdminLogin = async (e) => {
         e.preventDefault();
         if (adminUser.username === 'admin' && adminUser.password === 'admin123') {
-            setShowAdminLogin(false);
             setError('');
-            navigate('/admin'); // ✅ Redirect to dashboard
+            localStorage.setItem('adminIsOn','true')
+            navigate('/admin/dashboard');
         } else {
             setError('Invalid credentials');
         }
     };
-
-
-    const handleLogout = () => {
-        setIsAdminLoggedIn(false);
-        setAdminUser({ username: '', password: '' });
-    };
-
 
     return (
         <div>
@@ -84,4 +71,4 @@ function AdminLogin() {
         </div>
     )
 }
-export default AdminLogin;
+export default AdminSignIn;
