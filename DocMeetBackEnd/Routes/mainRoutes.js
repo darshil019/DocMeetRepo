@@ -8,6 +8,7 @@ const adminController = require('../Controllers/adminController')
 router.post('/user/signup',authController.userSignUp)
 router.post('/user/signin',authController.userSignin)
 router.post('/admin/signin',adminController.adminSignin)
+router.post('/doctor/signin',adminController.doctorSignin)
 
 //adminRoutes
 router.post('/admin/signin',adminController.adminSignin)
