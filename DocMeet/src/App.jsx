@@ -6,6 +6,8 @@ import UserDashboard from "./Pages/user/Dashboard";
 import { Routes,Route } from "react-router-dom";
 import AdminDashboard from "./Pages/admin/AdminDashboard";
 import AdminSignIn from "./Components/admin/AdminSignIn";
+import AddDoctor from "./Pages/admin/adddoctor";
+
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
         </Route>
         <Route path="admin/signin" element={<AdminSignIn/>}></Route>
         <Route path="admin/dashboard" element={<AdminDashboard/>}></Route>
+         <Route path="admin/adddoctor" element={<AddDoctor/>}></Route>
       </Routes>
     </div>
   );
