@@ -27,10 +27,10 @@ function Navbar() {
           </a>
 
           <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6">
-            <a href="/features" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>HOME</a>
-            <a href="/AllDoctors" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>ALL DOCTORS</a>
-            <a href="/about" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>ABOUT</a>
-            <Link to="/contact" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>CONTACT</Link>
+          <Link to="/user/dashboard" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>HOME</Link>
+          <a href="/AllDoctors" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>ALL DOCTORS</a>
+          <a href="/about" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>ABOUT</a>
+          <Link to="/user/dashboard" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>CONTACT</Link>
           </div>
 
           <div className="hidden md:flex items-center space-x-4">

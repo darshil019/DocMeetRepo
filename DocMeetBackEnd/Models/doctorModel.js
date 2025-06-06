@@ -18,10 +18,6 @@ const doctorSchema = new mongoose.Schema({
         type:Number,
         required:true,
     },
-    doctorDesc:{
-        type: String,
-        required: true,
-    },
     doctorDegree:{
         type: String,
         required: true,
@@ -40,16 +36,17 @@ const doctorSchema = new mongoose.Schema({
     },
     doctorTimmings:{
         type:{
-            start:{type: String},
-            end:{type: String}
+            doctorStart:{type: String},
+            doctorEnd:{type: String}
         }
     },
-    doctorImage:{
-        type: String,
-    },
-    doctorAvailability:{
-        type: Boolean,
-        required: true,
+    doctorAvailableDays: {
+        type: [String],
+        enum: {
+          values: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          message: '{VALUE} is not a valid day'
+        },
+        required: true
     },
     doctorPhno:{
         type: String,
@@ -58,6 +55,16 @@ const doctorSchema = new mongoose.Schema({
     doctorRating:{
         type: Number,
         required: true,
+    },
+    doctorImage:{
+        type:{
+            imgPath : {type:String},
+            imgName : {type:String}
+        }
+    },
+    doctorDesc:{
+        type: String,
+        required: true
     }
 });
 

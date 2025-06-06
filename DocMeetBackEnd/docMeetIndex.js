@@ -1,10 +1,13 @@
 const express=require('express')
-const cors=require('cors')
+let cors=require('cors')
 let app=express()
 app.use(express.json())
 app.use(cors())
 require('dotenv').config()
 require('./dbconfig')
+const path = require('path')
+
+app.use('/doctorImages', express.static(path.join(__dirname, 'doctorImages')));
 
 const mainRoutes = require('./Routes/mainRoutes')
 app.use('/docmeet',mainRoutes)

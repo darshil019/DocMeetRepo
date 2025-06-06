@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import {Link} from 'react-router-dom'
 import { ArrowUpRight, Heart, Shield, Star } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -13,21 +14,32 @@ import cat3 from '../../assets/images/cat3.svg'
 import cat4 from '../../assets/images/cat4.svg'
 import cat5 from '../../assets/images/cat5.svg'
 import cat6 from '../../assets/images/cat6.svg'
-import doc1 from '../../assets/images/doc1.png'
-import doc2 from '../../assets/images/doc2.png'
-import doc3 from '../../assets/images/doc3.png'
-import doc5 from '../../assets/images/doc5.png'
-import doc6 from '../../assets/images/doc6.png'
 import img from "../../assets/images/image.png";
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
 function UserDashboard() {
+  const [storeDoctorData, setStoreDoctorData] = useState([])
+  useEffect(() => {
+    axios.get(`http://localhost:5001/docmeet/user/getDoctorImages`)
+      .then((res) => {
+        console.log(res.data.data)
+        setStoreDoctorData(res.data.data)
+
+      })
+      .catch((err) => {
+        console.log("Err", err)
+      })
+  }, [])
   useEffect(() => {
     AOS.init({
       duration: 1000,
       once: true,
     });
   }, []);
+  const now = new Date();
+  const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const dayName = now.toLocaleDateString('en-US', { weekday: 'long' });
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8" >
       <div className="max-w-7xl mx-auto">
@@ -171,7 +183,7 @@ function UserDashboard() {
       </div>
       <div className='flex flex-col items-center justify-center py-5 mt-12'>
         <div><p className='text-3xl font-bold py-2'>Find By Speciality</p></div>
-        <div><p className='text-xs md:text-xs font-bold m-0 lg:line-clamp-3'>Simply browse through our extensive list of trusted doctors,<br/><center> schedule your appointment hassle-free. </center></p></div>
+        <div><p className='text-xs md:text-xs font-bold m-0 lg:line-clamp-3'>Simply browse through our extensive list of trusted doctors,<br /><center> schedule your appointment hassle-free. </center></p></div>
       </div>
       <div className='grid grid-cols-3 lg:grid-cols-6 gap-2 max-w-6xl mx-auto '>
         <motion.div
@@ -190,22 +202,26 @@ function UserDashboard() {
           <img src={cat2} className='w-20 h-20 rounded-full object-cover shadow-md' />
           <span className='text-sm text-center'>Gynecologist</span>
         </motion.div>
+        <Link to="/user/Dermatologist" style={{ textDecoration: "none" }}>
         <motion.div
           whileHover={{ scale: 1.1 }}
           transition={{ type: 'spring', stiffness: 300 }}
           className='flex flex-col items-center space-y-2'
         >
           <img src={cat3} className='w-20 h-20 rounded-full object-cover shadow-md' />
-          <span className='text-sm text-center'>Dermatologist</span>
+          <span className='text-sm text-gray-800 hover:text-[#5D6BFF] text-center'>Dermatologist</span>
         </motion.div>
+        </Link>
+        <Link to="/user/Pediatricians" style={{ textDecoration: "none" }}>
         <motion.div
           whileHover={{ scale: 1.1 }}
           transition={{ type: 'spring', stiffness: 300 }}
           className='flex flex-col items-center space-y-2'
         >
           <img src={cat4} className='w-20 h-20 rounded-full object-cover shadow-md' />
-          <span className='text-sm text-center'>Pediatricians</span>
+          <span className='text-sm text-center text-gray-800 hover:text-[#5D6BFF]'>Pediatricians</span>
         </motion.div>
+        </Link>
         <motion.div
           whileHover={{ scale: 1.1 }}
           transition={{ type: 'spring', stiffness: 300 }}
@@ -228,216 +244,85 @@ function UserDashboard() {
         <div><p className='text-xs md:text-xs font-bold m-0 lg:line-clamp-3'>Simply browse through our extensive list of trusted doctors.</p></div>
       </div>
       <div className='grid grid-cols-1 lg:grid-cols-5 gap-6 px-4 max-w-6xl mx-auto mt-6'>
-              <motion.div 
+        {
+          
+          storeDoctorData.map((val) => {
+            const isTodayAvailable = val.doctorAvailableDays.includes(dayName);
+            const isAvailable =
+              formattedTime > val.doctorTimmings.doctorStart &&
+              formattedTime < val.doctorTimmings.doctorEnd && isTodayAvailable;
+            return (
+              <motion.div
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 300 }}
                 className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
               >
-                <img src={doc1} className='bg-[#5D6BFF]'/>
-                <div className='flex items-center space-x-2'>
-                <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                  <span className='text-green-500 font-medium text-sm'>Available</span>
+                <img src={val.doctorImage.imgPath} className='bg-[#5D6BFF]' />
+                <div className="flex items-center space-x-2">
+                  <div
+                    className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500' : 'bg-red-500'
+                      }`}
+                  ></div>
+                  <span
+                    className={`font-medium text-sm ${isAvailable ? 'text-green-500' : 'text-red-500'
+                      }`}
+                  >
+                    {isAvailable ? 'Available' : 'Not Available'}
+                  </span>
                 </div>
-                <span className='font-bold'>Dr. Richard James</span>
-                <span className='font-semibold'>General physician</span>
+
+                <span className='font-bold'>{val.doctorName}</span>
+                <span className='font-semibold'>{val.doctorSpeciality}</span>
               </motion.div>
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
-              >
-              <img src={doc2} className='bg-[#5D6BFF]'/>
-              <div className='flex items-center space-x-2'>
-                  <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                  <span className='text-green-500 font-medium text-sm'>Available</span>
-              </div>
-              <span className='font-bold'>Dr. Emily Larson</span>
-              <span className='font-semibold'>Gynecologist</span>
-              </motion.div>
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
-              >
-                <img src={doc3} className='bg-[#5D6BFF]'/>
-                <div className='flex items-center space-x-2'>
-                    <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                    <span className='text-green-500 font-medium text-sm'>Available</span>
-                </div>
-                <span className='font-bold'>Dr. Sarah Patel</span>
-                <span className='font-semibold'>Dermatologist</span>
-              </motion.div>
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
-              >
-                  <img src={doc5} className='bg-[#5D6BFF]'/>
-                  <div className='flex items-center space-x-2'>
-                    <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                    <span className='text-green-500 font-medium text-sm'>Available</span>
-                  </div>
-                  <span className='font-bold'>Dr. Jennifer Garcia</span>
-                  <span className='font-semibold'>Neurologist</span>
-              </motion.div>
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
-              >
-                  <img src={doc6} className='bg-[#5D6BFF]'/>
-                <div className='flex items-center space-x-2'>
-                    <div className='w-2 h-2 bg-red-500 rounded-full'></div>
-                    <span className='text-red-500 font-medium text-sm'>Not Available</span>
-                </div>
-                  <span className='font-bold'>Dr. Andrew Williams</span>
-                  <span className='font-semibold'>Gastroenterologist</span>
-              </motion.div>
-      </div>
-      <div className='grid grid-cols-1 lg:grid-cols-5 gap-6 px-4 max-w-6xl mx-auto mt-6'>
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
-              >
-                <img src={doc1} className='bg-[#5D6BFF]'/>
-                <div className='flex items-center space-x-2'>
-                <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                  <span className='text-green-500 font-medium text-sm'>Available</span>
-                </div>
-                <span className='font-bold'>Dr. Richard James</span>
-                <span className='font-semibold'>General physician</span>
-              </motion.div>
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
-              >
-              <img src={doc2} className='bg-[#5D6BFF]'/>
-              <div className='flex items-center space-x-2'>
-                  <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                  <span className='text-green-500 font-medium text-sm'>Available</span>
-              </div>
-              <span className='font-bold'>Dr. Emily Larson</span>
-              <span className='font-semibold'>Gynecologist</span>
-              </motion.div>
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
-              >
-                <img src={doc3} className='bg-[#5D6BFF]'/>
-                <div className='flex items-center space-x-2'>
-                    <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                    <span className='text-green-500 font-medium text-sm'>Available</span>
-                </div>
-                <span className='font-bold'>Dr. Sarah Patel</span>
-                <span className='font-semibold'>Dermatologist</span>
-              </motion.div>
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
-              >
-                  <img src={doc5} className='bg-[#5D6BFF]'/>
-                  <div className='flex items-center space-x-2'>
-                    <div className='w-2 h-2 bg-green-500 rounded-full'></div>
-                    <span className='text-green-500 font-medium text-sm'>Available</span>
-                  </div>
-                  <span className='font-bold'>Dr. Jennifer Garcia</span>
-                  <span className='font-semibold'>Neurologist</span>
-              </motion.div>
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
-              >
-                  <img src={doc6} className='bg-[#5D6BFF]'/>
-                <div className='flex items-center space-x-2'>
-                    <div className='w-2 h-2 bg-red-500 rounded-full'></div>
-                    <span className='text-red-500 font-medium text-sm'>Not Available</span>
-                </div>
-                  <span className='font-bold'>Dr. Andrew Williams</span>
-                  <span className='font-semibold'>Gastroenterologist</span>
-              </motion.div>
+            )
+          })
+        }
       </div>
 
-      {/* <div className='flex flex-row justify-center gap-100 items-center mt-40 max-w-6xl mx-auto'>
-        <div className='flex flex-col space-y-1'>
-          <a href="/" className="flex items-center no-underline" style={{ textDecoration: "none" }}>
-              <img
-                src={img}
-                alt="Logo"
-                className="h-9 w-9 rounded-full mr-3 border-2 border-white mb-2"
-              />
-              <h3 className="text-black font-semibold tracking-wider">
-                D<span className="text-[#5D6BFF]">o</span>cM
-                <span className="text-[#5D6BFF]">ee</span>t
-              </h3>
-          </a>
-          <span className="text-sm text-gray-600 leading-relaxed mt-2">
-          DocMeet connects patients with certified medical professionals instantly. Book appointments, get consultations, and manage your health – all in one place.
-          </span>
+      <footer className="mt-40 bg-white">
+        <div className="max-w-6xl mx-auto px-4 py-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-10">
+
+            {/* Logo & Description */}
+            <div className="flex flex-col space-y-1 max-w-md">
+              <a href="/" className="flex items-center no-underline mb-2">
+                <img
+                  src={img}
+                  alt="Logo"
+                  className="h-9 w-9 rounded-full mr-3 border-2 border-white"
+                />
+                <h3 className="text-black font-semibold tracking-wider">
+                  D<span className="text-[#5D6BFF]">o</span>cM
+                  <span className="text-[#5D6BFF]">ee</span>t
+                </h3>
+              </a>
+              <span className="text-sm text-gray-600 leading-relaxed mt-2 md:pr-4 text-center md:text-left">
+                DocMeet connects patients with certified medical professionals instantly. Book appointments, get consultations, and manage your health – all in one place.
+              </span>
+            </div>
+
+            {/* Company Links */}
+            <div className="flex flex-col space-y-1 items-center md:items-start">
+              <span className="font-bold text-lg">Company</span>
+              <span>Home</span>
+              <span>About</span>
+              <span>Privacy</span>
+            </div>
+
+            {/* Contact Info */}
+            <div className="flex flex-col space-y-1 items-center md:items-start">
+              <span className="font-bold text-lg">GET IN TOUCH</span>
+              <span>+91 79932 29000</span>
+              <span>docmeet@gmail.com</span>
+            </div>
+          </div>
+
+          {/* Bottom Text */}
+          <div className="text-center text-sm text-gray-500 mt-10 pt-4 border-t">
+            © 2025 DocMeet.io – All Rights Reserved.
+          </div>
         </div>
-        <div className='flex flex-col space-y-1 ml-10'>
-          <span className='font-bold text-lg'>Company</span>
-          <span>Home</span>
-          <span>About</span>
-          <span>Privacy</span>
-        </div>
-        <div className='flex flex-col space-y-1'>
-        <span className='font-bold text-lg'>GET IN TOUCH</span>
-          <span>+917993229000</span>
-          <span>docmeet@gmail.com</span>
-        </div>
-      </div>
-      <div className="text-center text-sm text-gray-500 mt-6 pb-1 border-t pt-4 max-w-6xl mx-auto">
-        Copyright 2025 © DocMeet.io – All Rights Reserved.
-      </div> */}
-  <footer className="mt-40 bg-white">
-  <div className="max-w-6xl mx-auto px-4 py-10">
-    <div className="flex flex-col md:flex-row justify-between items-start md:items-start gap-10">
-      
-      {/* Logo & Description */}
-      <div className="flex flex-col space-y-1 max-w-md">
-        <a href="/" className="flex items-center no-underline mb-2">
-          <img
-            src={img}
-            alt="Logo"
-            className="h-9 w-9 rounded-full mr-3 border-2 border-white"
-          />
-          <h3 className="text-black font-semibold tracking-wider">
-            D<span className="text-[#5D6BFF]">o</span>cM
-            <span className="text-[#5D6BFF]">ee</span>t
-          </h3>
-        </a>
-        <span className="text-sm text-gray-600 leading-relaxed mt-2 md:pr-4 text-center md:text-left">
-          DocMeet connects patients with certified medical professionals instantly. Book appointments, get consultations, and manage your health – all in one place.
-        </span>
-      </div>
-
-      {/* Company Links */}
-      <div className="flex flex-col space-y-1 items-center md:items-start">
-        <span className="font-bold text-lg">Company</span>
-        <span>Home</span>
-        <span>About</span>
-        <span>Privacy</span>
-      </div>
-
-      {/* Contact Info */}
-      <div className="flex flex-col space-y-1 items-center md:items-start">
-        <span className="font-bold text-lg">GET IN TOUCH</span>
-        <span>+91 79932 29000</span>
-        <span>docmeet@gmail.com</span>
-      </div>
-    </div>
-
-    {/* Bottom Text */}
-    <div className="text-center text-sm text-gray-500 mt-10 pt-4 border-t">
-      © 2025 DocMeet.io – All Rights Reserved.
-    </div>
-  </div>
-</footer>
+      </footer>
 
     </div>
   )

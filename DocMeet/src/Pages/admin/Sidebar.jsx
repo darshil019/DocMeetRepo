@@ -39,7 +39,7 @@ function Sidebar(){
             <span className="text-[#5D6BFF]">ee</span>t
           </h3>
         </a>
-        <nav className="flex flex-col space-y-4">
+        <nav className="flex flex-col space-y-5 mt-4">
           <Link to="/admin/dashboard" className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
             <FaTachometerAlt /> Dashboard
           </Link>
