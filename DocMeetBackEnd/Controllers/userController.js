@@ -1,4 +1,5 @@
 const doctorSignInModel = require('../Models/doctorModel');
+const {userSignUpModel} = require('../Models/authModel')
 
 const getDoctorImages = async (req,res) => {
     try{
@@ -45,6 +46,21 @@ const getDermatologistDoctors = async (req,res) => {
     }
 }
 
+const userDashboardName = async (req,res) => {
+    const user = await userSignUpModel.findOne({email:req.user.email});
+    try{
+        if(user){
+            res.send({
+                user
+            })
+        }
+    }catch{
+        res.send({
+            msg:"NotFound"
+        })
+    }
+}
 
 
-module.exports = {getDoctorImages,getPediatriciansDoctors,getDermatologistDoctors}
+
+module.exports = {getDoctorImages,getPediatriciansDoctors,getDermatologistDoctors,userDashboardName}

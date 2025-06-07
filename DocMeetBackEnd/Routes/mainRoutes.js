@@ -1,10 +1,28 @@
 const express = require('express')
 let router = express.Router()
 const multer = require('multer')
+const jwt = require('jsonwebtoken')
 
 const authController = require('../Controllers/authController')
 const adminController = require('../Controllers/adminController')
 const userController = require('../Controllers/userController')
+
+//jwt verification
+const protect = (req,res,next) => {
+    const token = req.headers.authorization.split(" ")[1]
+    if(!token){
+      return res.status(404).send({
+        msg:"UserNotAuthorized"
+      })
+    }
+    try{
+      const decoded = jwt.verify(token,"abc")
+      req.user = decoded
+      next()
+    }catch{
+        res.status(401).json({ message: "Invalid token" });
+    }
+}
 
 //authRoutes
 router.post('/user/signup',authController.userSignUp)
@@ -30,5 +48,6 @@ router.post('/admin/doctorAdd',upload.single('myfile'),adminController.doctorSig
 router.get('/user/getDoctorImages',userController.getDoctorImages)
 router.get('/user/getPediatriciansDoctors',userController.getPediatriciansDoctors)
 router.get('/user/getDermatologistDoctors',userController.getDermatologistDoctors)
+router.get('/user/dashboardName',protect,userController.userDashboardName)
 
 module.exports = router

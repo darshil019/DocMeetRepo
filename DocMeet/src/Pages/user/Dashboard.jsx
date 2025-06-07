@@ -20,6 +20,8 @@ import axios from 'axios';
 
 function UserDashboard() {
   const [storeDoctorData, setStoreDoctorData] = useState([])
+  
+
   useEffect(() => {
     axios.get(`http://localhost:5001/docmeet/user/getDoctorImages`)
       .then((res) => {
@@ -31,12 +33,16 @@ function UserDashboard() {
         console.log("Err", err)
       })
   }, [])
+
+
   useEffect(() => {
     AOS.init({
       duration: 1000,
       once: true,
     });
   }, []);
+
+
   const now = new Date();
   const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const dayName = now.toLocaleDateString('en-US', { weekday: 'long' });
@@ -44,7 +50,6 @@ function UserDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8" >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center" >
-
           <div className="space-y-6" data-aos="fade-right">
             <div className="flex items-center gap-2 text-indigo-600">
               <Heart className="w-5 h-5 mb-2" />
@@ -285,13 +290,13 @@ function UserDashboard() {
 
             {/* Logo & Description */}
             <div className="flex flex-col space-y-1 max-w-md">
-              <a href="/" className="flex items-center no-underline mb-2">
+              <a href="/" className="flex items-center no-underline mb-2" style={{ textDecoration: "none" }}>
                 <img
                   src={img}
                   alt="Logo"
                   className="h-9 w-9 rounded-full mr-3 border-2 border-white"
                 />
-                <h3 className="text-black font-semibold tracking-wider">
+                <h3 className="text-black font-semibold tracking-wider mt-2">
                   D<span className="text-[#5D6BFF]">o</span>cM
                   <span className="text-[#5D6BFF]">ee</span>t
                 </h3>

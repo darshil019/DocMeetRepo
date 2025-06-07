@@ -40,15 +40,15 @@ const userSignin = async (req, res) => {
         const { error } = userSigninValidation.validate({ email: email, password: password }, { allowUnknown: true })
         if(!error){
             const getUserData = await userSignUpModel.findOne({
-                email:email
+                email
             })
             try{
-                if(Object.keys(getUserData).length > 0){
-                    const checkPass = await bcrypt.compareSync(password,getUserData.password)
+                if(getUserData){
+                    const checkPass = bcrypt.compareSync(password,getUserData.password)
 
                     if(checkPass){
                         const token = jwt.sign({email:getUserData.email},
-                            process.env.secretKey,{ expiresIn:'1h'}
+                            "abc",{ expiresIn:'1h'}
                         )
                         res.status(200).send({
                             token:token
@@ -72,4 +72,5 @@ const userSignin = async (req, res) => {
         res.send({ "msg": "All Fields Must Be Filled" })
     }
 }
+
 module.exports = { userSignUp, userSignin }

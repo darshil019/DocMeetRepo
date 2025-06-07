@@ -62,13 +62,13 @@ function Dermatologist(){
       
                   {/* Logo & Description */}
                   <div className="flex flex-col space-y-1 max-w-md">
-                    <a href="/" className="flex items-center no-underline mb-2">
+                    <a href="/" className="flex items-center no-underline mb-2" style={{ textDecoration: "none" }}>
                       <img
                         src={img}
                         alt="Logo"
                         className="h-9 w-9 rounded-full mr-3 border-2 border-white"
                       />
-                      <h3 className="text-black font-semibold tracking-wider">
+                      <h3 className="text-black font-semibold tracking-wider mt-2">
                         D<span className="text-[#5D6BFF]">o</span>cM
                         <span className="text-[#5D6BFF]">ee</span>t
                       </h3>

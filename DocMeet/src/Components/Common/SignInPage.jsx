@@ -1,9 +1,11 @@
 import axios from 'axios'
-import React,{useState} from 'react'
+import React,{useState,useContext} from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { AuthContext } from '../Common/AuthContext';
 
 function SignInPage() {
     let navigate = useNavigate()
+    const { userLoggedIn, setUserLoggedIn, logout ,login } = useContext(AuthContext);
     const [signInData, setsignInData] = useState({})
 
     const handleOnChange = (e) => {
@@ -14,21 +16,22 @@ function SignInPage() {
     }
 
 
-    const handleSignInClick = (e) => {
-        e.preventDefault()
-
+    const handleSignInClick = () => {
         axios.post(`http://localhost:5001/docmeet/user/signin`, signInData)
-            .then(() => {
-                console.log("Successfully Added")
-                navigate('/user/dashboard')
-            })
-            .catch((err) => {
-                console.log("Not Successfully Added", err)
-            })
-        setsignInData({})
+        .then((res) => {
+            console.log("Successfully Added")
+            console.log(signInData)
+            if (res.data.token) {
+                login(res.data.token)
+            }
+        })
+        .catch((err) => {
+            console.log("Not Successfully Added", err)
+        })
+        //setsignInData({})
     }
     return (
-        <form className='min-h-[80vh] flex items-center'>
+        <div className='min-h-[80vh] flex items-center'>
             <div className='flex flex-col gap-2 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg'>
                 <div>
                     <p className='text-2xl font-semibold'>SignIn</p>
@@ -56,11 +59,11 @@ function SignInPage() {
                     >
                     </input>
                 </div>
-                <button onClick={handleSignInClick}
+                <button onClick={(()=>{handleSignInClick()})}
                     className='bg-[#5D6BFF] text-white w-full py-2 !rounded-lg text-base mt-3'>SignIn</button>
                 <p>Don't have an account ? <Link to="/user/signup"><span className='text-[#5D6BFF] underline cursor-pointer'>SignUp Here</span></Link></p>
             </div>
-        </form>
+        </div>
     );
 }
 
