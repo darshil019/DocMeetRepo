@@ -14,11 +14,13 @@ import Gastroenterologist from "./Pages/user/Gastroenterologist";
 import GeneralPhysician from "./Pages/user/GeneralPhysician";
 import Gynecologist from "./Pages/user/Gynecologist";
 import Neurologist from "./Pages/user/Neurologist";
+import {Navigate} from 'react-router-dom'
 
 function App() {
   return (
     <div className="App">
       <Routes>
+        <Route path="/" element={<Navigate to="/user/dashboard" />} />
         <Route element={<UserLayout/>}>
             <Route path="user/signup" element={<SignupPage/>}></Route>
             <Route path="user/signin" element={<SignInPage/>}></Route>
