@@ -27,7 +27,11 @@ const protect = (req,res,next) => {
 //authRoutes
 router.post('/user/signup',authController.userSignUp)
 router.post('/user/signin',authController.userSignin)
+router.post('/user/googlesignin', authController.userGoogleSignin)
 router.post('/admin/signin',adminController.adminSignin)
+router.post('/user/resetpassword',authController.resetpassword)
+router.post('/user/verifyotp',authController.verifyotp)
+router.post('/user/newpassword',authController.newpassword)
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -48,6 +52,10 @@ router.post('/admin/doctorAdd',upload.single('myfile'),adminController.doctorSig
 router.get('/user/getDoctorImages',userController.getDoctorImages)
 router.get('/user/getPediatriciansDoctors',userController.getPediatriciansDoctors)
 router.get('/user/getDermatologistDoctors',userController.getDermatologistDoctors)
+router.get('/user/getGynecologistDoctors',userController.getGynecologistDoctors)
+router.get('/user/getGeneralPhysician',userController.getGeneralPhysician)
+router.get('/user/getNeurologist',userController.getNeurologist)
+router.get('/user/getGastroenterologist',userController.getGastroenterologist)
 router.get('/user/dashboardName',protect,userController.userDashboardName)
 
 module.exports = router

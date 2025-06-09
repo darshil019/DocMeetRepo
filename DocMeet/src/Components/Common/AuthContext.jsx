@@ -5,7 +5,7 @@ import { useNavigate, Link } from 'react-router-dom'
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  let navigate = useNavigate()
+    let navigate = useNavigate()
 
     const [userLoggedIn, setUserLoggedIn] = useState(false);
     const [userData, setUserData] = useState(null);
@@ -20,19 +20,20 @@ export const AuthProvider = ({ children }) => {
 
       if (token && !userData) {
         axios
-          .get("http://localhost:5001/docmeet/user/dashboardName", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((res) => {
-            setUserData(res.data.user);
-          })
-          .catch((err) => {
-            console.error("Error fetching user data on load", err);
-            logout();
-            navigate('/user/signin');
-          });
+        .get("http://localhost:5001/docmeet/user/dashboardName", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          setUserData(res.data.user);
+          //console.log(res.data.user)
+        })
+        .catch((err) => {
+          console.error("Error fetching user data on load", err);
+          logout();
+          navigate('/user/signin');
+        });
       }
     }, [userData]);
 

@@ -1,12 +1,15 @@
 import axios from 'axios'
-import React,{useState,useContext} from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { AuthContext } from '../Common/AuthContext';
+import { auth, provider, signInWithPopup } from "../../firebase";
 
 function SignInPage() {
     let navigate = useNavigate()
-    const { userLoggedIn, setUserLoggedIn, logout ,login } = useContext(AuthContext);
+    const { userLoggedIn, setUserLoggedIn, logout, login } = useContext(AuthContext);
     const [signInData, setsignInData] = useState({})
+    const [errors, setErrors] = useState({});
+
 
     const handleOnChange = (e) => {
         setsignInData({
@@ -15,19 +18,63 @@ function SignInPage() {
         })
     }
 
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!signInData.email) {
+            newErrors.email = "Email is required";
+        } else if (!/^\S+@\S+\.\S+$/.test(signInData.email)) {
+            newErrors.email = "Invalid email format";
+        }
+
+        if (!signInData.password) {
+            newErrors.password = "Password is required";
+        } else if (signInData.password.length < 6) {
+            newErrors.password = "Password must be at least 6 characters";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleGoogleSignIn = async () => {
+        try {
+            //console.log("Clicked Google Sign-In");
+            const result = await signInWithPopup(auth, provider);
+            //console.log("Google result", result);
+            const token = await result.user.getIdToken();
+            //console.log("Google token", token);
+
+            const res = await axios.post("http://localhost:5001/docmeet/user/googlesignin", { token });
+            //console.log("Backend response", res.data);
+            if (res.data.token) {
+                login(res.data.token);
+                navigate('/user/dashboard');
+            } else {
+                alert("Login failed. No token returned from backend.");
+            }
+        } catch (error) {
+            console.error("Google Sign-In Error", error);
+            alert("Google Sign-In Error: " + error.message);
+        }
+    };
+
+
 
     const handleSignInClick = () => {
+        if (!validateForm()) return;
+
         axios.post(`http://localhost:5001/docmeet/user/signin`, signInData)
-        .then((res) => {
-            console.log("Successfully Added")
-            console.log(signInData)
-            if (res.data.token) {
-                login(res.data.token)
-            }
-        })
-        .catch((err) => {
-            console.log("Not Successfully Added", err)
-        })
+            .then((res) => {
+                console.log("Successfully Added")
+                console.log(signInData)
+                if (res.data.token) {
+                    login(res.data.token)
+                }
+            })
+            .catch((err) => {
+                console.log("Not Successfully Added", err)
+            })
         //setsignInData({})
     }
     return (
@@ -47,6 +94,7 @@ function SignInPage() {
                         onChange={((e) => { handleOnChange(e) })}
                         value={signInData.email ? signInData.email : ''}
                     />
+                    {errors.email && <p className='text-red-500 text-xs mt-1'>{errors.email}</p>}
                 </div>
                 <div className='w-full mt-3'>
                     <label className='block text-sm font-medium text-zinc-700'>Password</label>
@@ -58,10 +106,31 @@ function SignInPage() {
                         value={signInData.password ? signInData.password : ''}
                     >
                     </input>
+                    {errors.password && <p className='text-red-500 text-xs mt-1'>{errors.password}</p>}
                 </div>
-                <button onClick={(()=>{handleSignInClick()})}
-                    className='bg-[#5D6BFF] text-white w-full py-2 !rounded-lg text-base mt-3'>SignIn</button>
-                <p>Don't have an account ? <Link to="/user/signup"><span className='text-[#5D6BFF] underline cursor-pointer'>SignUp Here</span></Link></p>
+
+                <div className="w-full text-right mt-1">
+                    <Link to="/user/forgot-password" className="text-[#5D6BFF] text-sm underline">
+                        Forgot Password?
+                    </Link>
+                </div>
+
+                <button onClick={(() => { handleSignInClick() })}
+                    className='bg-[#5D6BFF] text-white w-full py-2 !rounded-lg text-base mt-3'>SignIn
+                </button>
+                <button
+                    onClick={handleGoogleSignIn}
+                    className="flex items-center justify-center gap-3 w-full px-4 py-2 mt-2 bg-white text-gray-700 border border-gray-300 rounded-lg shadow-md hover:bg-gray-100 transition duration-300 ease-in-out"
+                >
+                    <img
+                        src="https://www.svgrepo.com/show/475656/google-color.svg"
+                        alt="Google logo"
+                        className="w-5 h-5"
+                    />
+                    <span className="font-medium">Sign in with Google</span>
+                </button>
+
+                <p className='mt-4'>Don't have an account ? <Link to="/user/signup"><span className='text-[#5D6BFF] underline cursor-pointer'>SignUp Here</span></Link></p>
             </div>
         </div>
     );

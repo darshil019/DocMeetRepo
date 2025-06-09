@@ -46,6 +46,66 @@ const getDermatologistDoctors = async (req,res) => {
     }
 }
 
+const getGynecologistDoctors = async (req,res) => {
+    try{
+        const getDoctorData3 = await doctorSignInModel.find({doctorSpeciality:"Gynecologist"})
+        res.send({
+            data:getDoctorData3
+        })
+    }
+    catch(err){
+        res.send({
+            err:err
+        })
+        console.log(err)
+    }
+}
+
+const getGeneralPhysician = async (req,res) => {
+    try{
+        const getDoctorData4 = await doctorSignInModel.find({doctorSpeciality:"General Physician"})
+        res.send({
+            data:getDoctorData4
+        })
+    }
+    catch(err){
+        res.send({
+            err:err
+        })
+        console.log(err)
+    }
+}
+
+const getNeurologist = async (req,res) => {
+    try{
+        const getDoctorData5 = await doctorSignInModel.find({doctorSpeciality:"Neurologist"})
+        res.send({
+            data:getDoctorData5
+        })
+    }
+    catch(err){
+        res.send({
+            err:err
+        })
+        console.log(err)
+    }
+}
+
+const getGastroenterologist = async (req,res) => {
+    try{
+        const getDoctorData6 = await doctorSignInModel.find({doctorSpeciality:"Gastroenterologist"})
+        res.send({
+            data:getDoctorData6
+        })
+    }
+    catch(err){
+        res.send({
+            err:err
+        })
+        console.log(err)
+    }
+}
+
 const userDashboardName = async (req,res) => {
     const user = await userSignUpModel.findOne({email:req.user.email});
     try{
@@ -63,4 +123,4 @@ const userDashboardName = async (req,res) => {
 
 
 
-module.exports = {getDoctorImages,getPediatriciansDoctors,getDermatologistDoctors,userDashboardName}
+module.exports = {getDoctorImages,getPediatriciansDoctors,getDermatologistDoctors,getGynecologistDoctors,getGeneralPhysician,getNeurologist,getGastroenterologist,userDashboardName}

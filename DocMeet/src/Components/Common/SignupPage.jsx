@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-import { useNavigate,Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 function SignupPage() {
     let navigate = useNavigate()
@@ -27,22 +27,6 @@ function SignupPage() {
         if (!signUpData.password || !/^[a-z0-9]{3,30}$/.test(signUpData.password)) {
             newErrors.password = "Password must be 3-30 characters and lowercase letters/numbers only"
         }
-        if (!signUpData.birthday) {
-            newErrors.birthday = "Birthday is required"
-        } 
-        else 
-        {
-            const today = new Date()
-            const birthDate = new Date(signUpData.birthday)
-            
-            const age = today.getFullYear() - birthDate.getFullYear()
-            const monthDiff = today.getMonth() - birthDate.getMonth()
-            const dayDiff = today.getDate() - birthDate.getDate()
-        
-            if (age < 18 || (age === 18 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
-                newErrors.birthday = "You must be at least 18 years old"
-            }
-        }
         return newErrors
     }
 
@@ -56,14 +40,22 @@ function SignupPage() {
         }
 
         axios.post(`http://localhost:5001/docmeet/user/signup`, signUpData)
-            .then(() => {
-                console.log("Successfully Added")
+            .then((res) => {
+                console.log("Signup Response:", res.data);
+
+                if (res.data.isSuccess) {
+                    alert('Successfully Registered!');
+                    setsignUpData({});
+                    setError({});
+                } else {
+                    alert('User already exists!');
+                }
             })
             .catch((err) => {
-                console.log("Not Successfully Added", err)
-            })
-        setsignUpData({})
-        setError({})
+                console.error("Signup Error:", err);
+                alert('Signup failed. Please try again.');
+            });
+
     }
 
     return (
@@ -83,17 +75,6 @@ function SignupPage() {
                         value={signUpData.fullname ? signUpData.fullname : ''}
                     />
                     {errors.fullname ? <p className="text-red-500 text-xs mt-1">{errors.fullname}</p> : ''}
-                </div>
-                <div className='w-full mt-3'>
-                    <label className='block text-sm font-medium text-zinc-700'>Birthday</label>
-                    <input
-                        name="birthday"
-                        className='border border-zinc-300 rounded w-full p-2 mt-1'
-                        type='date'
-                        onChange={((e) => { handleOnChange(e) })}
-                        value={signUpData.birthday ? signUpData.birthday : ''}
-                    />
-                    {errors.birthday ? <p className="text-red-500 text-xs mt-1">{errors.birthday}</p> : ''}
                 </div>
                 <div className='w-full mt-3'>
                     <label className='block text-sm font-medium text-zinc-700'>Email</label>
@@ -119,7 +100,7 @@ function SignupPage() {
                     {errors.password ? <p className="text-red-500 text-xs mt-1">{errors.password}</p> : ''}
                 </div>
                 <button className='bg-[#5D6BFF] text-white w-full py-2 !rounded-lg text-base mt-3' onClick={handleSignUpClick}>SignUp</button>
-                <p>Already have an account ? <Link to="/user/signin"><span className='text-[#5D6BFF] underline cursor-pointer'>SignIn Here</span></Link></p>
+                <p className='mt-4'>Already have an account ? <Link to="/user/signin"><span className='text-[#5D6BFF] underline cursor-pointer'>SignIn Here</span></Link></p>
             </div>
         </div>
     );

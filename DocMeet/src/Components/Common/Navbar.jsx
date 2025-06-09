@@ -9,7 +9,7 @@ import { AuthContext } from '../Common/AuthContext';
 
 function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
-  const { userLoggedIn, setUserLoggedIn, logout, login, userData,setUserData } = useContext(AuthContext);
+  const { userLoggedIn, setUserLoggedIn, logout, login, userData, setUserData } = useContext(AuthContext);
   return (
     <>
       <nav className="bg-gray-100 shadow-lg py-1.5 px-5 font-['Poppins']">
@@ -41,19 +41,24 @@ function Navbar() {
             {
               userLoggedIn ?
                 <>
-                    <span className="text-gray-800 hover:text-[#5D6BFF] font-semibold mt-3">
-                        {
-                          userData ? <p>Welcome {userData.fullname}</p>  : <p>Loading user data...</p>
-                        }
-                    </span>
-                    <Link to="/user/signin">
-                      <button
-                        onClick={(() => { logout() })}
-                        className="bg-gray-300 text-black px-3 py-1 rounded-xl text-xs hover:bg-[#5D6BFF] hover:text-white shadow-md"
-                      >
-                        LogOut
-                      </button>
-                    </Link>
+                  <img
+                    src={userData?.picture || img}
+                    alt="User"
+                    className="h-10 w-10 rounded-full object-cover border-2 border-[#5D6BFF]"
+                  />
+                  <span className="text-gray-800 hover:text-[#5D6BFF] font-semibold mt-3">
+                    {
+                      userData ? <p>Welcome {userData.fullname}</p> : <p>Loading user data...</p>
+                    }
+                  </span>
+                  <Link to="/user/signin">
+                    <button
+                      onClick={(() => { logout() })}
+                      className="bg-gray-300 text-black px-3 py-1 rounded-xl text-xs hover:bg-[#5D6BFF] hover:text-white shadow-md"
+                    >
+                      LogOut
+                    </button>
+                  </Link>
                 </>
                 :
                 <>
@@ -101,16 +106,16 @@ function Navbar() {
                 <Link to="/contact" className="text-gray-800 font-semibold hover:text-[#5D6BFF]" style={{ textDecoration: "none" }}>CONTACT</Link>
                 {userLoggedIn ? (
                   <>
-                   <Link to="/user/signin">
-                    <button
-                      onClick={() => {
-                        logout();
-                        setIsOpen(false);
-                      }}
-                      className="bg-gray-300 text-black px-3 py-2 rounded-lg text-sm hover:bg-red-500 hover:text-white"
-                    >
-                      Logout
-                    </button>
+                    <Link to="/user/signin">
+                      <button
+                        onClick={() => {
+                          logout();
+                          setIsOpen(false);
+                        }}
+                        className="bg-gray-300 text-black px-3 py-2 rounded-lg text-sm hover:bg-red-500 hover:text-white"
+                      >
+                        Logout
+                      </button>
                     </Link>
                   </>
                 ) : (

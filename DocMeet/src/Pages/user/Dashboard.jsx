@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ArrowUpRight, Heart, Shield, Star } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -20,7 +20,7 @@ import axios from 'axios';
 
 function UserDashboard() {
   const [storeDoctorData, setStoreDoctorData] = useState([])
-  
+
 
   useEffect(() => {
     axios.get(`http://localhost:5001/docmeet/user/getDoctorImages`)
@@ -191,58 +191,66 @@ function UserDashboard() {
         <div><p className='text-xs md:text-xs font-bold m-0 lg:line-clamp-3'>Simply browse through our extensive list of trusted doctors,<br /><center> schedule your appointment hassle-free. </center></p></div>
       </div>
       <div className='grid grid-cols-3 lg:grid-cols-6 gap-2 max-w-6xl mx-auto '>
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-          className='flex flex-col items-center space-y-2'
-        >
-          <img src={cat1} className='w-20 h-20 rounded-full object-cover shadow-md' />
-          <span className='text-sm text-center'>General physician</span>
-        </motion.div>
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-          className='flex flex-col items-center space-y-2'
-        >
-          <img src={cat2} className='w-20 h-20 rounded-full object-cover shadow-md' />
-          <span className='text-sm text-center'>Gynecologist</span>
-        </motion.div>
+        <Link to="/user/GeneralPhysician" style={{ textDecoration: "none" }}>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className='flex flex-col items-center space-y-2'
+          >
+            <img src={cat1} className='w-20 h-20 rounded-full object-cover shadow-md' />
+            <span className='text-sm text-center text-gray-800 hover:text-[#5D6BFF]'>GeneralPhysician</span>
+          </motion.div>
+        </Link>
+        <Link to="/user/Gynecologist" style={{ textDecoration: "none" }}>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className='flex flex-col items-center space-y-2'
+          >
+            <img src={cat2} className='w-20 h-20 rounded-full object-cover shadow-md' />
+            <span className='text-sm text-gray-800 hover:text-[#5D6BFF] text-center'>Gynecologist</span>
+          </motion.div>
+        </Link>
         <Link to="/user/Dermatologist" style={{ textDecoration: "none" }}>
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-          className='flex flex-col items-center space-y-2'
-        >
-          <img src={cat3} className='w-20 h-20 rounded-full object-cover shadow-md' />
-          <span className='text-sm text-gray-800 hover:text-[#5D6BFF] text-center'>Dermatologist</span>
-        </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className='flex flex-col items-center space-y-2'
+          >
+            <img src={cat3} className='w-20 h-20 rounded-full object-cover shadow-md' />
+            <span className='text-sm text-gray-800 hover:text-[#5D6BFF] text-center'>Dermatologist</span>
+          </motion.div>
         </Link>
         <Link to="/user/Pediatricians" style={{ textDecoration: "none" }}>
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-          className='flex flex-col items-center space-y-2'
-        >
-          <img src={cat4} className='w-20 h-20 rounded-full object-cover shadow-md' />
-          <span className='text-sm text-center text-gray-800 hover:text-[#5D6BFF]'>Pediatricians</span>
-        </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className='flex flex-col items-center space-y-2'
+          >
+            <img src={cat4} className='w-20 h-20 rounded-full object-cover shadow-md' />
+            <span className='text-sm text-center text-gray-800 hover:text-[#5D6BFF]'>Pediatricians</span>
+          </motion.div>
         </Link>
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-          className='flex flex-col items-center space-y-2'
-        >
-          <img src={cat5} className='w-20 h-20 rounded-full object-cover shadow-md' />
-          <span className='text-sm text-center'>Neurologist</span>
-        </motion.div>
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-          className='flex flex-col items-center space-y-2'
-        >
-          <img src={cat6} className='w-20 h-20 rounded-full object-cover shadow-md' />
-          <span className='text-sm text-center'>Gastroenterologist</span>
-        </motion.div>
+        <Link to="/user/Neurologist" style={{ textDecoration: "none" }}>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className='flex flex-col items-center space-y-2'
+          >
+            <img src={cat5} className='w-20 h-20 rounded-full object-cover shadow-md' />
+            <span className='text-sm text-center text-gray-800 hover:text-[#5D6BFF]'>Neurologist</span>
+          </motion.div>
+        </Link>
+        <Link to="/user/Gastroenterologist" style={{ textDecoration: "none" }}>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+            className='flex flex-col items-center space-y-2'
+          >
+            <img src={cat6} className='w-20 h-20 rounded-full object-cover shadow-md' />
+            <span className='text-sm text-center text-gray-800 hover:text-[#5D6BFF]'>Gastroenterologist</span>
+          </motion.div>
+        </Link>
       </div>
       <div className='flex flex-col items-center justify-center py-5 mt-13'>
         <div><p className='text-3xl font-bold py-2'>Top Doctors to Book</p></div>
@@ -250,7 +258,7 @@ function UserDashboard() {
       </div>
       <div className='grid grid-cols-1 lg:grid-cols-5 gap-6 px-4 max-w-6xl mx-auto mt-6'>
         {
-          
+
           storeDoctorData.map((val) => {
             const isTodayAvailable = val.doctorAvailableDays.includes(dayName);
             const isAvailable =
