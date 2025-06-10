@@ -6,9 +6,16 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../Common/AuthContext';
+import { motion, AnimatePresence } from "framer-motion";
+import { LogOut } from 'lucide-react';
+
 
 function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const percentage = 90;
+
+
   const { userLoggedIn, setUserLoggedIn, logout, login, userData, setUserData } = useContext(AuthContext);
   return (
     <>
@@ -44,19 +51,63 @@ function Navbar() {
                   <img
                     src={userData?.picture || img}
                     alt="User"
-                    className="h-10 w-10 rounded-full object-cover border-2 border-[#5D6BFF]"
+                    className="h-10 w-10 rounded-full object-cover border-2 border-[#5D6BFF] cursor-pointer"
+                    onClick={() => setShowModal(true)}
                   />
-                  <span className="text-gray-800 hover:text-[#5D6BFF] font-semibold mt-3">
-                    {
-                      userData ? <p>Welcome {userData.fullname}</p> : <p>Loading user data...</p>
-                    }
-                  </span>
+
+                  <AnimatePresence>
+                    {showModal && (
+                      <>
+                        <motion.div
+                          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          onClick={() => setShowModal(false)}
+                        />
+                        <motion.div
+                          className="fixed z-50 top-1/2 left-1/2 w-80 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-xl p-6 text-center"
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <button
+                            onClick={() => setShowModal(false)}
+                            className="absolute top-2 right-3 text-gray-500 hover:text-red-500 text-lg"
+                          >
+                            ✕
+                          </button>
+                          <img
+                            src={userData?.picture || img}
+                            alt="User"
+                            className="w-20 h-20 rounded-full border-2 border-[#5D6BFF] mx-auto mb-4"
+                          />
+                          <h2 className="text-xl font-semibold">{userData?.fullname || "User Name"}</h2>
+                          <p className="text-gray-600">{userData?.email || "user@example.com"}</p>
+
+                          <div className="text-left w-full">
+                            <p className="text-sm font-medium text-gray-700 mb-1">Profile Completion</p>
+                            <div className="w-full bg-gray-200 rounded-full h-4 shadow-inner">
+                              <div
+                                className="bg-[#5D6BFF] h-4 rounded-full text-xs font-semibold text-white text-center transition-all duration-300"
+                                style={{ width: `${percentage}%` }}
+                              >
+                                {percentage}%
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
                   <Link to="/user/signin">
                     <button
-                      onClick={(() => { logout() })}
-                      className="bg-gray-300 text-black px-3 py-1 rounded-xl text-xs hover:bg-[#5D6BFF] hover:text-white shadow-md"
+                      onClick={logout}
+                      className="bg-[#5D6BFF] text-white px-2 py-2 !rounded-xl text-sm font-medium shadow-md hover:bg-[#4a5de4] transition-all duration-200 flex items-center gap-2"
                     >
-                      LogOut
+                      <LogOut size={16} />
+                      Log Out
                     </button>
                   </Link>
                 </>

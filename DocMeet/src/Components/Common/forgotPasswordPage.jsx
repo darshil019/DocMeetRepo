@@ -22,7 +22,7 @@ function ForgotPasswordPage() {
             .catch(err => {
                 setMessage("Email not found.");
             })
-            .finally(() => setLoading(false));  // always stop loading
+            .finally(() => setLoading(false));
     };
 
     const handleOtpSubmit = () => {
