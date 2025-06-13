@@ -11,12 +11,39 @@ import { LogOut } from 'lucide-react';
 
 
 function Navbar() {
+  const { userLoggedIn, setUserLoggedIn, logout, login, userData, setUserData,token , getUserData} = useContext(AuthContext);
   const [isOpen, setIsOpen] = React.useState(false);
   const [showModal, setShowModal] = useState(false);
-  const percentage = 90;
+  const [verifyUser,setVerifyUser] = useState({})
+  let navigate = useNavigate()
+
+  const onHandleChange = (e) => {
+      setVerifyUser({
+        ...verifyUser,
+        [e.target.name]:e.target.value,
+        verifyUserPer:100
+      })
+  } 
+
+  const verifyUserPer = (req,res) => {
+      axios.put(`http://localhost:5001/docmeet/user/verifiedUser`,verifyUser,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      .then(()=>{
+        console.log('Successfully Updated Bthdy')
+        setVerifyUser({})
+        getUserData()
+      })
+      .catch((err)=>{
+        console.log('error',err)
+      })
+  }
 
 
-  const { userLoggedIn, setUserLoggedIn, logout, login, userData, setUserData } = useContext(AuthContext);
   return (
     <>
       <nav className="bg-gray-100 shadow-lg py-1.5 px-5 font-['Poppins']">
@@ -86,17 +113,50 @@ function Navbar() {
                           <h2 className="text-xl font-semibold">{userData?.fullname || "User Name"}</h2>
                           <p className="text-gray-600">{userData?.email || "user@example.com"}</p>
 
-                          <div className="text-left w-full">
-                            <p className="text-sm font-medium text-gray-700 mb-1">Profile Completion</p>
+                          <div className="w-full text-left space-y-2">
+                            <p className="text-sm font-medium text-gray-700">Profile Completion</p>
+
                             <div className="w-full bg-gray-200 rounded-full h-4 shadow-inner">
                               <div
                                 className="bg-[#5D6BFF] h-4 rounded-full text-xs font-semibold text-white text-center transition-all duration-300"
-                                style={{ width: `${percentage}%` }}
+                                style={{ width: `${userData?.verifyUserPer}%` }}
                               >
-                                {percentage}%
+                                {userData?.verifyUserPer}%
                               </div>
                             </div>
+                            {
+                              userData.verifyUserPer > 90 ? (
+                                <p className="text-sm font-semibold text-gray-800">
+                                  Birthday :
+                                {new Date(userData.userBirthDay).toLocaleDateString('en-US', {
+                                  year: 'numeric',
+                                  month: 'long',
+                                  day: 'numeric'
+                                })}
+                              </p>
+                              )
+                              :
+                                (
+                                <>
+                                <label className="block text-sm font-medium text-gray-700 mt-2">
+                                Fill Your Birthday:
+                                </label>
+                                <input
+                                  type="date"
+                                  name="userBirthDay"
+                                  onChange={((e)=>{onHandleChange(e)})}
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-[#5D6BFF] focus:border-[#5D6BFF] text-sm"
+                                />
+                                <button
+                                  onClick={verifyUserPer}
+                                  className="bg-[#5D6BFF] mt-4 text-white mx-auto px-2 py-2 !rounded-xl text-sm font-medium shadow-md hover:bg-[#4a5de4] transition-all duration-200 flex items-center gap-2"
+                                >
+                                  Submit
+                                </button>
+                                </>)
+                            }
                           </div>
+
                         </motion.div>
                       </>
                     )}

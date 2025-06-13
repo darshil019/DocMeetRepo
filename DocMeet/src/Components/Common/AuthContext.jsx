@@ -6,9 +6,25 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     let navigate = useNavigate()
-
+    const token = localStorage.getItem("token");
     const [userLoggedIn, setUserLoggedIn] = useState(false);
     const [userData, setUserData] = useState(null);
+
+
+    //this why i created bcz i want to update birthday section that's why i used...
+    const getUserData = () => {
+      axios.get(`http://localhost:5001/docmeet/user/dashboardName`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((res) => {
+        setUserData(res.data.user);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch user data", err);
+      });
+    };
 
     //why this useEffect run bcz after login we set userName but after refresh page token is already
     //in localstorage and with token userLoggedIn becomes true so logout button works good but userName
@@ -19,8 +35,7 @@ export const AuthProvider = ({ children }) => {
       setUserLoggedIn(isLoggedIn);
 
       if (token && !userData) {
-        axios
-        .get("http://localhost:5001/docmeet/user/dashboardName", {
+        axios.get("http://localhost:5001/docmeet/user/dashboardName", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -61,7 +76,7 @@ export const AuthProvider = ({ children }) => {
     };
   
     return (
-      <AuthContext.Provider value={{ userLoggedIn, setUserLoggedIn, logout ,login,userData,setUserData}}>
+      <AuthContext.Provider value={{ userLoggedIn, setUserLoggedIn, logout ,login,userData,setUserData,token,getUserData}}>
         {children}
       </AuthContext.Provider>
     );

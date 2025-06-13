@@ -16,7 +16,7 @@ const userSignUpDataSchema = mongoose.Schema({
         required : false,
     },
     picture: {
-        type: String, // for profile image from Google
+        type: String,
         required: false
     },
     loginMethod: {
@@ -30,6 +30,14 @@ const userSignUpDataSchema = mongoose.Schema({
     otpExpiresAt: {
         type: Date
     },
+    verifyUserPer : {
+        type :  Number,
+        default : 90
+    },
+    userBirthDay : {
+        type : Date,
+        default : new Date()
+    }
 })
 
 const userSignUpValidation = Joi.object({

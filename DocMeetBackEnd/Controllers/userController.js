@@ -121,6 +121,17 @@ const userDashboardName = async (req,res) => {
     }
 }
 
+const verifyUser = async (req,res) => {
+    userSignUpModel.updateOne({email:req.user.email},req.body)
+    .then((data)=>{
+        console.log(data)
+        res.send({msg:"Update Data Successfully"})
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+}
 
 
-module.exports = {getDoctorImages,getPediatriciansDoctors,getDermatologistDoctors,getGynecologistDoctors,getGeneralPhysician,getNeurologist,getGastroenterologist,userDashboardName}
+
+module.exports = {getDoctorImages,getPediatriciansDoctors,getDermatologistDoctors,getGynecologistDoctors,getGeneralPhysician,getNeurologist,getGastroenterologist,userDashboardName,verifyUser}

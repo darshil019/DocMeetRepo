@@ -57,5 +57,6 @@ router.get('/user/getGeneralPhysician',userController.getGeneralPhysician)
 router.get('/user/getNeurologist',userController.getNeurologist)
 router.get('/user/getGastroenterologist',userController.getGastroenterologist)
 router.get('/user/dashboardName',protect,userController.userDashboardName)
+router.put('/user/verifiedUser',protect,userController.verifyUser)
 
 module.exports = router
