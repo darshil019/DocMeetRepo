@@ -132,6 +132,21 @@ const verifyUser = async (req,res) => {
     })
 }
 
+const allDoctors = async (req,res) => {
+    try{
+        const getAllDoctorData = await doctorSignInModel.find()
+        res.send({
+            data:getAllDoctorData
+        })
+    }
+    catch(err){
+        res.send({
+            err:err
+        })
+        console.log(err)
+    }
+}
 
 
-module.exports = {getDoctorImages,getPediatriciansDoctors,getDermatologistDoctors,getGynecologistDoctors,getGeneralPhysician,getNeurologist,getGastroenterologist,userDashboardName,verifyUser}
+
+module.exports = {getDoctorImages,getPediatriciansDoctors,getDermatologistDoctors,getGynecologistDoctors,getGeneralPhysician,getNeurologist,getGastroenterologist,userDashboardName,verifyUser,allDoctors}

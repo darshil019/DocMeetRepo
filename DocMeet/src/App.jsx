@@ -14,6 +14,9 @@ import Gastroenterologist from "./Pages/user/Gastroenterologist";
 import GeneralPhysician from "./Pages/user/GeneralPhysician";
 import Gynecologist from "./Pages/user/Gynecologist";
 import Neurologist from "./Pages/user/Neurologist";
+import AllDoctors from "./Pages/user/AllDoctors";
+import ContactUs from "./Pages/user/ContactUs";
+import Aboutus from "./Pages/user/Aboutus";
 import {Navigate} from 'react-router-dom'
 
 function App() {
@@ -32,6 +35,9 @@ function App() {
             <Route path="user/GeneralPhysician" element={<GeneralPhysician/>}></Route>
             <Route path="user/Neurologist" element={<Neurologist/>}></Route>
             <Route path="user/Gastroenterologist" element={<Gastroenterologist/>}></Route>
+            <Route path="user/alldoctors" element={<AllDoctors/>}></Route>
+            <Route path="user/ContactUs" element={<ContactUs/>}></Route>
+            <Route path="user/Aboutus" element={<Aboutus/>}></Route>
         </Route>
         <Route path="admin/signin" element={<AdminSignIn/>}></Route>
         <Route path="admin/dashboard" element={<AdminDashboard/>}></Route>

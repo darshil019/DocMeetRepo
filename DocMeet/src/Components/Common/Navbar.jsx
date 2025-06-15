@@ -64,9 +64,9 @@ function Navbar() {
             {userLoggedIn ?
               <>
                 <Link to="/user/dashboard" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>HOME</Link>
-                <a href="/AllDoctors" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>ALL DOCTORS</a>
-                <a href="/about" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>ABOUT</a>
-                <Link to="/user/dashboard" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>CONTACT</Link>
+                <Link to="/user/alldoctors" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>ALL DOCTORS</Link>
+                <Link to="/user/Aboutus" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>ABOUT</Link>
+                <Link to="/user/ContactUs" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>CONTACT</Link>
               </> : ' '
             }
           </div>

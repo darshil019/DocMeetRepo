@@ -17,10 +17,11 @@ import cat6 from '../../assets/images/cat6.svg'
 import img from "../../assets/images/image.png";
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function UserDashboard() {
   const [storeDoctorData, setStoreDoctorData] = useState([])
-
+  let navigate = useNavigate()
 
   useEffect(() => {
     axios.get(`http://localhost:5001/docmeet/user/getDoctorImages`)
@@ -88,7 +89,10 @@ function UserDashboard() {
             </div>
 
             <div className="flex flex-wrap gap-4 pt-4">
-              <button className="bg-[#5D6BFF] hover:bg-indigo-700 text-white px-8 py-3 !rounded-full text-base font-medium transition-colors duration-200 shadow-lg hover:shadow-xl">
+              <button className="bg-[#5D6BFF] hover:bg-indigo-700 text-white px-8 py-3 !rounded-full text-base font-medium transition-colors duration-200 shadow-lg hover:shadow-xl"
+              onClick={(()=>{
+                  navigate('/user/alldoctors')
+              })}>
                 Book An Appointment
               </button>
 
