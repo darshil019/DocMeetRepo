@@ -25,7 +25,7 @@ function AllDoctors() {
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8" >
             <div className="max-w-7xl mx-auto flex gap-8">
                 {/* Left Sidebar: Category Filter */}
-                <aside className="w-full sm:w-1/4">
+                <aside className="w-full sm:w-1/6">
                     <div className="flex flex-col gap-3">
                         {[
                             { label: "All Doctors", value: "alldoctors" },
@@ -49,7 +49,7 @@ function AllDoctors() {
                         ))}
                     </div>
                 </aside>
-                <main className="w-full sm:w-3/4">
+                <main className="w-full sm:w-5/6">
                     <div className='grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-4'>
                         {
                             storeDoctorData.map((val) => {

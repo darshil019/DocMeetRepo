@@ -17,6 +17,7 @@ import Neurologist from "./Pages/user/Neurologist";
 import AllDoctors from "./Pages/user/AllDoctors";
 import ContactUs from "./Pages/user/ContactUs";
 import Aboutus from "./Pages/user/Aboutus";
+import OTP from "./Components/Common/OTP";
 import {Navigate} from 'react-router-dom'
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path="user/signup" element={<SignupPage/>}></Route>
             <Route path="user/signin" element={<SignInPage/>}></Route>
             <Route path="user/dashboard" element={<UserDashboard/>}></Route>
+            <Route path="user/otp" element={<OTP/>}></Route>
             <Route path="user/forgot-password" element={<ForgotPasswordPage/>}></Route>
             <Route path="user/Pediatricians" element={<Pediatricians/>}></Route>
             <Route path="user/Dermatologist" element={<Dermatologist/>}></Route>

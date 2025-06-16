@@ -40,6 +40,28 @@ const userSignUpDataSchema = mongoose.Schema({
     }
 })
 
+const verificationOTPSchema = mongoose.Schema({
+    fullname : {
+        type : String,
+        required : true,
+    },
+    email : {
+        type : String,
+        required : true,
+        unique : true
+    },
+    password : {
+        type : String,
+        required : false,
+    },
+    otp: {
+        type: String
+    },
+    otpExpiresAt: {
+        type: Date
+    },
+})
+
 const userSignUpValidation = Joi.object({
     fullname : Joi.string().min(3).max(30).required(),
     email : Joi.string().email().required(),
@@ -64,5 +86,6 @@ const userSigninValidation = Joi.object({
 })
 
 const userSignUpModel = mongoose.model('userSignUpModel',userSignUpDataSchema)
+const verificationOTPModel = mongoose.model('verificationOTPModel',verificationOTPSchema)
 
-module.exports = {userSignUpModel,userSignUpValidation,userSigninValidation}
+module.exports = {userSignUpModel,userSignUpValidation,userSigninValidation,verificationOTPModel}
