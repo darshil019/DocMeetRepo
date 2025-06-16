@@ -152,7 +152,7 @@ function UserDashboard() {
       </div>
       <div className='grid mx-auto grid-cols-1 lg:grid-cols-4 md:grid-cols-2 2xl:grid-cols-2 gap-5 px-20 justify-items-center'>
         <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
-          <img src={doctorImg} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
+          <img src={doctorImg1} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
           <h2 className='py-3 font-bold'>Check Doctor Profile</h2>
           <p className=''>
             Browse through detailed doctor profiles to learn about their qualifications, areas of expertise, experience, and patient feedback — helping you make confident and informed healthcare choices tailored to your needs.
@@ -270,7 +270,7 @@ function UserDashboard() {
                 transition={{ type: 'spring', stiffness: 300 }}
                 className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
               >
-                <img src={val.doctorImage.imgPath} className='bg-[#5D6BFF]' />
+                <img src={val.doctorImage?.imgPath} className='bg-[#5D6BFF]' />
                 <div className="flex items-center space-x-2">
                   <div
                     className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500' : 'bg-red-500'
