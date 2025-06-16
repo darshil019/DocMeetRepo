@@ -27,6 +27,9 @@ const protect = (req, res, next) => {
 //authRoutes
 router.post('/user/signup', authController.userSignUp)
 router.post('/user/signin', authController.userSignin)
+router.post('/user/signupOtp',authController.userSignUpOtp)
+router.post('/user/signup',authController.userSignUp)
+router.post('/user/signin',authController.userSignin)
 router.post('/user/googlesignin', authController.userGoogleSignin)
 router.post('/admin/signin', adminController.adminSignin)
 router.post('/user/resetpassword', authController.resetpassword)

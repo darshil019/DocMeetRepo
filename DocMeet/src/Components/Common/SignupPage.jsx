@@ -7,7 +7,8 @@ function SignupPage() {
 
     const [signUpData, setsignUpData] = useState({})
     const [errors, setError] = useState({})
-
+    const [loading, setLoading] = useState(false);
+    
     const handleOnChange = (e) => {
         setsignUpData({
             ...signUpData,
@@ -38,24 +39,25 @@ function SignupPage() {
             setError(newErrors)
             return
         }
-
-        axios.post(`http://localhost:5001/docmeet/user/signup`, signUpData)
+        setLoading(true);
+        axios.post(`http://localhost:5001/docmeet/user/signupOtp`, signUpData)
             .then((res) => {
                 console.log("Signup Response:", res.data);
-
-                if (res.data.isSuccess) {
-                    alert('Successfully Registered!');
-                    setsignUpData({});
-                    setError({});
-                } else {
-                    alert('User already exists!');
-                }
+                localStorage.setItem("userEmail",signUpData.email)
+                navigate('/user/otp')
+                // if (res.data.isSuccess) {
+                //     alert('Successfully Registered!');
+                //     setsignUpData({});
+                //     setError({});
+                // } else {
+                //     alert('User already exists!');
+                // }
             })
             .catch((err) => {
                 console.error("Signup Error:", err);
                 alert('Signup failed. Please try again.');
-            });
-
+            })
+            .finally(() => setLoading(false));
     }
 
     return (
@@ -99,7 +101,7 @@ function SignupPage() {
                     </input>
                     {errors.password ? <p className="text-red-500 text-xs mt-1">{errors.password}</p> : ''}
                 </div>
-                <button className='bg-[#5D6BFF] text-white w-full py-2 !rounded-lg text-base mt-3' onClick={handleSignUpClick}>SignUp</button>
+                <button disabled={loading} className='bg-[#5D6BFF] text-white w-full py-2 !rounded-lg text-base mt-3 disabled:opacity-60' onClick={handleSignUpClick}>{loading ? "Sending OTP..." : "SignUP"}</button>
                 <p className='mt-4'>Already have an account ? <Link to="/user/signin"><span className='text-[#5D6BFF] underline cursor-pointer'>SignIn Here</span></Link></p>
             </div>
         </div>
