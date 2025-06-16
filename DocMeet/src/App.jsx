@@ -17,8 +17,11 @@ import Neurologist from "./Pages/user/Neurologist";
 import AllDoctors from "./Pages/user/AllDoctors";
 import ContactUs from "./Pages/user/ContactUs";
 import Aboutus from "./Pages/user/Aboutus";
+import AddPrescription from "./Pages/doctor/AddPrescription";
+import PrescriptionAdded from "./Pages/doctor/PrescriptionAdded";
 import {Navigate} from 'react-router-dom'
-
+import AddMedicine from "./Pages/doctor/AddMedicine";
+import DoctorDashboard from "./Pages/doctor/DoctorDashboard";
 function App() {
   return (
     <div className="App">
@@ -42,6 +45,11 @@ function App() {
         <Route path="admin/signin" element={<AdminSignIn/>}></Route>
         <Route path="admin/dashboard" element={<AdminDashboard/>}></Route>
          <Route path="admin/adddoctor" element={<AddDoctor/>}></Route>
+         <Route path="doctor/addprescription" element={<AddPrescription/>}></Route>
+         <Route path="doctor/prescriptionadded" element={<PrescriptionAdded/>}></Route>
+         <Route path="doctor/addmedicine" element={<AddMedicine/>}></Route>
+         <Route path="doctor/dashboard" element={<DoctorDashboard/>}></Route>
+         
       </Routes>
     </div>
   );

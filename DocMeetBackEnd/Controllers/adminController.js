@@ -1,6 +1,6 @@
 const fs = require('fs')
 const adminSignInModel = require('../Models/adminModel');
-const {doctorSignInModel} = require('../Models/doctorModel');
+const {doctorSigninModel} = require('../Models/doctorModel');
 
 const adminSignin = (req, res) => {
     let adminSignInData = new adminSignInModel({
@@ -14,7 +14,7 @@ const doctorSignin = async (req, res) => {
     try {
         fs.readFile(req.file.path, async (err,data)=>{
             if(!err){
-                let doctorSignInData = new doctorSignInModel({
+                let doctorSignInData = new doctorSigninModel({
                     doctorName: req.body.doctorName,
                     doctorEmail: req.body.doctorEmail,
                     doctorPassword: req.body.doctorPassword,

@@ -1,9 +1,9 @@
-const doctorSignInModel = require('../Models/doctorModel');
+const {doctorSigninModel} = require('../Models/doctorModel');
 const {userSignUpModel} = require('../Models/authModel')
 
 const getDoctorImages = async (req,res) => {
     try{
-        const getDoctorData = await doctorSignInModel.find({}).select('doctorName doctorImage doctorSpeciality doctorTimmings doctorAvailableDays')
+        const getDoctorData = await doctorSigninModel.find({}).select('doctorName doctorImage doctorSpeciality doctorTimmings doctorAvailableDays')
         res.send({
             data:getDoctorData
         })
@@ -18,7 +18,7 @@ const getDoctorImages = async (req,res) => {
 
 const getPediatriciansDoctors = async (req,res) => {
     try{
-        const getDoctorData1 = await doctorSignInModel.find({doctorSpeciality:"Pediatricians"})
+        const getDoctorData1 = await doctorSigninModel.find({doctorSpeciality:"Pediatricians"})
         res.send({
             data:getDoctorData1
         })
@@ -33,7 +33,7 @@ const getPediatriciansDoctors = async (req,res) => {
 
 const getDermatologistDoctors = async (req,res) => {
     try{
-        const getDoctorData2 = await doctorSignInModel.find({doctorSpeciality:"Dermatologist"})
+        const getDoctorData2 = await doctorSigninModel.find({doctorSpeciality:"Dermatologist"})
         res.send({
             data:getDoctorData2
         })
@@ -48,7 +48,7 @@ const getDermatologistDoctors = async (req,res) => {
 
 const getGynecologistDoctors = async (req,res) => {
     try{
-        const getDoctorData3 = await doctorSignInModel.find({doctorSpeciality:"Gynecologist"})
+        const getDoctorData3 = await doctorSigninModel.find({doctorSpeciality:"Gynecologist"})
         res.send({
             data:getDoctorData3
         })
@@ -63,7 +63,7 @@ const getGynecologistDoctors = async (req,res) => {
 
 const getGeneralPhysician = async (req,res) => {
     try{
-        const getDoctorData4 = await doctorSignInModel.find({doctorSpeciality:"General Physician"})
+        const getDoctorData4 = await doctorSigninModel.find({doctorSpeciality:"General Physician"})
         res.send({
             data:getDoctorData4
         })
@@ -78,7 +78,7 @@ const getGeneralPhysician = async (req,res) => {
 
 const getNeurologist = async (req,res) => {
     try{
-        const getDoctorData5 = await doctorSignInModel.find({doctorSpeciality:"Neurologist"})
+        const getDoctorData5 = await doctorSigninModel.find({doctorSpeciality:"Neurologist"})
         res.send({
             data:getDoctorData5
         })
@@ -93,7 +93,7 @@ const getNeurologist = async (req,res) => {
 
 const getGastroenterologist = async (req,res) => {
     try{
-        const getDoctorData6 = await doctorSignInModel.find({doctorSpeciality:"Gastroenterologist"})
+        const getDoctorData6 = await doctorSigninModel.find({doctorSpeciality:"Gastroenterologist"})
         res.send({
             data:getDoctorData6
         })
@@ -134,7 +134,7 @@ const verifyUser = async (req,res) => {
 
 const allDoctors = async (req,res) => {
     try{
-        const getAllDoctorData = await doctorSignInModel.find()
+        const getAllDoctorData = await doctorSigninModel.find()
         res.send({
             data:getAllDoctorData
         })

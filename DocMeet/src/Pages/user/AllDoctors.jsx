@@ -63,7 +63,7 @@ function AllDoctors() {
                                         transition={{ type: 'spring', stiffness: 300 }}
                                         className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
                                     >
-                                        <img src={val.doctorImage.imgPath} className='bg-[#5D6BFF]' />
+                                        <img src={val.doctorImage?.imgPath} className='bg-[#5D6BFF]' />
                                         <div className="flex items-center space-x-2">
                                             <div
                                                 className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500' : 'bg-red-500'

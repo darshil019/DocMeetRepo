@@ -95,4 +95,4 @@ const prescriptionSchema = new mongoose.Schema({
 
 const Prescription = mongoose.model('Prescription', prescriptionSchema);
 const doctorSigninModel = mongoose.model('Doctor', doctorSchema);
-module.exports = {doctorSigninModel,Prescription};
+module.exports = { doctorSigninModel,Prescription };
