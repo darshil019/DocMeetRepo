@@ -1,6 +1,6 @@
 const fs = require('fs')
 const adminSignInModel = require('../Models/adminModel');
-const doctorSignInModel = require('../Models/doctorModel');
+const {doctorSignInModel} = require('../Models/doctorModel');
 
 const adminSignin = (req, res) => {
     let adminSignInData = new adminSignInModel({
