@@ -76,5 +76,7 @@ router.get('/user/partDoc/:_id', userController.partDoc)
 
 //DoctorRoutes
 router.post('/doctor/addPrescription', upload1.single('prescriptionImage'),doctorController.addPrescription )
+router.post('/doctor/addMedicine', doctorController.addMedicine);
+
 
 module.exports = router
