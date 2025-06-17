@@ -23,6 +23,9 @@ import OTP from "./Components/Common/OTP";
 import {Navigate} from 'react-router-dom'
 import AddMedicine from "./Pages/doctor/AddMedicine";
 import DoctorDashboard from "./Pages/doctor/DoctorDashboard";
+import DoctorSignIn from "./Pages/doctor/DoctorSignIn";
+import PartDoc from "./Pages/user/PartDoc";
+
 function App() {
   return (
     <div className="App">
@@ -43,15 +46,16 @@ function App() {
             <Route path="user/alldoctors" element={<AllDoctors/>}></Route>
             <Route path="user/ContactUs" element={<ContactUs/>}></Route>
             <Route path="user/Aboutus" element={<Aboutus/>}></Route>
+            <Route path="user/partDoc/:_id" element={<PartDoc/>} />
         </Route>
-        <Route path="admin/signin" element={<AdminSignIn/>}></Route>
-        <Route path="admin/dashboard" element={<AdminDashboard/>}></Route>
-         <Route path="admin/adddoctor" element={<AddDoctor/>}></Route>
-         <Route path="doctor/addprescription" element={<AddPrescription/>}></Route>
-         <Route path="doctor/prescriptionadded" element={<PrescriptionAdded/>}></Route>
-         <Route path="doctor/addmedicine" element={<AddMedicine/>}></Route>
-         <Route path="doctor/dashboard" element={<DoctorDashboard/>}></Route>
-         
+          <Route path="admin/signin" element={<AdminSignIn/>}></Route>
+          <Route path="admin/dashboard" element={<AdminDashboard/>}></Route>
+          <Route path="admin/adddoctor" element={<AddDoctor/>}></Route>
+          <Route path="doctor/addprescription" element={<AddPrescription/>}></Route>
+          <Route path="doctor/prescriptionadded" element={<PrescriptionAdded/>}></Route>
+          <Route path="doctor/addmedicine" element={<AddMedicine/>}></Route>
+          <Route path="doctor/dashboard" element={<DoctorDashboard/>}></Route>
+          <Route path="doctor/signin" element={<DoctorSignIn/>}></Route>
       </Routes>
     </div>
   );

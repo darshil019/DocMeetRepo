@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }) => {
     const [userLoggedIn, setUserLoggedIn] = useState(false);
     const [userData, setUserData] = useState(null);
 
-
     //this why i created bcz i want to update birthday section that's why i used...
     const getUserData = () => {
       axios.get(`http://localhost:5001/docmeet/user/dashboardName`, {

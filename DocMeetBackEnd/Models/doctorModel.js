@@ -65,6 +65,10 @@ const doctorSchema = new mongoose.Schema({
     doctorDesc:{
         type: String,
         required: true
+    },
+    slotDuration:{
+        type: Number,
+        required: true
     }
 });
 

@@ -262,14 +262,13 @@ function UserDashboard() {
       </div>
       <div className='grid grid-cols-1 lg:grid-cols-5 gap-6 px-4 max-w-6xl mx-auto mt-6'>
         {
-
           storeDoctorData?.map((val) => {
             const isTodayAvailable = val.doctorAvailableDays.includes(dayName);
             const isAvailable =
               formattedTime > val.doctorTimmings.doctorStart &&
               formattedTime < val.doctorTimmings.doctorEnd && isTodayAvailable;
             return (
-              <motion.div
+              <Link to={`/user/partDoc/${val._id}`}><motion.div
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 300 }}
                 className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
@@ -290,7 +289,7 @@ function UserDashboard() {
 
                 <span className='font-bold'>{val.doctorName}</span>
                 <span className='font-semibold'>{val.doctorSpeciality}</span>
-              </motion.div>
+              </motion.div></Link>
             )
           })
         }

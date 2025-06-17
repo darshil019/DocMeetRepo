@@ -5,21 +5,6 @@ const admin = require('../firebaseadmin');
 const nodemailer = require('nodemailer')
 
 
-function generateOTP1() {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-}
-
-const transporter1 = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: 'modikrish1964@gmail.com',
-        pass: 'oehs anto mluf wfaa' 
-    }
-});
-const userSignUp = async (req, res) => {
-    const { email } = req.body;
-    
-    const securePass = bcrypt.hashSync(req.body.password, 10)
 function generateOTP() {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }

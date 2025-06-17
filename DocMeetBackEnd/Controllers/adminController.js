@@ -35,6 +35,7 @@ const doctorSignin = async (req, res) => {
                     },
                     doctorPhno: req.body.doctorPhno,
                     doctorRating: req.body.doctorRating,
+                    slotDuration: req.body.slotDuration
                 });
                 await doctorSignInData.save()
                 res.send({ msg: "Doctor Added" })

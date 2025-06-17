@@ -56,7 +56,7 @@ function Sidebar(){
             <FaCalendarPlus /> Add Medicine
           </Link>
 
-          <Link to='/admin/signin' className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
+          <Link to='/doctor/signin' className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
             <FaSignOutAlt /> Log Out
           </Link>
         </nav>

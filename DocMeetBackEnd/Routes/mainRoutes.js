@@ -72,6 +72,7 @@ router.get('/user/getGastroenterologist', userController.getGastroenterologist)
 router.get('/user/dashboardName', protect, userController.userDashboardName)
 router.put('/user/verifiedUser', protect, userController.verifyUser)
 router.get('/user/allDoctors', userController.allDoctors)
+router.get('/user/partDoc/:_id', userController.partDoc)
 
 //DoctorRoutes
 router.post('/doctor/addPrescription', upload1.single('prescriptionImage'),doctorController.addPrescription )

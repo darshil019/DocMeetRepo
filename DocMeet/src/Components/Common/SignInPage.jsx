@@ -130,7 +130,13 @@ function SignInPage() {
                     <span className="font-medium">Sign in with Google</span>
                 </button>
 
-                <p className='mt-4'>Don't have an account ? <Link to="/user/signup"><span className='text-[#5D6BFF] underline cursor-pointer'>SignUp Here</span></Link></p>
+                <p className='mt-3 text-center w-full'>Don't have an account? <Link to="/user/signup"><span className='text-[#5D6BFF] underline cursor-pointer'>SignUp Here</span></Link></p>
+                <p className='text-sm text-center w-full'>
+                    Are you a doctor?{" "}
+                    <Link to="/doctor/signin" className="text-[#5D6BFF] underline">
+                        Doctor Sign In
+                    </Link>
+                </p>            
             </div>
         </div>
     );

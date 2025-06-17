@@ -1,5 +1,7 @@
 const {doctorSigninModel} = require('../Models/doctorModel');
 const {userSignUpModel} = require('../Models/authModel')
+const mongoose = require('mongoose');
+
 
 const getDoctorImages = async (req,res) => {
     try{
@@ -147,6 +149,26 @@ const allDoctors = async (req,res) => {
     }
 }
 
+const partDoc = async (req,res) => {
+    const { _id } = req.params;
+    const objectId = new mongoose.Types.ObjectId(_id);
+    console.log(_id)
+    try{
+        const user = await doctorSigninModel.findById(objectId)
+        if(user){
+            console.log(user)
+            res.send({
+                data:user
+            })
+        }
+    }catch(err){
+        res.send({
+            err:err
+        })
+        console.log(err)
+    }
+}
 
 
-module.exports = {getDoctorImages,getPediatriciansDoctors,getDermatologistDoctors,getGynecologistDoctors,getGeneralPhysician,getNeurologist,getGastroenterologist,userDashboardName,verifyUser,allDoctors}
+
+module.exports = {getDoctorImages,getPediatriciansDoctors,getDermatologistDoctors,getGynecologistDoctors,getGeneralPhysician,getNeurologist,getGastroenterologist,userDashboardName,verifyUser,allDoctors,partDoc}
