@@ -72,5 +72,7 @@ router.get('/user/allDoctors', userController.allDoctors)
 
 //DoctorRoutes
 router.post('/doctor/addPrescription', upload1.single('prescriptionImage'),doctorController.addPrescription )
+router.post('/doctor/addMedicine', doctorController.addMedicine);
+
 
 module.exports = router

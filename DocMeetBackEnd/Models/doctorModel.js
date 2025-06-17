@@ -93,6 +93,18 @@ const prescriptionSchema = new mongoose.Schema({
   },
 });
 
+const medicineSchema=new mongoose.Schema({
+    medicineName: {
+        type: String,
+        required: true,
+      },
+      medicineInfo: {
+        type: String,
+        required: true,
+      }, 
+})
+
 const Prescription = mongoose.model('Prescription', prescriptionSchema);
 const doctorSigninModel = mongoose.model('Doctor', doctorSchema);
-module.exports = {doctorSigninModel,Prescription};
+const MedicineModel = mongoose.model('medicine', medicineSchema);
+module.exports = {doctorSigninModel,Prescription,MedicineModel};

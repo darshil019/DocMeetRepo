@@ -1,5 +1,4 @@
-const {Prescription} = require("../Models/doctorModel");
-
+const {Prescription,MedicineModel} = require("../Models/doctorModel");
 const addPrescription = async (req, res) => {
   try {
     const { patientName, patientEmail, additionalInfo } = req.body;
@@ -26,4 +25,25 @@ const addPrescription = async (req, res) => {
   }
 };
 
-module.exports = { addPrescription };
+const addMedicine = async (req, res) => {
+  try {
+    const { medicineName, medicineInfo } = req.body;
+
+    if (!medicineName || !medicineInfo) {
+      return res.status(400).json({ msg: "Both medicineName and medicineInfo are required" });
+    }
+
+    const newMedicine = new MedicineModel({ medicineName, medicineInfo });
+    await newMedicine.save();
+
+    res.status(201).json({ msg: "Medicine added successfully", data: newMedicine });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ msg: "Something went wrong", error });
+  }
+};
+
+
+
+
+module.exports = { addPrescription,addMedicine };
