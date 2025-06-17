@@ -3,6 +3,39 @@ const {userSignUpModel} = require('../Models/authModel')
 const mongoose = require('mongoose');
 
 
+// controllers/userController.js
+const admin = require("firebase-admin");
+const getFullUserData = async (req, res) => {
+  const email = req.user.email;
+  if (!email) {
+    return res.status(400).json({ isSuccess: false, msg: "Email is required in query" });
+  }
+
+  try {
+    // Fetch user by email
+    const user = await userSignUpModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ isSuccess: false, msg: "User not found" });
+    }
+
+    res.status(200).json({
+      isSuccess: true,
+      user: {
+        _id: user._id,
+        fullname: user.fullname,
+        email: user.email,
+        picture: user.picture,
+        loginMethod: user.loginMethod,
+        userBirthDay: user.userBirthDay,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).json({ isSuccess: false, msg: "Server error" });
+  }
+};
+
 const getDoctorImages = async (req,res) => {
     try{
         const getDoctorData = await doctorSigninModel.find({}).select('doctorName doctorImage doctorSpeciality doctorTimmings doctorAvailableDays')
@@ -169,6 +202,38 @@ const partDoc = async (req,res) => {
     }
 }
 
+const updateUserProfile = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const { fullname, userBirthDay } = req.body;
+
+    const updateFields = {
+      fullname,
+      userBirthDay,
+    };
+
+    if (req.file) {
+      updateFields.picture = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+    }
+
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { $set: updateFields },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json({ message: "User updated", user: updatedUser });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Update failed" });
+  }
+};
 
 
-module.exports = {getDoctorImages,getPediatriciansDoctors,getDermatologistDoctors,getGynecologistDoctors,getGeneralPhysician,getNeurologist,getGastroenterologist,userDashboardName,verifyUser,allDoctors,partDoc}
+
+
+module.exports = {updateUserProfile,getDoctorImages,getPediatriciansDoctors,getDermatologistDoctors,getGynecologistDoctors,getGeneralPhysician,getNeurologist,getGastroenterologist,userDashboardName,verifyUser,allDoctors,partDoc,getFullUserData}
