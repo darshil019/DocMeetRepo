@@ -7,6 +7,7 @@ const authController = require('../Controllers/authController')
 const adminController = require('../Controllers/adminController')
 const userController = require('../Controllers/userController')
 const doctorController = require('../Controllers/doctorController')
+
 //jwt verification
 const protect = (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1]
@@ -60,6 +61,7 @@ const upload1 = multer({ storage: storage1 });
 //adminRoutes
 router.post('/admin/signin', adminController.adminSignin)
 router.post('/admin/doctorAdd', upload.single('myfile'), adminController.doctorSignin)
+router.get('/admin/getDoctors', adminController.getDoctors);
 
 //userRoutes
 router.get('/user/getDoctorImages', userController.getDoctorImages)

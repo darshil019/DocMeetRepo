@@ -25,6 +25,7 @@ import AddMedicine from "./Pages/doctor/AddMedicine";
 import DoctorDashboard from "./Pages/doctor/DoctorDashboard";
 import DoctorSignIn from "./Pages/doctor/DoctorSignIn";
 import PartDoc from "./Pages/user/PartDoc";
+import DoctorList from "./Pages/admin/DoctorList";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
           <Route path="admin/signin" element={<AdminSignIn/>}></Route>
           <Route path="admin/dashboard" element={<AdminDashboard/>}></Route>
           <Route path="admin/adddoctor" element={<AddDoctor/>}></Route>
+          <Route path="admin/doctor-list" element={<DoctorList/>}></Route>
           <Route path="doctor/addprescription" element={<AddPrescription/>}></Route>
           <Route path="doctor/prescriptionadded" element={<PrescriptionAdded/>}></Route>
           <Route path="doctor/addmedicine" element={<AddMedicine/>}></Route>

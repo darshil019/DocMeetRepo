@@ -47,4 +47,20 @@ const doctorSignin = async (req, res) => {
     }
 };
 
-module.exports = { adminSignin, doctorSignin };
+const getDoctors = async (req, res) => {
+    try {
+        const doctors = await doctorSigninModel.find({}, {
+            doctorName: 1,
+            doctorEmail: 1,
+            doctorDegree: 1,
+            doctorSpeciality: 1,
+            _id: 0 
+        });
+        res.json(doctors);
+    } catch (err) {
+        res.status(500).json({ msg: "Failed to fetch doctors", error: err });
+    }
+};
+
+
+module.exports = { adminSignin, doctorSignin, getDoctors };

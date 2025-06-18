@@ -21,13 +21,13 @@ import {
   CartesianGrid
 } from 'recharts';
 
-function Sidebar(){
-     let navigate = useNavigate()
-    return(
-        <div>
-    <aside className="w-full lg:w-64 bg-white border-b lg:border-b-0 lg:border-r border-gray-200 p-6">
-   
-     
+function Sidebar() {
+  let navigate = useNavigate()
+  return (
+    <div>
+      <aside className="w-full lg:w-64 bg-white border-b lg:border-b-0 lg:border-r border-gray-200 p-6">
+
+
         <a href="/" className="flex items-center no-underline" style={{ textDecoration: "none" }}>
           <img
             src={img}
@@ -44,24 +44,25 @@ function Sidebar(){
             <FaTachometerAlt /> Dashboard
           </Link>
 
-            <Link to="/admin/adddoctor" className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
+          <Link to="/admin/adddoctor" className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
             <FaUserMd /> Add Doctor
           </Link>
 
           <Link to="/admin/add-appointment" className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
             <FaCalendarPlus /> Add Appointment
           </Link>
-         
+
           <Link to="/admin/doctor-list" className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
             <FaListUl /> Doctor List
           </Link>
+
           <Link to='' className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
             <FaSignOutAlt /> Log Out
           </Link>
         </nav>
 
-   </aside>
-        </div>
-    )
+      </aside>
+    </div>
+  )
 }
 export default Sidebar;
