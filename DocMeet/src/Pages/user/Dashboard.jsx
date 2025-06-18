@@ -268,7 +268,7 @@ function UserDashboard() {
               formattedTime > val.doctorTimmings.doctorStart &&
               formattedTime < val.doctorTimmings.doctorEnd && isTodayAvailable;
             return (
-              <Link to={`/user/partDoc/${val._id}`}><motion.div
+              <Link to={`/user/partDoc/${val._id}`} style={{ textDecoration: "none" }}><motion.div
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 300 }}
                 className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
