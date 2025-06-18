@@ -87,7 +87,7 @@ router.put('/user/verifiedUser', protect, userController.verifyUser)
 router.get('/user/allDoctors', userController.allDoctors)
 router.get('/user/partDoc/:_id', userController.partDoc)
 router.get("/getuser",protect, userController.getFullUserData);
-router.put('/user/updateUserProfile', upload2.single('picture'), userController.updateUserProfile);
+router.put('/user/updateUserProfile', upload2.single('myfile'), userController.updateUserProfile);
 
 //DoctorRoutes
 router.post('/doctor/addPrescription', upload1.single('prescriptionImage'),doctorController.addPrescription )

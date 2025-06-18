@@ -76,11 +76,13 @@ function Navbar() {
               userLoggedIn ?
                 <>
                   <img
-                    src={userData?.picture || img}
+                    src={userData?.picture || '/default-user.png'}
                     alt="User"
                     className="h-10 w-10 rounded-full object-cover border-2 border-[#5D6BFF] cursor-pointer"
                     onClick={() => setShowModal(true)}
                   />
+
+ 
 
                   <AnimatePresence>
                     {showModal && (

@@ -6,69 +6,90 @@ const EditProfile = () => {
     const [userData, setUserData] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({});
-    const [selectedImage, setSelectedImage] = useState(null); 
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [imageStore, setImageStore] = useState(null);
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
-    const [imageStore, setImageStore] = useState({})
-    
 
     useEffect(() => {
-        axios.get(`http://localhost:5001/docmeet/getuser`, {
-            headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((res) => {
-            setUserData(res.data.user);
-            setFormData(res.data.user);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        axios
+            .get(`http://localhost:5001/docmeet/getuser`, {
+                headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((res) => {
+                setUserData(res.data.user);
+                setFormData(res.data.user);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, []);
 
     const handleChange = (e) => {
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         }));
     };
 
-    const handleSubmit = () => {
-        const updatedForm = new FormData()
-        
-        for (const key in updatedForm) {
-            updatedForm.append(key, formData[key]);
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImageStore(file);
+            setSelectedImage(URL.createObjectURL(file));
         }
-        updatedForm.append("myfile", imageStore);
-
-        axios.put(
-            `http://localhost:5001/docmeet/update-user/${formData.email}`,
-            updatedForm,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
-                },
-            }
-        )
-        .then(res => {
-            setUserData(res.data.user);
-            setIsEditing(false);
-            alert("Profile updated successfully");
-        })
-        .catch(err => {
-            console.error(err);
-            alert("Failed to update profile");
-        });
     };
+
+    const handleSubmit = () => {
+        const updatedForm = new FormData();
+
+        // Only append editable fields
+        updatedForm.append('fullname', formData.fullname || '');
+        updatedForm.append('userBirthDay', formData.userBirthDay || '');
+
+        if (imageStore) {
+            updatedForm.append('myfile', imageStore); // KEY NAME MUST BE myfile
+        }
+
+        axios
+            .put(
+                `http://localhost:5001/docmeet/user/updateUserProfile?email=${userData.email}`, // Don't send possibly modified email
+                updatedForm,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            )
+            .then((res) => {
+                setUserData(res.data.user);
+                setIsEditing(false);
+                alert('Profile updated successfully');
+            })
+            .catch((err) => {
+                console.error(err);
+                alert('Failed to update profile');
+            });
+    };
+
 
     return (
         <div className="min-h-screen bg-gray-100 py-10 px-4">
             <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
-                <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Your Profile</h2>
+                <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+                    Your Profile
+                </h2>
 
                 <div className="flex flex-col items-center space-y-4 mb-6">
                     <img
-                        src={selectedImage || userData?.picture || '/default-user.png'}
+                        src={
+                            selectedImage ||
+                            userData?.picture ||
+                            '/default-user.png'
+                        }
+
+
                         alt="Profile"
                         className="w-24 h-24 rounded-full border-2 border-[#5D6BFF] object-cover"
                     />
@@ -101,22 +122,6 @@ const EditProfile = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 items-center">
-                        <div className="font-medium">Email:</div>
-                        <div>
-                            {isEditing ? (
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email || ''}
-                                    onChange={handleChange}
-                                    className="border px-2 py-1 rounded w-full"
-                                />
-                            ) : (
-                                userData?.email || 'N/A'
-                            )}
-                        </div>
-                    </div>
 
                     <div className="grid grid-cols-2 gap-4 items-center">
                         <div className="font-medium">Birthday:</div>
@@ -125,22 +130,27 @@ const EditProfile = () => {
                                 <input
                                     type="date"
                                     name="userBirthDay"
-                                    value={formData.userBirthDay?.split("T")[0] || ''}
+                                    value={
+                                        formData.userBirthDay?.split("T")[0] || ''
+                                    }
                                     onChange={handleChange}
                                     className="border px-2 py-1 rounded w-full"
                                 />
-                            ) : (
-                                userData?.userBirthDay
-                                    ? new Date(userData.userBirthDay).toLocaleDateString('en-US', {
+                            ) : userData?.userBirthDay ? (
+                                new Date(userData.userBirthDay).toLocaleDateString(
+                                    'en-US',
+                                    {
                                         year: 'numeric',
                                         month: 'long',
                                         day: 'numeric',
-                                    })
-                                    : 'N/A'
+                                    }
+                                )
+                            ) : (
+                                'N/A'
                             )}
                         </div>
                     </div>
-                    
+
                     <div className="mt-6 space-x-2">
                         <button
                             onClick={() => navigate(-1)}
