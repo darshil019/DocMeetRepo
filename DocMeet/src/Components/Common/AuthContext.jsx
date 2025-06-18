@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     const [userLoggedIn, setUserLoggedIn] = useState(false);
     const [userData, setUserData] = useState(null);
+    const currencySymbol = '₹'
 
     //this why i created bcz i want to update birthday section that's why i used...
     const getUserData = () => {
@@ -75,7 +76,7 @@ export const AuthProvider = ({ children }) => {
     };
   
     return (
-      <AuthContext.Provider value={{ userLoggedIn, setUserLoggedIn, logout ,login,userData,setUserData,token,getUserData}}>
+      <AuthContext.Provider value={{ userLoggedIn, setUserLoggedIn, logout ,login,userData,setUserData,token,getUserData,currencySymbol}}>
         {children}
       </AuthContext.Provider>
     );

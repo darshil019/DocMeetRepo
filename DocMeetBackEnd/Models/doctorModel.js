@@ -43,7 +43,7 @@ const doctorSchema = new mongoose.Schema({
     doctorAvailableDays: {
         type: [String],
         enum: {
-          values: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          values: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
           message: '{VALUE} is not a valid day'
         },
         required: true

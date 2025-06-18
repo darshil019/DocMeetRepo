@@ -113,7 +113,7 @@ function AddDoctor() {
                             <div className="mb-4">
                                 <p className="mb-2 font-medium">Available Days</p>
                                 <div className="flex flex-wrap gap-4">
-                                    {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => (
+                                    {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
                                         <label key={day} className="flex items-center space-x-2">
                                             <input
                                                 type="checkbox"
@@ -127,7 +127,7 @@ function AddDoctor() {
                                                 }}
                                                 value={day}
                                                 className="form-checkbox text-blue-600"
-                                                required
+                                                
                                             />
                                             <span className="text-gray-700">{day}</span>
                                         </label>
@@ -140,7 +140,7 @@ function AddDoctor() {
                             <InputField label="Doctor Rating" name="doctorRating" type="number" step="0.1" min="1" max="5" placeholder="Enter rating (1-5)" onChange={((e) => { onHandleChange(e) })} value={doctorData.doctorRating ? doctorData.doctorRating : ''} required />
                             <div>
                                 <p className="mb-1 font-medium">Doctor Image</p>
-                                <input type="file" name="doctorImage" value={doctorData.doctorImage || ''} className="w-full p-2 border rounded" onChange={((e) => { setImageStore(e.target.files[0]) })} required />
+                                <input type="file" name="doctorImage" value={doctorData.doctorImage || ''} className="w-full p-2 border rounded" onChange={((e) => { setImageStore(e.target.files[0]) })}/>
                             </div>
                             <TextareaField label="Doctor Description" name="doctorDesc" placeholder="Enter description" onChange={((e) => { onHandleChange(e) })} value={doctorData.doctorDesc ? doctorData.doctorDesc : ''} required />
                         </div>
