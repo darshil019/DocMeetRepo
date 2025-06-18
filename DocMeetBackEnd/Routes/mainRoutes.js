@@ -3,14 +3,16 @@ let router = express.Router()
 const multer = require('multer')
 const jwt = require('jsonwebtoken')
 
+
 const authController = require('../Controllers/authController')
 const adminController = require('../Controllers/adminController')
 const userController = require('../Controllers/userController')
 const doctorController = require('../Controllers/doctorController')
 
+
 //jwt verification
 const protect = (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1]
+  const token = req.headers.authorization.split(" ")[1];
   if (!token) {
     return res.status(404).send({
       msg: "UserNotAuthorized"
@@ -55,9 +57,19 @@ const storage1 = multer.diskStorage({
   },
 });
 
+const storage2 = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads');
+  },
+  filename: function (req, file, cb) {
+    const uniqueName = Date.now() + '-' + file.originalname;
+    cb(null, uniqueName);
+  }
+});
+
 const upload = multer({ storage: storage });
 const upload1 = multer({ storage: storage1 });
-
+const upload2 = multer({ storage: storage2 });
 //adminRoutes
 router.post('/admin/signin', adminController.adminSignin)
 router.post('/admin/doctorAdd', upload.single('myfile'), adminController.doctorSignin)
@@ -75,10 +87,14 @@ router.get('/user/dashboardName', protect, userController.userDashboardName)
 router.put('/user/verifiedUser', protect, userController.verifyUser)
 router.get('/user/allDoctors', userController.allDoctors)
 router.get('/user/partDoc/:_id', userController.partDoc)
+router.get("/getuser",protect, userController.getFullUserData);
+router.put('/user/updateUserProfile', upload2.single('myfile'), userController.updateUserProfile);
 
 //DoctorRoutes
 router.post('/doctor/addPrescription', upload1.single('prescriptionImage'),doctorController.addPrescription )
 router.post('/doctor/addMedicine', doctorController.addMedicine);
+
+
 
 
 module.exports = router

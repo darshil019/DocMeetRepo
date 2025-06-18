@@ -1,12 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
 import { motion } from 'framer-motion';
 import img from "../../assets/images/image.png";
 import { useParams } from 'react-router-dom';
+import verfied from '../../assets/images/verfied.png'
+import info from '../../assets/images/information.png'
+import { AuthContext } from '../../Components/Common/AuthContext';
 
 function PartDoc() {
+  const { currencySymbol } = useContext(AuthContext);
   const { _id } = useParams()
   const [storeDoctorData, setStoreDoctorData] = useState(null)
+  const [docSlots, setDocSlots] = useState([])
+  const [slotIndex, setSlotIndex] = useState(0)
+  const [slottime, setSlotTime] = useState('')
+  const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+  const [totalDays, setTotalDays] = useState([])
+
+  useEffect(() => {
+    console.log(docSlots)
+  }, [docSlots])
 
   useEffect(() => {
     console.log(_id)
@@ -14,49 +27,165 @@ function PartDoc() {
       .then((res) => {
         console.log(res.data.data)
         setStoreDoctorData(res.data.data)
+        getAvailableSlots()
       })
       .catch((err) => {
         console.log("Err", err)
       })
-  }, [])
+  }, [_id])
 
-  const now = new Date();
-  const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const dayName = now.toLocaleDateString('en-US', { weekday: 'long' });
 
-  // Handle loading state
-  if (!storeDoctorData) return <div className='text-center py-10'>Loading...</div>
+  useEffect(() => {
+    if (storeDoctorData?.doctorAvailableDays) {
+      const filteredDays = storeDoctorData.doctorAvailableDays.filter(day =>
+        daysOfWeek.includes(day)
+      );
+      console.log("Filtered Days:", filteredDays);
+      setTotalDays(filteredDays);
+    }
+  }, [storeDoctorData]);
 
-  const isTodayAvailable = storeDoctorData.doctorAvailableDays.includes(dayName)
-  const isAvailable = formattedTime > storeDoctorData.doctorTimmings.doctorStart &&
-                      formattedTime < storeDoctorData.doctorTimmings.doctorEnd &&
-                      isTodayAvailable
+  const getAvailableSlots = async () => {
+    setDocSlots([])
+
+    //getting current data
+    let today = new Date()
+
+    for (let i = 0; i < 7; i++) {
+      //getting data with index
+      let currentDate = new Date(today)
+      currentDate.setDate(today.getDate() + i)
+
+      //setting end time of the date with index
+      let endTime = new Date()
+      endTime.setDate(today.getDate() + i)
+      endTime.setHours(21, 0, 0, 0)
+
+      //setting hours
+      if (today.getDate() === currentDate.getDate()) {
+        currentDate.setHours(currentDate.getHours() > 10 ? currentDate.getHours() + 1 : 10)
+        currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0)
+      } else {
+        currentDate.setHours(10)
+        currentDate.setMinutes(0)
+      }
+
+      let timeSlots = []
+
+      while (currentDate < endTime) {
+        let formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+
+        //add slots to array
+        timeSlots.push({
+          datatime: new Date(currentDate),
+          time: formattedTime
+        })
+
+        //increment current time by 30 mins
+        currentDate.setMinutes(currentDate.getMinutes() + 30)
+      }
+
+      setDocSlots(prev => ([...prev, timeSlots]))
+    }
+  }
+
+
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8">
-      <div className='grid grid-cols-1 lg:grid-cols-5 gap-6 px-4 max-w-6xl mx-auto mt-6'>
-        <motion.div
-          key={storeDoctorData._id}
-          whileHover={{ scale: 1.1 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-          className='flex flex-col items-center space-y-2 border p-3 bg-white shadow-lg'
-        >
-          <img src={storeDoctorData.doctorImage?.imgPath} className='bg-[#5D6BFF]' />
-          <div className="flex items-center space-x-2">
-            <div
-              className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500' : 'bg-red-500'}`}
-            ></div>
-            <span
-              className={`font-medium text-sm ${isAvailable ? 'text-green-500' : 'text-red-500'}`}
-            >
-              {isAvailable ? 'Available' : 'Not Available'}
-            </span>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#e0e7ff] to-[#f0f4ff] px-4 py-8 ">
 
-          <span className='font-bold'>{storeDoctorData.doctorName}</span>
-          <span className='font-semibold'>{storeDoctorData.doctorSpeciality}</span>
-        </motion.div>
-      </div>
+      {storeDoctorData ? (
+        <>
+          <div className='flex flex-col sm:flex-row gap-4'>
+            <div>
+              <img
+                className='bg-[#5D6BFF] w-full sm:max-w-65 rounded-xl shadow-lg border border-white/30'
+                src={storeDoctorData.doctorImage?.imgPath}
+                alt="Doctor"
+              />
+            </div>
+
+            <div className='flex-1 bg-white/20 backdrop-blur-md border border-white/30 shadow-xl rounded-xl p-8 py-7 mx-2 sm:mx-0 mt-[-80px] sm:mt-0'>
+              <p className="text-lg font-semibold flex items-center gap-2 text-gray-900">
+                {storeDoctorData.doctorName}
+                <img src={verfied} alt="Verified" className="w-5 h-5" />
+              </p>
+
+              <div className='flex items-center gap-2 text-sm mt-1 text-gray-700'>
+                <p>{storeDoctorData.doctorDegree} - {storeDoctorData.doctorSpeciality}</p>
+                <button className='py-0.5 px-2 border text-xs rounded-full mb-3'>
+                  {storeDoctorData.doctorExperience} Years
+                </button>
+              </div>
+
+              <div>
+                <p className="flex items-center gap-1 text-sm font-medium text-gray-900 mt-3">
+                  About
+                  <img
+                    src={info}
+                    alt="Info"
+                    className="w-3.5 h-3.5 cursor-pointer hover:scale-110 transition-transform duration-200"
+                    title="Details about the doctor"
+                  />
+                </p>
+                <p className='text-sm text-gray-600 max-w-[700px] mt-1'>
+                  {storeDoctorData.doctorDesc}
+                </p>
+              </div>
+              <p className='text-sm text-gray-600 max-w-[700px] '>
+                Appointment Fees : <span className='text-gray-600 font-bold'>{currencySymbol}{storeDoctorData.doctorFees}</span>
+              </p>
+            </div>
+
+            {/* booking slots */}
+
+          </div>
+          <div className='sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700'>
+            <p>Booking Slots</p>
+            <div className='flex gap-3 items-center w-full overflow-x-scroll mt-4'>
+              {
+                docSlots.length && docSlots.map((item, index) => (
+                  <div onClick={() => setSlotIndex(index)} className={`text-center py-6 min-w-16 !rounded-full cursor-pointer ${slotIndex === index ? 'bg-[#5D6BFF] text-white' : 'border border-gray-200'}`} key={index}>
+                    <p>{item[0] && daysOfWeek[item[0].datatime.getDay()]}</p>
+                    <p>{item[0] && item[0].datatime.getDate()}</p>
+                  </div>
+                ))
+              }
+            </div>
+            <div className="flex items-center gap-3 w-full overflow-x-auto mt-4 pb-2 scrollbar-thin scrollbar-thumb-gray-300">
+              {docSlots.length > 0 && docSlots[slotIndex]?.length > 0 ? (
+                docSlots[slotIndex].map((item, index) => (
+                  <p
+                    key={index}
+                    onClick={() => setSlotTime(item.time)}
+                    className={`text-sm flex-shrink-0 px-5 py-3 rounded-lg cursor-pointer transition duration-200 
+                        ${item.time === slottime
+                        ? 'bg-[#5D6BFF] text-white font-semibold shadow-md'
+                        : 'border border-gray-300 text-gray-700 hover:bg-gray-100'
+                      }`}
+                  >
+                    {item.time.toLowerCase()}
+                  </p>
+                ))
+              ) : (
+                <p className="text-sm text-gray-500">No slots available</p>
+              )}
+            </div>
+            <div className="mt-6">
+              <button
+                onClick={() => {
+                  console.log(totalDays);
+                }}
+                className="bg-[#5D6BFF] hover:bg-[#4a5ce3] text-white font-medium px-6 py-2 !rounded-lg shadow transition duration-200"
+              >
+                Book Appointment
+              </button>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="text-center mt-10 text-gray-600">Loading doctor details...</div>
+      )}
 
       {/* Footer */}
       <footer className="mt-40 bg-white">

@@ -9,7 +9,8 @@ const path = require('path')
 
 app.use('/doctorImages', express.static(path.join(__dirname, 'doctorImages')));
 app.use('/doctorAddedPrescriptions', express.static(path.join(__dirname, 'doctorAddedPrescription')));
-
+app.use('/picture', express.static(path.join(__dirname, 'picture')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const mainRoutes = require('./Routes/mainRoutes')
 app.use('/docmeet',mainRoutes)
 

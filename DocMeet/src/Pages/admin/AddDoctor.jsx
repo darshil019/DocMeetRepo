@@ -113,7 +113,7 @@ function AddDoctor() {
                             <div className="mb-4">
                                 <p className="mb-2 font-medium">Available Days</p>
                                 <div className="flex flex-wrap gap-4">
-                                    {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => (
+                                    {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
                                         <label key={day} className="flex items-center space-x-2">
                                             <input
                                                 type="checkbox"
