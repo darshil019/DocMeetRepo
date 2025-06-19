@@ -52,7 +52,7 @@ function Sidebar() {
             <FaCalendarPlus /> Add Appointment
           </Link>
 
-          <Link to="/admin/doctor-list" className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
+          <Link to="/admin/doctorlist" className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
             <FaListUl /> Doctor List
           </Link>
 

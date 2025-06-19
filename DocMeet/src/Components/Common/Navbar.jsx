@@ -159,7 +159,7 @@ function Navbar() {
                             } */}
 
                             {/* ✅ Show Edit button only when profile is 100% complete */}
-                            {userData?.verifyUserPer === 100 && (
+                            {userData?.verifyUserPer === 90 && (
                               <button
                                 onClick={() => navigate('/user/Editprofile')}
                                 className="bg-[#5D6BFF] mt-6 text-white mx-auto px-4 py-2 rounded-xl text-sm font-medium shadow-md hover:bg-[#4a5de4] transition-all duration-200 block"

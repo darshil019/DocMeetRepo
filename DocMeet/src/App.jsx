@@ -53,8 +53,8 @@ function App() {
         </Route>
           <Route path="admin/signin" element={<AdminSignIn/>}></Route>
           <Route path="admin/dashboard" element={<AdminDashboard/>}></Route>
-          <Route path="admin/adddoctor" element={<AddDoctor/>}></Route>
-          <Route path="admin/doctor-list" element={<DoctorList/>}></Route>
+          <Route path="/admin/adddoctor" element={<AddDoctor />} />
+          <Route path="admin/doctorlist" element={<DoctorList/>}></Route>
           <Route path="doctor/addprescription" element={<AddPrescription/>}></Route>
           <Route path="doctor/prescriptionadded" element={<PrescriptionAdded/>}></Route>
           <Route path="doctor/addmedicine" element={<AddMedicine/>}></Route>
