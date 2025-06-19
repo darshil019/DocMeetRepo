@@ -78,8 +78,8 @@ function SignInPage() {
         //setsignInData({})
     }
     return (
-        <div className='min-h-[80vh] flex items-center'>
-            <div className='flex flex-col gap-2 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg'>
+        <div className='min-h-[80vh] flex items-center '>
+            <div className='bg-white/20 backdrop-blur-md border-white/30 flex flex-col gap-2 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg'>
                 <div>
                     <p className='text-2xl font-semibold'>SignIn</p>
                     <p className='text-sm text-zinc-500'>Please sign in to book appointment</p>

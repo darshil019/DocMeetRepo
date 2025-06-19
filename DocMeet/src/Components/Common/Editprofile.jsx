@@ -75,8 +75,8 @@ const EditProfile = () => {
 
 
     return (
-        <div className="min-h-screen bg-gray-100 py-10 px-4">
-            <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
+        <div className="min-h-screen  py-10 px-4">
+            <div className="bg-white/20 backdrop-blur-md border border-white/30 max-w-2xl mx-auto  p-8 rounded-2xl shadow-lg">
                 <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
                     Your Profile
                 </h2>
@@ -95,12 +95,22 @@ const EditProfile = () => {
                     />
 
                     {isEditing && (
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                            className="text-sm text-gray-600"
-                        />
+                       <div className="relative">
+                       <label
+                         htmlFor="profileImage"
+                         className="cursor-pointer inline-block px-4 py-2 bg-[#5D6BFF] text-white text-sm rounded-md hover:bg-[#4a5de4] transition"
+                       >
+                         Choose Profile Picture
+                       </label>
+                       <input
+                         id="profileImage"
+                         type="file"
+                         accept="image/*"
+                         onChange={handleImageChange}
+                         className="absolute opacity-0 w-0 h-0"
+                       />
+                     </div>
+                     
                     )}
                 </div>
 

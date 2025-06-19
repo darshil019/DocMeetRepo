@@ -1,99 +1,97 @@
 import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
-import { motion } from 'framer-motion';
-import img from "../../assets/images/image.png";
 import { useParams } from 'react-router-dom';
 import verfied from '../../assets/images/verfied.png'
 import info from '../../assets/images/information.png'
 import { AuthContext } from '../../Components/Common/AuthContext';
 
 function PartDoc() {
-  const { currencySymbol } = useContext(AuthContext);
+  const { currencySymbol,token } = useContext(AuthContext);
   const { _id } = useParams()
   const [storeDoctorData, setStoreDoctorData] = useState(null)
-  const [docSlots, setDocSlots] = useState([])
-  const [slotIndex, setSlotIndex] = useState(0)
-  const [slottime, setSlotTime] = useState('')
-  const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
   const [totalDays, setTotalDays] = useState([])
+  const [time, setTime] = useState([])
+  const [selectedFullDay,setSelectedFullDay] = useState(null)
+  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null)
 
   useEffect(() => {
-    console.log(docSlots)
-  }, [docSlots])
-
-  useEffect(() => {
-    console.log(_id)
     axios.get(`http://localhost:5001/docmeet/user/partDoc/${_id}`)
       .then((res) => {
-        console.log(res.data.data)
         setStoreDoctorData(res.data.data)
-        getAvailableSlots()
       })
       .catch((err) => {
         console.log("Err", err)
       })
   }, [_id])
 
-
   useEffect(() => {
-    if (storeDoctorData?.doctorAvailableDays) {
-      const filteredDays = storeDoctorData.doctorAvailableDays.filter(day =>
-        daysOfWeek.includes(day)
-      );
-      console.log("Filtered Days:", filteredDays);
-      setTotalDays(filteredDays);
+    if (storeDoctorData?.doctorTimmings || storeDoctorData?.slotDuration) {
+
+      const slots = [];
+
+      const [startHour, startMin] = storeDoctorData.doctorTimmings.doctorStart.split(":").map(Number);
+      const [endHour, endMin] = storeDoctorData.doctorTimmings.doctorEnd.split(":").map(Number);
+
+      const start = new Date();
+      start.setHours(startHour, startMin, 0, 0);
+
+      const end = new Date();
+      end.setHours(endHour, endMin, 0, 0);
+
+      const current = new Date(start);
+
+      while (current <= end) {
+        const timeStr = current.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        });
+
+        slots.push(timeStr);
+
+        current.setMinutes(current.getMinutes() + storeDoctorData.slotDuration);
+      }
+
+      setTime(slots);
     }
   }, [storeDoctorData]);
 
-  const getAvailableSlots = async () => {
-    setDocSlots([])
 
-    //getting current data
-    let today = new Date()
+  useEffect(() => {
+    if (storeDoctorData?.doctorAvailableDays) {
+      const today = new Date();
+      const nextAvailableDays = [];
 
-    for (let i = 0; i < 7; i++) {
-      //getting data with index
-      let currentDate = new Date(today)
-      currentDate.setDate(today.getDate() + i)
+      for (let i = 0; i < 14; i++) {
+        const date = new Date();
+        date.setDate(today.getDate() + i);
 
-      //setting end time of the date with index
-      let endTime = new Date()
-      endTime.setDate(today.getDate() + i)
-      endTime.setHours(21, 0, 0, 0)
-
-      //setting hours
-      if (today.getDate() === currentDate.getDate()) {
-        currentDate.setHours(currentDate.getHours() > 10 ? currentDate.getHours() + 1 : 10)
-        currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0)
-      } else {
-        currentDate.setHours(10)
-        currentDate.setMinutes(0)
+        const dayName = daysOfWeek[date.getDay()];
+        if (storeDoctorData.doctorAvailableDays.includes(dayName)) {
+          const formattedDate = `${dayName} - ${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}`
+          nextAvailableDays.push(formattedDate);
+        }
       }
-
-      let timeSlots = []
-
-      while (currentDate < endTime) {
-        let formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-
-        //add slots to array
-        timeSlots.push({
-          datatime: new Date(currentDate),
-          time: formattedTime
-        })
-
-        //increment current time by 30 mins
-        currentDate.setMinutes(currentDate.getMinutes() + 30)
-      }
-
-      setDocSlots(prev => ([...prev, timeSlots]))
+      setTotalDays(nextAvailableDays);
     }
+  }, [storeDoctorData]);
+
+  const handleOnClick = async () => {
+      if(token){
+        console.log(selectedDay)
+        console.log(selectedDate)
+        console.log(selectedTime)
+      }
+      else{
+        alert('do sign in first')
+      }
   }
 
-
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e0e7ff] to-[#f0f4ff] px-4 py-8 ">
-
+    <div>
       {storeDoctorData ? (
         <>
           <div className='flex flex-col sm:flex-row gap-4'>
@@ -132,49 +130,57 @@ function PartDoc() {
                   {storeDoctorData.doctorDesc}
                 </p>
               </div>
-              <p className='text-sm text-gray-600 max-w-[700px] '>
+              <p className='text-sm text-gray-600 max-w-[700px] mt-3'>
                 Appointment Fees : <span className='text-gray-600 font-bold'>{currencySymbol}{storeDoctorData.doctorFees}</span>
               </p>
             </div>
-
-            {/* booking slots */}
-
           </div>
-          <div className='sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700'>
-            <p>Booking Slots</p>
-            <div className='flex gap-3 items-center w-full overflow-x-scroll mt-4'>
-              {
-                docSlots.length && docSlots.map((item, index) => (
-                  <div onClick={() => setSlotIndex(index)} className={`text-center py-6 min-w-16 !rounded-full cursor-pointer ${slotIndex === index ? 'bg-[#5D6BFF] text-white' : 'border border-gray-200'}`} key={index}>
-                    <p>{item[0] && daysOfWeek[item[0].datatime.getDay()]}</p>
-                    <p>{item[0] && item[0].datatime.getDate()}</p>
-                  </div>
-                ))
-              }
-            </div>
-            <div className="flex items-center gap-3 w-full overflow-x-auto mt-4 pb-2 scrollbar-thin scrollbar-thumb-gray-300">
-              {docSlots.length > 0 && docSlots[slotIndex]?.length > 0 ? (
-                docSlots[slotIndex].map((item, index) => (
-                  <p
+
+          <div className='sm:ml-72 sm:pl-4 mt-8 font-medium text-gray-700'>
+            <p className="text-lg mb-3">Available Days</p>
+            <div className='flex gap-3 flex-wrap overflow-x-scroll p-2'>
+              {totalDays.length > 0 ? (
+                totalDays.map((day, index) => (
+                  <span
                     key={index}
-                    onClick={() => setSlotTime(item.time)}
-                    className={`text-sm flex-shrink-0 px-5 py-3 rounded-lg cursor-pointer transition duration-200 
-                        ${item.time === slottime
-                        ? 'bg-[#5D6BFF] text-white font-semibold shadow-md'
-                        : 'border border-gray-300 text-gray-700 hover:bg-gray-100'
-                      }`}
+                    onClick={() => {
+                      const [day1, date1] = day.split(" - ");
+                      setSelectedDay(day1)
+                      setSelectedDate(date1)
+                      setSelectedFullDay(day)
+                    }}
+                    className={`px-4 py-2 rounded-full text-sm shadow-sm cursor-pointer transition-all 
+                    ${selectedFullDay === day ? 'bg-[#3b4ae0] text-white scale-105' : 'bg-gradient-to-br from-[#e0e7ff] to-[#f0f4ff] shadow-xl text-black'}`}
                   >
-                    {item.time.toLowerCase()}
-                  </p>
+                    {day}
+                  </span>
                 ))
               ) : (
-                <p className="text-sm text-gray-500">No slots available</p>
+                <p className='text-sm text-gray-500'>No available days listed</p>
               )}
             </div>
-            <div className="mt-6">
+          </div>
+          <div className='sm:ml-72 sm:pl-4 mt-8 font-medium text-gray-700 '>
+            <div className='flex gap-3 flex-wrap p-2'>
+              {time.length > 0 ? (
+                time.map((val, index) => (
+                  <span
+                    onClick={() => setSelectedTime(val)}
+                    key={index}
+                    className={`px-4 py-2 rounded-full text-sm shadow-sm cursor-pointer transition-all 
+                      ${selectedTime === val ? 'bg-[#3b4ae0] text-white scale-105' : 'bg-gradient-to-br from-[#e0e7ff] to-[#f0f4ff] shadow-xl text-black'}`}         
+                  >
+                    {val}
+                  </span>
+                ))
+              ) : (
+                <p className='text-sm text-gray-500'>No available days listed</p>
+              )}
+            </div>
+            <div className="mt-6 p-2">
               <button
                 onClick={() => {
-                  console.log(totalDays);
+                  handleOnClick()
                 }}
                 className="bg-[#5D6BFF] hover:bg-[#4a5ce3] text-white font-medium px-6 py-2 !rounded-lg shadow transition duration-200"
               >
@@ -182,47 +188,13 @@ function PartDoc() {
               </button>
             </div>
           </div>
+          
         </>
       ) : (
         <div className="text-center mt-10 text-gray-600">Loading doctor details...</div>
       )}
 
-      {/* Footer */}
-      <footer className="mt-40 bg-white">
-        <div className="max-w-6xl mx-auto px-4 py-10">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-10">
-            <div className="flex flex-col space-y-1 max-w-md">
-              <a href="/" className="flex items-center no-underline mb-2">
-                <img src={img} alt="Logo" className="h-9 w-9 rounded-full mr-3 border-2 border-white" />
-                <h3 className="text-black font-semibold tracking-wider mt-2">
-                  D<span className="text-[#5D6BFF]">o</span>cM
-                  <span className="text-[#5D6BFF]">ee</span>t
-                </h3>
-              </a>
-              <span className="text-sm text-gray-600 leading-relaxed mt-2 md:pr-4 text-center md:text-left">
-                DocMeet connects patients with certified medical professionals instantly. Book appointments, get consultations, and manage your health – all in one place.
-              </span>
-            </div>
-
-            <div className="flex flex-col space-y-1 items-center md:items-start">
-              <span className="font-bold text-lg">Company</span>
-              <span>Home</span>
-              <span>About</span>
-              <span>Privacy</span>
-            </div>
-
-            <div className="flex flex-col space-y-1 items-center md:items-start">
-              <span className="font-bold text-lg">GET IN TOUCH</span>
-              <span>+91 79932 29000</span>
-              <span>docmeet@gmail.com</span>
-            </div>
-          </div>
-
-          <div className="text-center text-sm text-gray-500 mt-10 pt-4 border-t">
-            © 2025 DocMeet.io – All Rights Reserved.
-          </div>
-        </div>
-      </footer>
+      
     </div>
   )
 }

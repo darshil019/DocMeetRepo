@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import img from "../../assets/images/image.png";
+import img from "../../assets/images/img2.png";
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -14,36 +14,8 @@ function Navbar() {
   const { userLoggedIn, setUserLoggedIn, logout, login, userData, setUserData, token, getUserData } = useContext(AuthContext);
   const [isOpen, setIsOpen] = React.useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [verifyUser, setVerifyUser] = useState({})
   let navigate = useNavigate()
-
-  const onHandleChange = (e) => {
-    setVerifyUser({
-      ...verifyUser,
-      [e.target.name]: e.target.value,
-      verifyUserPer: 100
-    })
-  }
-
-  const verifyUserPer = (req, res) => {
-    axios.put(`http://localhost:5001/docmeet/user/verifiedUser`, verifyUser,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    )
-      .then(() => {
-        console.log('Successfully Updated Bthdy')
-        setVerifyUser({})
-        getUserData()
-      })
-      .catch((err) => {
-        console.log('error', err)
-      })
-  }
-
-
+  
   return (
     <>
       <nav className="bg-gray-100 shadow-lg py-1.5 px-5 font-['Poppins']">
@@ -52,7 +24,7 @@ function Navbar() {
             <img
               src={img}
               alt="Logo"
-              className="h-12 w-12 rounded-full mr-3 border-2 border-white mb-2"
+              className="h-12 w-12 rounded-full mr-3 border-2 border-[#5D6BFF] mb-2"
             />
             <h3 className="text-black font-semibold tracking-wider">
               D<span className="text-[#5D6BFF]">o</span>cM
@@ -81,9 +53,6 @@ function Navbar() {
                     className="h-10 w-10 rounded-full object-cover border-2 border-[#5D6BFF] cursor-pointer"
                     onClick={() => setShowModal(true)}
                   />
-
- 
-
                   <AnimatePresence>
                     {showModal && (
                       <>
@@ -95,7 +64,7 @@ function Navbar() {
                           onClick={() => setShowModal(false)}
                         />
                         <motion.div
-                          className="fixed z-50 top-1/2 left-1/2 w-80 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-xl p-6 text-center"
+                          className="fixed z-50 top-1/2 left-1/2 w-80 -translate-x-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl shadow-xl p-6 text-center"
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.8 }}
@@ -103,7 +72,7 @@ function Navbar() {
                         >
                           <button
                             onClick={() => setShowModal(false)}
-                            className="absolute top-2 right-3 text-gray-500 hover:text-red-500 text-lg"
+                            className="absolute top-2 right-3 text-white-500 hover:text-red-500 text-lg"
                           >
                             ✕
                           </button>
@@ -112,64 +81,20 @@ function Navbar() {
                             alt="User"
                             className="w-20 h-20 rounded-full border-2 border-[#5D6BFF] mx-auto mb-4"
                           />
-                          <h2 className="text-xl font-semibold">{userData?.fullname || "User Name"}</h2>
-                          <p className="text-gray-600">{userData?.email || "user@example.com"}</p>
+                          <h2 className="text-xl font-bold">{userData?.fullname || "User Name"}</h2>
+                          <p className="text-black-600 font-semibold">{userData?.email || "user@example.com"}</p>
 
                           <div className="w-full text-left space-y-2">
-                            {/* <p className="text-sm font-medium text-gray-700">Profile Completion</p> */}
-
-                            {/* <div className="w-full bg-gray-200 rounded-full h-4 shadow-inner">
-                              <div
-                                className="bg-[#5D6BFF] h-4 rounded-full text-xs font-semibold text-white text-center transition-all duration-300"
-                                style={{ width: `${userData?.verifyUserPer}%` }}
-                              >
-                                {userData?.verifyUserPer}%
-                              </div>
-                            </div>
-
-                            {
-                              userData.verifyUserPer > 90 ? (
-                                <p className="text-sm font-semibold text-gray-800">
-                                  Birthday:{" "}
-                                  {new Date(userData.userBirthDay).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                  })}
-                                </p>
-                              ) : (
-                                <>
-                                  <label className="block text-sm font-medium text-gray-700 mt-2">
-                                    Fill Your Birthday:
-                                  </label>
-                                  <input
-                                    type="date"
-                                    name="userBirthDay"
-                                    onChange={onHandleChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-[#5D6BFF] focus:border-[#5D6BFF] text-sm"
-                                  />
-                                  <button
-                                    onClick={verifyUserPer}
-                                    className="bg-[#5D6BFF] mt-4 text-white mx-auto px-2 py-2 !rounded-xl text-sm font-medium shadow-md hover:bg-[#4a5de4] transition-all duration-200 flex items-center gap-2"
-                                  >
-                                    Submit
-                                  </button>
-                                </>
-                              )
-                            } */}
-
-                            {/* ✅ Show Edit button only when profile is 100% complete */}
-                            {userData?.verifyUserPer === 100 && (
                               <button
-                                onClick={() => navigate('/user/Editprofile')}
+                                onClick={() => {
+                                  navigate('/user/Editprofile')
+                                  setShowModal(false)
+                                }}
                                 className="bg-[#5D6BFF] mt-6 text-white mx-auto px-4 py-2 rounded-xl text-sm font-medium shadow-md hover:bg-[#4a5de4] transition-all duration-200 block"
                               >
                                 ✏️ Edit Information
                               </button>
-                            )}
                           </div>
-
-
                         </motion.div>
                       </>
                     )}
