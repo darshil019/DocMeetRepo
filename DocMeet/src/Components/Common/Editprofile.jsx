@@ -13,7 +13,7 @@ const EditProfile = () => {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:5001/docmeet/getuser`, {
+            .get(`http://localhost:5001/docmeet/user/getUser`, {
                 headers: { Authorization: `Bearer ${token}` },
             })
             .then((res) => {

@@ -236,7 +236,19 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
+const getUser = async (req,res) => {
+    const {email} = req.user
+    try{
+        const data = await userSignUpModel.findOne({email})
+        res.send({
+            user:data
+        })
+    }
+    catch(err){
+        console.log(err)
+    }
+}
 
 
 
-module.exports = { updateUserProfile, getDoctorImages, getPediatriciansDoctors, getDermatologistDoctors, getGynecologistDoctors, getGeneralPhysician, getNeurologist, getGastroenterologist, userDashboardName, verifyUser, allDoctors, partDoc, getFullUserData }
+module.exports = { updateUserProfile, getDoctorImages, getPediatriciansDoctors, getDermatologistDoctors, getGynecologistDoctors, getGeneralPhysician, getNeurologist, getGastroenterologist, userDashboardName, verifyUser, allDoctors, partDoc, getFullUserData,getUser }
