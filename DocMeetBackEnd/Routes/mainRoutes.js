@@ -55,8 +55,18 @@ const storage1 = multer.diskStorage({
   },
 });
 
+const storage2 = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
 const upload = multer({ storage: storage });
 const upload1 = multer({ storage: storage1 });
+const upload2 = multer({ storage: storage2 });
 
 //adminRoutes
 router.post('/admin/signin', adminController.adminSignin)
@@ -78,6 +88,7 @@ router.put('/user/verifiedUser', protect, userController.verifyUser)
 router.get('/user/allDoctors', userController.allDoctors)
 router.get('/user/partDoc/:_id', userController.partDoc)
 router.get('/user/getUser',protect,userController.getUser)
+router.put('/user/updateUserProfile', upload2.single('myfile'), userController.updateUserProfile);
 
 //DoctorRoutes
 router.post('/doctor/addPrescription', upload1.single('prescriptionImage'),doctorController.addPrescription )
