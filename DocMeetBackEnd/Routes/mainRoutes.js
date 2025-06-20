@@ -8,7 +8,7 @@ const adminController = require('../Controllers/adminController')
 const userController = require('../Controllers/userController')
 const doctorController = require('../Controllers/doctorController')
 
-//jwt verification
+//jwt verification User
 const protect = (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1]
   if (!token) {
@@ -19,6 +19,23 @@ const protect = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, "abc")
     req.user = decoded
+    next()
+  } catch {
+    res.status(401).json({ message: "Invalid token" });
+  }
+}
+
+//jwt verification Doctor
+const protect1 = (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1]
+  if (!token) {
+    return res.status(404).send({
+      msg: "UserNotAuthorized"
+    })
+  }
+  try {
+    const decoded = jwt.verify(token, "abc")
+    req.doctor = decoded
     next()
   } catch {
     res.status(401).json({ message: "Invalid token" });
@@ -89,10 +106,13 @@ router.get('/user/allDoctors', userController.allDoctors)
 router.get('/user/partDoc/:_id', userController.partDoc)
 router.get('/user/getUser',protect,userController.getUser)
 router.put('/user/updateUserProfile', upload2.single('myfile'), userController.updateUserProfile);
+router.post('/user/appintmentBooking',userController.bookAppointment)
 
 //DoctorRoutes
 router.post('/doctor/addPrescription', upload1.single('prescriptionImage'),doctorController.addPrescription )
 router.post('/doctor/addMedicine', doctorController.addMedicine);
-
+router.post('/doctor/signin',authController.doctorSignin)
+router.get('/doctor/doctordashboardName',protect1,doctorController.doctorDashboardName)
+router.get('/doctor/getAppointments',protect1,doctorController.getAppointments)
 
 module.exports = router

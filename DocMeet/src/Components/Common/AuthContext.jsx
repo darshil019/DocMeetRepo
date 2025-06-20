@@ -7,8 +7,11 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     let navigate = useNavigate()
     const token = localStorage.getItem("token");
+    const docterToken = localStorage.getItem("docterToken");
     const [userLoggedIn, setUserLoggedIn] = useState(false);
     const [userData, setUserData] = useState(null);
+    const [doctorLoggedIn, setDoctorLoggedIn] = useState(false);
+    const [doctorData, setDoctorData] = useState(null)
     const currencySymbol = '₹'
 
     //this why i created bcz i want to update birthday section that's why i used...
@@ -52,6 +55,28 @@ export const AuthProvider = ({ children }) => {
       }
     }, [userData]);
 
+    useEffect(() => {
+      const doctorToken = localStorage.getItem("doctorToken");
+      const isLoggedIn = localStorage.getItem("doctorToken") !== null;
+      setDoctorLoggedIn(isLoggedIn);
+
+      if (doctorToken && !doctorData) {
+        axios.get("http://localhost:5001/docmeet/doctor/doctordashboardName", {
+          headers: {
+            Authorization: `Bearer ${doctorToken}`,
+          },
+        })
+        .then((res) => {
+          setDoctorData(res.data.doctor);
+        })
+        .catch((err) => {
+          console.error("Error fetching user data on load", err);
+          logout();
+          navigate('/doctor/signin');
+        });
+      }
+    }, [doctorData]);
+
     const login = async (token) => {
       localStorage.setItem('token', token)
       setUserLoggedIn(true)
@@ -74,9 +99,29 @@ export const AuthProvider = ({ children }) => {
         setUserLoggedIn(false)
         setUserData(null)
     };
+
+    const DoctorSignIn = async (doctorToken) => {
+      localStorage.setItem('doctorToken', doctorToken)
+      setDoctorLoggedIn(true)
+      try {
+        const res = await axios.get("http://localhost:5001/docmeet/doctor/doctordashboardName", {
+          headers: {
+            Authorization: `Bearer ${doctorToken}`
+          }
+        });
+        setDoctorData(res.data.doctor);
+        navigate('/doctor/dashboard');
+      } catch (error) {
+        console.error("Failed to fetch user data during login", error);
+      }
+    }
   
+    const DoctorSignOut = () => {
+      //localStorage.removeItem('userLoggedIn')
+      localStorage.removeItem('doctorToken')
+  };
     return (
-      <AuthContext.Provider value={{ userLoggedIn, setUserLoggedIn, logout ,login,userData,setUserData,token,getUserData,currencySymbol}}>
+      <AuthContext.Provider value={{ docterToken,DoctorSignOut,DoctorSignIn,doctorLoggedIn,doctorData,userLoggedIn, setUserLoggedIn, logout ,login,userData,setUserData,token,getUserData,currencySymbol}}>
         {children}
       </AuthContext.Provider>
     );

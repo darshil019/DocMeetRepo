@@ -1,7 +1,26 @@
-import React from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import Sidebar from './Sidebar';
+import { AuthContext } from '../../Components/Common/AuthContext';
+import axios from 'axios';
 
 function DoctorDashboard() {
+  const { doctorLoggedIn, doctorData } = useContext(AuthContext);
+  const doctorToken = localStorage.getItem("doctorToken");
+  const [appointmentsAll, setAppointmentsAll] = useState([])
+  useEffect(() => {
+    axios.get(`http://localhost:5001/docmeet/doctor/getAppointments`, {
+      headers: {
+        Authorization: `Bearer ${doctorToken}`
+      }
+    })
+      .then((res) => {
+        console.log(res.data.appointments)
+        setAppointmentsAll(res.data.appointments)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
       <Sidebar />
@@ -9,7 +28,7 @@ function DoctorDashboard() {
       <main className="flex-1 p-6">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Welcome, Dr. Sharma</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Welcome, {doctorLoggedIn ? doctorData?.doctorName : ' '}</h1>
           <p className="text-sm text-gray-600">Here's your overview for today.</p>
         </div>
 
@@ -44,27 +63,23 @@ function DoctorDashboard() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-100">
-                <tr>
-                  <td className="px-6 py-4">John Doe</td>
-                  <td className="px-6 py-4">10:00 AM</td>
-                  <td className="px-6 py-4 text-green-600">Confirmed</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">Aisha Khan</td>
-                  <td className="px-6 py-4">11:30 AM</td>
-                  <td className="px-6 py-4 text-yellow-600">Pending</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4">Rahul Mehta</td>
-                  <td className="px-6 py-4">1:00 PM</td>
-                  <td className="px-6 py-4 text-red-500">Cancelled</td>
-                </tr>
+                {
+                  appointmentsAll.map((val,index) => (
+                    <>
+                      <tr key={index}>
+                        <td className="px-6 py-4">{val.userID?.fullname}</td>
+                        <td className="px-6 py-4">{val.slotTime}</td>
+                        <td className="px-6 py-4 text-green-600">{val.status}</td>
+                      </tr>
+                    </>
+                  ))
+                }
               </tbody>
             </table>
           </div>
         </div>
-      </main>
-    </div>
+      </main >
+    </div >
   );
 }
 

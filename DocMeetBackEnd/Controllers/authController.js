@@ -1,9 +1,9 @@
 const { userSignUpModel, userSignUpValidation, userSigninValidation, verificationOTPModel } = require('../Models/authModel')
+const { doctorSigninModel } = require('../Models/doctorModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const admin = require('../firebaseadmin');
 const nodemailer = require('nodemailer')
-
 
 function generateOTP() {
     return Math.floor(100000 + Math.random() * 900000).toString();
@@ -30,11 +30,11 @@ const userSignUpOtp = async (req, res) => {
                 email,
                 password: securePass,
                 otp,
-                otpExpiresAt:expiry
+                otpExpiresAt: expiry
             })
-            const { error } = userSignUpValidation.validate({fullname,email,password}, { allowUnknown: true })
+            const { error } = userSignUpValidation.validate({ fullname, email, password }, { allowUnknown: true })
 
-            if(error){
+            if (error) {
                 return res.status(400).send({ msg: "Validation error", error });
             }
 
@@ -242,5 +242,36 @@ const newpassword = async (req, res) => {
     }
 }
 
+const doctorSignin = async (req, res) => {
+    const { doctorEmail, doctorPassword } = req.body
+    if (doctorEmail && doctorPassword) {
+        const getDoctorData = await doctorSigninModel.findOne({
+            doctorEmail
+        })
+        try {
+            if (getDoctorData) {
+                const tokenDoctor = jwt.sign({ doctorEmail: getDoctorData.doctorEmail,_id: getDoctorData._id },
+                    "abc", { expiresIn: '1h' }
+                )
+                res.status(200).send({
+                    tokenDoctor: tokenDoctor
+                })
+            } else {
+                res.status(404).send({
+                    msg: "Password Error"
+                })
+            }
+        }
+        catch {
+            res.status(404).send({
+                "msg": "Email & Password Not Found"
+            })
+        }
+    }
+    else {
+        res.send({ "msg": "All Fields Must Be Filled" })
+    }
+}
 
-module.exports = { userSignUpOtp, userSignUp, userSignin, userGoogleSignin, resetpassword, verifyotp, newpassword }
+
+module.exports = { userSignUpOtp, userSignUp, userSignin, userGoogleSignin, resetpassword, verifyotp, newpassword,doctorSignin }

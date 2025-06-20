@@ -1,4 +1,5 @@
-const {Prescription,MedicineModel} = require("../Models/doctorModel");
+const {Prescription,MedicineModel,doctorSigninModel} = require("../Models/doctorModel");
+const {appointmentModel} = require("../Models/appointmentModel")
 const addPrescription = async (req, res) => {
   try {
     const { patientName, patientEmail, additionalInfo } = req.body;
@@ -43,7 +44,35 @@ const addMedicine = async (req, res) => {
   }
 };
 
+const doctorDashboardName = async (req, res) => {
+  const doctor = await doctorSigninModel.findOne({ doctorEmail: req.doctor.doctorEmail });
+  try {
+      if (doctor) {
+          res.send({
+              doctor
+          })
+      }
+  } catch {
+      res.send({
+          msg: "NotFound"
+      })
+  }
+}
+
+const getAppointments = async (req,res) => {
+  const getAppointmentsDetails = await appointmentModel.find({ doctorID: req.doctor._id }).populate("doctorID").populate("userID")
+  try{
+    if(getAppointmentsDetails){
+      res.send({
+          appointments:getAppointmentsDetails
+      })
+    }
+  }catch {
+    res.send({
+        appointments: "NotFound"
+    })
+}
+}
 
 
-
-module.exports = { addPrescription,addMedicine };
+module.exports = { addPrescription,addMedicine,doctorDashboardName,getAppointments};

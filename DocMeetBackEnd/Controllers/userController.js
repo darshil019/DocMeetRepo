@@ -1,5 +1,6 @@
 const { doctorSigninModel } = require('../Models/doctorModel');
 const { userSignUpModel } = require('../Models/authModel')
+const { appointmentModel } = require('../Models/appointmentModel')
 const mongoose = require('mongoose');
 
 
@@ -189,7 +190,6 @@ const partDoc = async (req, res) => {
     try {
         const user = await doctorSigninModel.findById(objectId)
         if (user) {
-            console.log(user)
             res.send({
                 data: user
             })
@@ -249,6 +249,29 @@ const getUser = async (req,res) => {
     }
 }
 
+const bookAppointment = async (req,res) => {
+    const { userID,doctorID,slotTime,slotDate,slotDay } = req.body
+    //console.log(slotDate)
+    try{
+        const appointData = new appointmentModel({
+            userID,
+            doctorID,
+            slotTime,
+            slotDate,
+            slotDay
+        })
+        await appointData.save()
+        res.send({
+            appointBooked:"Yes Booked !"
+        })
+    }
+    catch(err){
+        console.log(err)
+        res.send({
+            appointBooked:"NO Booked !"
+        })
+    }
+}
 
 
-module.exports = { updateUserProfile, getDoctorImages, getPediatriciansDoctors, getDermatologistDoctors, getGynecologistDoctors, getGeneralPhysician, getNeurologist, getGastroenterologist, userDashboardName, verifyUser, allDoctors, partDoc, getFullUserData,getUser }
+module.exports = { updateUserProfile, getDoctorImages, getPediatriciansDoctors, getDermatologistDoctors, getGynecologistDoctors, getGeneralPhysician, getNeurologist, getGastroenterologist, userDashboardName, verifyUser, allDoctors, partDoc, getFullUserData,getUser,bookAppointment }

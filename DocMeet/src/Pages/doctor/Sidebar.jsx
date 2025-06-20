@@ -1,6 +1,7 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import img from "../../assets/images/image.png";
+import { AuthContext } from '../../Components/Common/AuthContext';
 
 import {
   FaTachometerAlt,
@@ -22,10 +23,11 @@ import {
 } from 'recharts';
 
 function Sidebar(){
+    const { DoctorSignOut } = useContext(AuthContext);
      let navigate = useNavigate()
     return(
         <div>
-    <aside className="w-full lg:w-64 bg-white border-b lg:border-b-0 lg:border-r border-gray-200 p-6">
+    <aside className="w-full h-full lg:w-64 bg-white border-b lg:border-b-0 lg:border-r border-gray-200 p-6">
    
      
         <a href="/" className="flex items-center no-underline" style={{ textDecoration: "none" }}>
@@ -48,7 +50,7 @@ function Sidebar(){
             <FaUserMd /> Add Prescription
           </Link>
 
-          <Link to="/doctor/all-appointment" className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
+          <Link to="/doctor/allappointments" className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
             <FaCalendarPlus /> All Appointment
           </Link>
 
@@ -56,7 +58,7 @@ function Sidebar(){
             <FaCalendarPlus /> Add Medicine
           </Link>
 
-          <Link to='/doctor/signin' className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
+          <Link onClick={DoctorSignOut} to='/doctor/signin' className="flex items-center gap-3 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded transition no-underline" style={{ textDecoration: "none" }}>
             <FaSignOutAlt /> Log Out
           </Link>
         </nav>

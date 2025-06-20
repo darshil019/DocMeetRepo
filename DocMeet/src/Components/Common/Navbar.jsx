@@ -11,7 +11,7 @@ import { LogOut } from 'lucide-react';
 
 
 function Navbar() {
-  const { userLoggedIn, setUserLoggedIn, logout, login, userData, setUserData, token, getUserData } = useContext(AuthContext);
+  const { userLoggedIn, logout ,userData } = useContext(AuthContext);
   const [isOpen, setIsOpen] = React.useState(false);
   const [showModal, setShowModal] = useState(false);
   let navigate = useNavigate()

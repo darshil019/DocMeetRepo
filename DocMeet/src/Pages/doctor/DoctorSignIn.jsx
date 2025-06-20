@@ -1,21 +1,27 @@
-import React from "react";
+import axios from "axios";
+import React,{useContext} from "react";
 import { useNavigate,Link } from "react-router-dom";
+import { AuthContext } from '../../Components/Common/AuthContext';
 
 function DoctorSignIn() {
+    const { DoctorSignIn } = useContext(AuthContext);
     const navigate = useNavigate();
-    const [adminUser, setAdminUser] = React.useState({ username: '', password: '' });
+    const [adminUser, setAdminUser] = React.useState({ doctorEmail: '', doctorPassword: '' });
     const [error, setError] = React.useState('');
     //const [adminIsOn,setadminIsOn] = React.useState(false)
 
     const handleAdminLogin = async (e) => {
         e.preventDefault();
-        if (adminUser.username === 'admin' && adminUser.password === 'admin123') {
-            setError('');
-            localStorage.setItem('adminIsOn','true')
-            navigate('/doctor/dashboard');
-        } else {
-            setError('Invalid credentials');
-        }
+        axios.post(`http://localhost:5001/docmeet/doctor/signin`,adminUser)
+        .then((res)=>{
+            console.log(res.data.tokenDoctor)
+            if(res.data.tokenDoctor){
+                DoctorSignIn(res.data.tokenDoctor)
+            }
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
     };
 
     return (
@@ -35,14 +41,14 @@ function DoctorSignIn() {
                     )}
 
                     <div className="mb-4">
-                        <label htmlFor="username" className="block mb-1 text-sm font-medium text-gray-700">
+                        <label htmlFor="email" className="block mb-1 text-sm font-medium text-gray-700">
                             Username
                         </label>
                         <input
                             type="text"
-                            id="username"
-                            value={adminUser.username}
-                            onChange={(e) => setAdminUser({ ...adminUser, username: e.target.value })}
+                            id="doctorEmail"
+                            value={adminUser.doctorEmail}
+                            onChange={(e) => setAdminUser({ ...adminUser, doctorEmail: e.target.value })}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5D6BFF]"
                             placeholder="Enter username"
                             required
@@ -54,10 +60,10 @@ function DoctorSignIn() {
                             Password
                         </label>
                         <input
-                            type="password"
-                            id="password"
-                            value={adminUser.password}
-                            onChange={(e) => setAdminUser({ ...adminUser, password: e.target.value })}
+                            type="doctorPassword"
+                            id="doctorPassword"
+                            value={adminUser.doctorPassword}
+                            onChange={(e) => setAdminUser({ ...adminUser, doctorPassword: e.target.value })}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5D6BFF]"
                             placeholder="Enter password"
                             required

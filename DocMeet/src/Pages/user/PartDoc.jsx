@@ -6,9 +6,10 @@ import info from '../../assets/images/information.png'
 import { AuthContext } from '../../Components/Common/AuthContext';
 
 function PartDoc() {
-  const { currencySymbol,token } = useContext(AuthContext);
+  const { currencySymbol,token,userData } = useContext(AuthContext);
   const { _id } = useParams()
   const [storeDoctorData, setStoreDoctorData] = useState(null)
+  const [storeUserData,setStoreUserData] = useState(null)
   const [totalDays, setTotalDays] = useState([])
   const [time, setTime] = useState([])
   const [selectedFullDay,setSelectedFullDay] = useState(null)
@@ -16,6 +17,11 @@ function PartDoc() {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null)
+  const [appointment,setAppointment] = useState({})
+
+  useEffect(()=>{
+    setStoreUserData(userData)
+  },[userData])
 
   useEffect(() => {
     axios.get(`http://localhost:5001/docmeet/user/partDoc/${_id}`)
@@ -80,15 +86,30 @@ function PartDoc() {
   }, [storeDoctorData]);
 
   const handleOnClick = async () => {
-      if(token){
-        console.log(selectedDay)
-        console.log(selectedDate)
-        console.log(selectedTime)
+    if (token) {
+      const appointmentData = {
+        userID: storeUserData._id,
+        doctorID: storeDoctorData._id,
+        slotTime: selectedTime,
+        slotDate: selectedDate,
+        slotDay: selectedDay
+      };
+  
+      try {
+        const response = await axios.post(
+          `http://localhost:5001/docmeet/user/appintmentBooking`,
+          appointmentData
+        );
+        setSelectedTime(null)
+        setSelectedFullDay(null)
+        console.log(response.data.appointBooked);
+      } catch (err) {
+        console.log(err);
       }
-      else{
-        alert('do sign in first')
-      }
-  }
+    } else {
+      alert('Please sign in first');
+    }
+  };
 
   return (
     <div>
