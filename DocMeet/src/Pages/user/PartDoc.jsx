@@ -38,8 +38,8 @@ function PartDoc() {
 
       const slots = [];
 
-      const [startHour, startMin] = storeDoctorData.doctorTimmings.doctorStart.split(":").map(Number);
-      const [endHour, endMin] = storeDoctorData.doctorTimmings.doctorEnd.split(":").map(Number);
+      const [startHour, startMin] = storeDoctorData.doctorTimmings?.doctorStart.split(":").map(Number);
+      const [endHour, endMin] = storeDoctorData.doctorTimmings?.doctorEnd.split(":").map(Number);
 
       const start = new Date();
       start.setHours(startHour, startMin, 0, 0);

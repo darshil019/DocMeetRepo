@@ -1,6 +1,6 @@
 const fs = require('fs')
 const adminSignInModel = require('../Models/adminModel');
-const {doctorSigninModel} = require('../Models/doctorModel');
+const { doctorSigninModel } = require('../Models/doctorModel');
 
 const adminSignin = (req, res) => {
     let adminSignInData = new adminSignInModel({
@@ -12,8 +12,8 @@ const adminSignin = (req, res) => {
 
 const doctorSignin = async (req, res) => {
     try {
-        fs.readFile(req.file.path, async (err,data)=>{
-            if(!err){
+        fs.readFile(req.file.path, async (err, data) => {
+            if (!err) {
                 let doctorSignInData = new doctorSigninModel({
                     doctorName: req.body.doctorName,
                     doctorEmail: req.body.doctorEmail,
@@ -24,7 +24,7 @@ const doctorSignin = async (req, res) => {
                     doctorAddress: req.body.doctorAddress,
                     doctorSpeciality: req.body.doctorSpeciality,
                     doctorFees: req.body.doctorFees,
-                    doctorAvailableDays : JSON.parse(req.body.doctorAvailableDays),
+                    doctorAvailableDays: JSON.parse(req.body.doctorAvailableDays),
                     doctorTimmings: {
                         doctorStart: req.body.doctorStart,
                         doctorEnd: req.body.doctorEnd
@@ -47,6 +47,19 @@ const doctorSignin = async (req, res) => {
     }
 };
 
+const getDoctorById = async (req, res) => {
+  try {
+    const doctor = await doctorSigninModel.findById(req.params.id);
+    if (!doctor) {
+      return res.status(404).json({ msg: "Doctor not found" });
+    }
+    res.status(200).json(doctor); // ✅ return whole doc, including nested fields
+  } catch (err) {
+    res.status(500).json({ msg: "Failed to get doctor", error: err.message });
+  }
+};
+
+
 const getDoctors = async (req, res) => {
     try {
         const doctors = await doctorSigninModel.find({}, {
@@ -54,6 +67,7 @@ const getDoctors = async (req, res) => {
             doctorEmail: 1,
             doctorDegree: 1,
             doctorSpeciality: 1,
+            doctorFees: 1,
             _id: 1
         });
         res.json(doctors);
@@ -71,10 +85,20 @@ const deleteDoctor = async (req, res) => {
         res.status(500).send({ msg: "Failed to delete doctor", error: err });
     }
 };
-
 const updateDoctor = async (req, res) => {
     try {
-        let updatedFields = {
+        console.log("Incoming body:", req.body);
+        console.log("Incoming file:", req.file);
+
+        const doctorTimmings = typeof req.body.doctorTimmings === 'string' 
+            ? JSON.parse(req.body.doctorTimmings) 
+            : req.body.doctorTimmings;
+
+        const doctorAvailableDays = typeof req.body.doctorAvailableDays === 'string' 
+            ? JSON.parse(req.body.doctorAvailableDays) 
+            : req.body.doctorAvailableDays;
+
+        const updatedFields = {
             doctorName: req.body.doctorName,
             doctorEmail: req.body.doctorEmail,
             doctorPassword: req.body.doctorPassword,
@@ -84,11 +108,8 @@ const updateDoctor = async (req, res) => {
             doctorAddress: req.body.doctorAddress,
             doctorSpeciality: req.body.doctorSpeciality,
             doctorFees: req.body.doctorFees,
-            doctorAvailableDays: JSON.parse(req.body.doctorAvailableDays),
-            doctorTimmings: {
-                doctorStart: req.body.doctorStart,
-                doctorEnd: req.body.doctorEnd
-            },
+            doctorAvailableDays,
+            doctorTimmings,
             doctorPhno: req.body.doctorPhno,
             doctorRating: req.body.doctorRating,
             slotDuration: req.body.slotDuration
@@ -113,12 +134,9 @@ const updateDoctor = async (req, res) => {
 
         res.status(200).send({ msg: "Doctor updated successfully", data: updatedDoctor });
     } catch (err) {
-        res.status(500).send({ msg: "Failed to update doctor", error: err });
+        console.error('Update error:', err);
+        res.status(500).send({ msg: "Failed to update doctor", error: err.message });
     }
 };
 
-
-
-
-
-module.exports = { adminSignin, doctorSignin, getDoctors, deleteDoctor, updateDoctor};
+module.exports = { adminSignin, doctorSignin, getDoctors, deleteDoctor, updateDoctor, getDoctorById };

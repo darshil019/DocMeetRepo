@@ -91,6 +91,8 @@ router.post('/admin/doctorAdd', upload.single('myfile'), adminController.doctorS
 router.get('/admin/getDoctors', adminController.getDoctors);
 router.delete('/admin/deleteDoctor/:id', adminController.deleteDoctor)
 router.put('/admin/updateDoctor/:id', upload.single('myfile'), adminController.updateDoctor);
+router.get('/admin/getDoctor/:id', adminController.getDoctorById);
+
 
 //userRoutes
 router.get('/user/getDoctorImages', userController.getDoctorImages)

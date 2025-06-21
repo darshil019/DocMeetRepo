@@ -33,7 +33,7 @@ function DoctorList() {
     };
 
     const handleEdit = (doctor) => {
-        navigate('/admin/adddoctor', { state: { doctorData: doctor } });
+        navigate(`/admin/EditDoctor/${doctor}`);
     };
 
     return (
@@ -48,6 +48,7 @@ function DoctorList() {
                             <th className="border px-4 py-2">Email</th>
                             <th className="border px-4 py-2">Degree</th>
                             <th className="border px-4 py-2">Speciality</th>
+                            <th className="border px-4 py-2">Fees</th>
                             <th className="border px-4 py-2">Actions</th>
                         </tr>
                     </thead>
@@ -63,10 +64,11 @@ function DoctorList() {
                                     <td className="border px-4 py-2">{doc.doctorEmail}</td>
                                     <td className="border px-4 py-2">{doc.doctorDegree}</td>
                                     <td className="border px-4 py-2">{doc.doctorSpeciality}</td>
+                                    <td className="border px-4 py-2">{doc.doctorFees}</td>
                                     <td className="border px-4 py-2 flex gap-2">
                                         <button
                                             className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-                                            onClick={() => handleEdit(doc)}
+                                            onClick={() => handleEdit(doc._id)}
                                         >
                                             Edit
                                         </button>
