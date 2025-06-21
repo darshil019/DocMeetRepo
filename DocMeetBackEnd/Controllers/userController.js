@@ -273,5 +273,21 @@ const bookAppointment = async (req,res) => {
     }
 }
 
+const getUserAppointments = async (req,res) => {
+    const { _id } = req.params;
+    const getAppointmentsDetails = await appointmentModel.find({ userID: _id }).populate("doctorID").populate("userID");    
+    try{
+    if(getAppointmentsDetails){
+    res.send({
+        appointments:getAppointmentsDetails
+    })
+    }
+    }catch {
+      res.send({
+          appointments: "NotFound"
+      })
+  }
+  }
 
-module.exports = { updateUserProfile, getDoctorImages, getPediatriciansDoctors, getDermatologistDoctors, getGynecologistDoctors, getGeneralPhysician, getNeurologist, getGastroenterologist, userDashboardName, verifyUser, allDoctors, partDoc, getFullUserData,getUser,bookAppointment }
+
+module.exports = { updateUserProfile, getDoctorImages, getPediatriciansDoctors, getDermatologistDoctors, getGynecologistDoctors, getGeneralPhysician, getNeurologist, getGastroenterologist, userDashboardName, verifyUser, allDoctors, partDoc, getFullUserData,getUser,bookAppointment,getUserAppointments }

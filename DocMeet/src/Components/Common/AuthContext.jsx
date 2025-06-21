@@ -13,6 +13,9 @@ export const AuthProvider = ({ children }) => {
     const [doctorLoggedIn, setDoctorLoggedIn] = useState(false);
     const [doctorData, setDoctorData] = useState(null)
     const currencySymbol = '₹'
+    const doctorToken = localStorage.getItem("doctorToken");
+    const [appointmentsAll, setAppointmentsAll] = useState([])
+    const [appointmentsToday, setAppointmentsToday] = useState([])
 
     //this why i created bcz i want to update birthday section that's why i used...
     const getUserData = () => {
@@ -27,6 +30,36 @@ export const AuthProvider = ({ children }) => {
       .catch((err) => {
         console.error("Failed to fetch user data", err);
       });
+    };
+
+    const getAppointmentData = () => {
+      axios.get(`http://localhost:5001/docmeet/doctor/getAppointments`, {
+        headers: {
+            Authorization: `Bearer ${doctorToken}`
+        }
+        })
+        .then((res) => {
+            console.log(res.data.appointments)
+            setAppointmentsAll(res.data.appointments)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    };
+
+    const getAppointmentDataToday = () => {
+      axios.get(`http://localhost:5001/docmeet/doctor/getAppointmentstoday`, {
+        headers: {
+            Authorization: `Bearer ${doctorToken}`
+        }
+        })
+        .then((res) => {
+            console.log(res.data.appointments)
+            setAppointmentsToday(res.data.appointments)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     };
 
     //why this useEffect run bcz after login we set userName but after refresh page token is already
@@ -121,7 +154,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('doctorToken')
   };
     return (
-      <AuthContext.Provider value={{ docterToken,DoctorSignOut,DoctorSignIn,doctorLoggedIn,doctorData,userLoggedIn, setUserLoggedIn, logout ,login,userData,setUserData,token,getUserData,currencySymbol}}>
+      <AuthContext.Provider value={{ appointmentsToday,setAppointmentsToday,appointmentsAll,setAppointmentsAll,getAppointmentData,docterToken,DoctorSignOut,DoctorSignIn,doctorLoggedIn,doctorData,userLoggedIn, setUserLoggedIn, logout ,login,userData,setUserData,token,getUserData,currencySymbol}}>
         {children}
       </AuthContext.Provider>
     );

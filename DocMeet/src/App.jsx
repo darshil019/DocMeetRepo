@@ -28,6 +28,7 @@ import PartDoc from "./Pages/user/PartDoc";
 import DoctorList from "./Pages/admin/DoctorList";
 import EditProfile from "./Components/Common/Editprofile";
 import AppointmentsPage from "./Pages/doctor/AllAppointments";
+import UserAppointmentsPage from "./Pages/user/AllAppointments";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
             <Route path="user/Aboutus" element={<Aboutus/>}></Route>
             <Route path="user/partDoc/:_id" element={<PartDoc/>} />
             <Route path="user/Editprofile" element={<EditProfile/>}></Route>
+            <Route path="user/allappointments" element={<UserAppointmentsPage/>}></Route>
         </Route>
           <Route path="admin/signin" element={<AdminSignIn/>}></Route>
           <Route path="admin/dashboard" element={<AdminDashboard/>}></Route>
