@@ -114,7 +114,7 @@ const userSignin = async (req, res) => {
                     const checkPass = bcrypt.compareSync(password, getUserData.password)
 
                     if (checkPass) {
-                        const token = jwt.sign({ email: getUserData.email },
+                        const token = jwt.sign({ email: getUserData.email,_id: getDoctorData._id },
                             "abc", { expiresIn: '1h' }
                         )
                         res.status(200).send({
@@ -145,6 +145,7 @@ const userGoogleSignin = async (req, res) => {
     try {
         const decodedToken = await admin.auth().verifyIdToken(token);
         const email = decodedToken.email;
+        const _id = decodedToken._id
         const existingUser = await userSignUpModel.findOne({ email });
         if (!existingUser) {
             const newUser = new userSignUpModel({
@@ -156,7 +157,7 @@ const userGoogleSignin = async (req, res) => {
             });
             await newUser.save();
         }
-        const jwtToken = jwt.sign({ email }, "abc", { expiresIn: '1h' });
+        const jwtToken = jwt.sign({ email,_id }, "abc", { expiresIn: '1h' });
         res.status(200).send({ isSuccess: true, token: jwtToken });
     } catch (error) {
         res.status(401).send({ isSuccess: false, msg: "Google authentication failed" });

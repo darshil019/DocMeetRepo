@@ -19,6 +19,7 @@ const protect = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, "abc")
     req.user = decoded
+    console.log(req.user)
     next()
   } catch {
     res.status(401).json({ message: "Invalid token" });
@@ -109,6 +110,7 @@ router.get('/user/partDoc/:_id', userController.partDoc)
 router.get('/user/getUser',protect,userController.getUser)
 router.put('/user/updateUserProfile', upload2.single('myfile'), userController.updateUserProfile);
 router.post('/user/appintmentBooking',userController.bookAppointment)
+router.get('/user/getUserAppointments/:_id',protect,userController.getUserAppointments)
 
 //DoctorRoutes
 router.post('/doctor/addPrescription', upload1.single('prescriptionImage'),doctorController.addPrescription )
@@ -116,5 +118,8 @@ router.post('/doctor/addMedicine', doctorController.addMedicine);
 router.post('/doctor/signin',authController.doctorSignin)
 router.get('/doctor/doctordashboardName',protect1,doctorController.doctorDashboardName)
 router.get('/doctor/getAppointments',protect1,doctorController.getAppointments)
+router.get('/doctor/getAppointmentstoday',protect1,doctorController.getAppointmentsToday)
+router.put('/doctor/updatestatuspostive',protect1,doctorController.updatestatuspostive)
+router.put('/doctor/updatestatusnegative',protect1,doctorController.updatestatusnegative)
 
 module.exports = router

@@ -37,6 +37,7 @@ function Navbar() {
               <>
                 <Link to="/user/dashboard" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>HOME</Link>
                 <Link to="/user/alldoctors" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>ALL DOCTORS</Link>
+                <Link to="/user/allappointments" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>APPOINTMENTS</Link>
                 <Link to="/user/Aboutus" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>ABOUT</Link>
                 <Link to="/user/ContactUs" className="text-gray-800 hover:text-[#5D6BFF] font-semibold" style={{ textDecoration: "none" }}>CONTACT</Link>
               </> : ' '
