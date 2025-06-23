@@ -5,7 +5,7 @@ import axios from 'axios';
 import { AuthContext } from '../../Components/Common/AuthContext';
 
 function AppointmentsPage() {
-    const { appointmentsToday,setAppointmentsToday,appointmentsAll,setAppointmentsAll,getAppointmentData } = useContext(AuthContext);
+    const { getAppointmentDataToday,appointmentsToday,setAppointmentsToday,appointmentsAll,setAppointmentsAll,getAppointmentData } = useContext(AuthContext);
     const doctorToken = localStorage.getItem("doctorToken");
     //const [appointmentsAll, setAppointmentsAll] = useState([])
 
@@ -59,6 +59,7 @@ function AppointmentsPage() {
                     }
               );
               getAppointmentData()
+              getAppointmentDataToday()
               console.log(response.data.msg)
             } catch (err) {
               console.log(err);
@@ -89,6 +90,7 @@ function AppointmentsPage() {
                   }
             );
             getAppointmentData()
+            getAppointmentDataToday()
             console.log(response.data.msg)
           } catch (err) {
             console.log(err);

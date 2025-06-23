@@ -104,7 +104,9 @@ export const AuthProvider = ({ children }) => {
         })
         .catch((err) => {
           console.error("Error fetching user data on load", err);
-          logout();
+          DoctorSignOut()
+          setDoctorLoggedIn(false);
+          setDoctorData(null);
           navigate('/doctor/signin');
         });
       }
@@ -150,11 +152,12 @@ export const AuthProvider = ({ children }) => {
     }
   
     const DoctorSignOut = () => {
-      //localStorage.removeItem('userLoggedIn')
       localStorage.removeItem('doctorToken')
+      setDoctorLoggedIn(false);
+      setDoctorData(null);
   };
     return (
-      <AuthContext.Provider value={{ appointmentsToday,setAppointmentsToday,appointmentsAll,setAppointmentsAll,getAppointmentData,docterToken,DoctorSignOut,DoctorSignIn,doctorLoggedIn,doctorData,userLoggedIn, setUserLoggedIn, logout ,login,userData,setUserData,token,getUserData,currencySymbol}}>
+      <AuthContext.Provider value={{getAppointmentDataToday ,appointmentsToday,setAppointmentsToday,appointmentsAll,setAppointmentsAll,getAppointmentData,docterToken,DoctorSignOut,DoctorSignIn,doctorLoggedIn,doctorData,userLoggedIn, setUserLoggedIn, logout ,login,userData,setUserData,token,getUserData,currencySymbol}}>
         {children}
       </AuthContext.Provider>
     );
