@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
         user: 'panditdarshil5454@gmail.com',
-        pass: 'lhyt vpsq ftht uxqn'
+        pass: 'zgoa nkzu zqtz ydqt'
     }
 });
 
@@ -112,9 +112,9 @@ const userSignin = async (req, res) => {
             try {
                 if (getUserData) {
                     const checkPass = bcrypt.compareSync(password, getUserData.password)
-
+                    
                     if (checkPass) {
-                        const token = jwt.sign({ email: getUserData.email,_id: getDoctorData._id },
+                        const token = jwt.sign({ email: getUserData.email },
                             "abc", { expiresIn: '1h' }
                         )
                         res.status(200).send({

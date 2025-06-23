@@ -63,7 +63,7 @@ function SignInPage() {
 
     const handleSignInClick = () => {
         if (!validateForm()) return;
-
+        console.log(signInData)
         axios.post(`http://localhost:5001/docmeet/user/signin`, signInData)
             .then((res) => {
                 console.log("Successfully Added")
