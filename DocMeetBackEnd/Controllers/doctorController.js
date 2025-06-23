@@ -1,5 +1,5 @@
-const {Prescription,MedicineModel,doctorSigninModel} = require("../Models/doctorModel");
-const {appointmentModel} = require("../Models/appointmentModel")
+const { Prescription, MedicineModel, doctorSigninModel } = require("../Models/doctorModel");
+const { appointmentModel } = require("../Models/appointmentModel")
 const addPrescription = async (req, res) => {
   try {
     const { patientName, patientEmail, additionalInfo } = req.body;
@@ -47,68 +47,68 @@ const addMedicine = async (req, res) => {
 const doctorDashboardName = async (req, res) => {
   const doctor = await doctorSigninModel.findOne({ doctorEmail: req.doctor.doctorEmail });
   try {
-      if (doctor) {
-          res.send({
-              doctor
-          })
-      }
+    if (doctor) {
+      res.send({
+        doctor
+      })
+    }
   } catch {
-      res.send({
-          msg: "NotFound"
-      })
+    res.send({
+      msg: "NotFound"
+    })
   }
 }
 
-const getAppointments = async (req,res) => {
+const getAppointments = async (req, res) => {
   let date = new Date();
   let dateNumber = date.getDate();
   let monthName = date.toLocaleString('default', { month: 'short' });
 
   let fullDate = dateNumber + " " + monthName;
-  const getAppointmentsDetails = await appointmentModel.find({ doctorID: req.doctor._id,slotDate: { $gt: fullDate } }).populate("doctorID").populate("userID")
-  try{
-    if(getAppointmentsDetails){
+  const getAppointmentsDetails = await appointmentModel.find({ doctorID: req.doctor._id, slotDate: { $gt: fullDate } }).populate("doctorID").populate("userID")
+  try {
+    if (getAppointmentsDetails) {
       res.send({
-          appointments:getAppointmentsDetails
+        appointments: getAppointmentsDetails
       })
     }
-  }catch {
+  } catch {
     res.send({
-        appointments: "NotFound"
+      appointments: "NotFound"
     })
-}
+  }
 }
 
-const getAppointmentsToday = async (req,res) => {
+const getAppointmentsToday = async (req, res) => {
   let date = new Date();
   let dateNumber = date.getDate();
   let monthName = date.toLocaleString('default', { month: 'short' });
 
   let fullDate = dateNumber + " " + monthName;
-  const getAppointmentsDetails = await appointmentModel.find({ doctorID: req.doctor._id,slotDate: { $eq: fullDate } }).populate("doctorID").populate("userID")
-  try{
-    if(getAppointmentsDetails){
+  const getAppointmentsDetails = await appointmentModel.find({ doctorID: req.doctor._id, slotDate: { $eq: fullDate } }).populate("doctorID").populate("userID")
+  try {
+    if (getAppointmentsDetails) {
       res.send({
-          appointments:getAppointmentsDetails
+        appointments: getAppointmentsDetails
       })
     }
-  }catch {
+  } catch {
     res.send({
-        appointments: "NotFound"
+      appointments: "NotFound"
     })
-}
+  }
 }
 
-const updatestatuspostive = async (req,res) => {
-  const {userID,doctorID,slotTime,slotDay,slotDate,status} = req.body
-  try{
+const updatestatuspostive = async (req, res) => {
+  const { userID, doctorID, slotTime, slotDay, slotDate, status } = req.body
+  try {
     const updateResult = await appointmentModel.updateOne({
-      userID:userID,
-      doctorID:doctorID,
-      slotTime:slotTime,
-      slotDay:slotDay,
-      slotDate:slotDate
-    },{ $set: { status: status } })
+      userID: userID,
+      doctorID: doctorID,
+      slotTime: slotTime,
+      slotDay: slotDay,
+      slotDate: slotDate
+    }, { $set: { status: status } })
 
     if (updateResult.modifiedCount > 0) {
       res.send({ msg: "StatusUpdated" });
@@ -116,23 +116,23 @@ const updatestatuspostive = async (req,res) => {
       res.send({ msg: "Appointment not found or already updated" });
     }
   }
-  catch{
+  catch {
     res.send({
-      msg:"NotStatusUpdated"
-  })
+      msg: "NotStatusUpdated"
+    })
   }
 }
 
-const updatestatusnegative = async (req,res) => {
-  const {userID,doctorID,slotTime,slotDay,slotDate,status} = req.body
-  try{
+const updatestatusnegative = async (req, res) => {
+  const { userID, doctorID, slotTime, slotDay, slotDate, status } = req.body
+  try {
     const updateResult = await appointmentModel.updateOne({
-      userID:userID,
-      doctorID:doctorID,
-      slotTime:slotTime,
-      slotDay:slotDay,
-      slotDate:slotDate
-    },{ $set: { status: status } })
+      userID: userID,
+      doctorID: doctorID,
+      slotTime: slotTime,
+      slotDay: slotDay,
+      slotDate: slotDate
+    }, { $set: { status: status } })
 
     if (updateResult.modifiedCount > 0) {
       res.send({ msg: "StatusUpdated" });
@@ -140,12 +140,13 @@ const updatestatusnegative = async (req,res) => {
       res.send({ msg: "Appointment not found or already updated" });
     }
   }
-  catch{
+  catch {
     res.send({
-      msg:"NotStatusUpdated"
-  })
+      msg: "NotStatusUpdated"
+    })
   }
 }
 
 
-module.exports = { addPrescription,addMedicine,doctorDashboardName,getAppointments,updatestatuspostive,updatestatusnegative,getAppointmentsToday};
+
+module.exports = { addPrescription, addMedicine, doctorDashboardName, getAppointments, updatestatuspostive, updatestatusnegative, getAppointmentsToday };

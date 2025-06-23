@@ -108,7 +108,19 @@ const medicineSchema=new mongoose.Schema({
       }, 
 })
 
+const departmentSchema = new mongoose.Schema({
+  departmentName: {
+    type: String,
+    required: true
+  },
+  image: {
+    type: String // store image path or filename
+  }
+});
+
+
 const Prescription = mongoose.model('Prescription', prescriptionSchema);
 const doctorSigninModel = mongoose.model('Doctor', doctorSchema);
 const MedicineModel = mongoose.model('medicine', medicineSchema);
-module.exports = {doctorSigninModel,Prescription,MedicineModel};
+const departmentSchema1 = mongoose.model('department', departmentSchema);
+module.exports = {doctorSigninModel,Prescription,MedicineModel,departmentSchema1};

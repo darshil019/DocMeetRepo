@@ -46,9 +46,9 @@ const protect1 = (req, res, next) => {
 //authRoutes
 router.post('/user/signup', authController.userSignUp)
 router.post('/user/signin', authController.userSignin)
-router.post('/user/signupOtp',authController.userSignUpOtp)
-router.post('/user/signup',authController.userSignUp)
-router.post('/user/signin',authController.userSignin)
+router.post('/user/signupOtp', authController.userSignUpOtp)
+router.post('/user/signup', authController.userSignUp)
+router.post('/user/signin', authController.userSignin)
 router.post('/user/googlesignin', authController.userGoogleSignin)
 router.post('/admin/signin', adminController.adminSignin)
 router.post('/user/resetpassword', authController.resetpassword)
@@ -82,10 +82,21 @@ const storage2 = multer.diskStorage({
   },
 });
 
+
+const storage3 = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads1/'); // make sure this folder exists
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+
 const upload = multer({ storage: storage });
 const upload1 = multer({ storage: storage1 });
 const upload2 = multer({ storage: storage2 });
-
+const upload3 = multer({ storage: storage3 });
 //adminRoutes
 router.post('/admin/signin', adminController.adminSignin)
 router.post('/admin/doctorAdd', upload.single('myfile'), adminController.doctorSignin)
@@ -93,7 +104,11 @@ router.get('/admin/getDoctors', adminController.getDoctors);
 router.delete('/admin/deleteDoctor/:id', adminController.deleteDoctor)
 router.put('/admin/updateDoctor/:id', upload.single('myfile'), adminController.updateDoctor);
 router.get('/admin/getDoctor/:id', adminController.getDoctorById);
-
+router.post('/admin/adddepartment', upload3.single('myfile'), adminController.addDepartment);
+router.get('/admin/getdepartment',adminController.getdepartment);
+router.delete('/admin/deleteDepartment/:id',adminController.deleteDepartment)
+router.get('/admin/getdepartment/:id', adminController.getSingleDepartment);
+router.put('/admin/editdepartment/:id',upload.single('myfile'),adminController.editDepartment);
 
 //userRoutes
 router.get('/user/getDoctorImages', userController.getDoctorImages)
@@ -107,19 +122,19 @@ router.get('/user/dashboardName', protect, userController.userDashboardName)
 router.put('/user/verifiedUser', protect, userController.verifyUser)
 router.get('/user/allDoctors', userController.allDoctors)
 router.get('/user/partDoc/:_id', userController.partDoc)
-router.get('/user/getUser',protect,userController.getUser)
+router.get('/user/getUser', protect, userController.getUser)
 router.put('/user/updateUserProfile', upload2.single('myfile'), userController.updateUserProfile);
-router.post('/user/appintmentBooking',userController.bookAppointment)
-router.get('/user/getUserAppointments/:_id',protect,userController.getUserAppointments)
+router.post('/user/appintmentBooking', userController.bookAppointment)
+router.get('/user/getUserAppointments/:_id', protect, userController.getUserAppointments)
 
 //DoctorRoutes
-router.post('/doctor/addPrescription', upload1.single('prescriptionImage'),doctorController.addPrescription )
+router.post('/doctor/addPrescription', upload1.single('prescriptionImage'), doctorController.addPrescription)
 router.post('/doctor/addMedicine', doctorController.addMedicine);
-router.post('/doctor/signin',authController.doctorSignin)
-router.get('/doctor/doctordashboardName',protect1,doctorController.doctorDashboardName)
-router.get('/doctor/getAppointments',protect1,doctorController.getAppointments)
-router.get('/doctor/getAppointmentstoday',protect1,doctorController.getAppointmentsToday)
-router.put('/doctor/updatestatuspostive',protect1,doctorController.updatestatuspostive)
-router.put('/doctor/updatestatusnegative',protect1,doctorController.updatestatusnegative)
+router.post('/doctor/signin', authController.doctorSignin)
+router.get('/doctor/doctordashboardName', protect1, doctorController.doctorDashboardName)
+router.get('/doctor/getAppointments', protect1, doctorController.getAppointments)
+router.get('/doctor/getAppointmentstoday', protect1, doctorController.getAppointmentsToday)
+router.put('/doctor/updatestatuspostive', protect1, doctorController.updatestatuspostive)
+router.put('/doctor/updatestatusnegative', protect1, doctorController.updatestatusnegative)
 
 module.exports = router

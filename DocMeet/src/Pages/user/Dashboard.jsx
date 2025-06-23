@@ -21,28 +21,31 @@ import { useNavigate } from 'react-router-dom';
 
 function UserDashboard() {
   const [storeDoctorData, setStoreDoctorData] = useState([])
+  const [departments, setDepartments] = useState([]);
   let navigate = useNavigate()
-
   useEffect(() => {
+    // Fetch doctors
     axios.get(`http://localhost:5001/docmeet/user/getDoctorImages`)
       .then((res) => {
-        console.log(res.data.data)
-        setStoreDoctorData(res.data.data)
-
+        setStoreDoctorData(res.data.data);
       })
       .catch((err) => {
-        console.log("Err", err)
+        console.log("Err", err);
+      });
+
+    // Fetch departments from admin
+    axios.get('http://localhost:5001/docmeet/admin/getdepartment')
+      .then((res) => {
+        setDepartments(res.data);
       })
-  }, [])
-
-
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
+      .catch((err) => {
+        console.log("Error fetching departments:", err);
+      });
   }, []);
 
+  useEffect(() => {
+    AOS.init({ duration: 1000, once: true });
+  }, []);
 
   const now = new Date();
   const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -90,16 +93,16 @@ function UserDashboard() {
 
             <div className="flex flex-wrap gap-4 pt-4">
               <button className="bg-[#5D6BFF] hover:bg-indigo-700 text-white px-8 py-3 !rounded-full text-base font-medium transition-colors duration-200 shadow-lg hover:shadow-xl"
-              onClick={(()=>{
+                onClick={(() => {
                   navigate('/user/alldoctors')
-              })}>
+                })}>
                 Book An Appointment
               </button>
 
               <button className="bg-white hover:bg-gray-50 text-indigo-600 border-2 border-indigo-600 px-8 py-3 !rounded-full text-base font-medium flex items-center gap-2 transition-all duration-200 hover:shadow-lg"
-              onClick={(()=>{
-                navigate('/user/Aboutus')
-              })}>
+                onClick={(() => {
+                  navigate('/user/Aboutus')
+                })}>
                 Learn More <ArrowUpRight size={20} />
               </button>
             </div>
@@ -193,72 +196,32 @@ function UserDashboard() {
           </p>
         </div>
       </div>
+
       <div className='flex flex-col items-center justify-center py-5 mt-12'>
         <div><p className='text-3xl font-bold py-2'>Find By Speciality</p></div>
         <div><p className='text-xs md:text-xs font-bold m-0 lg:line-clamp-3'>Simply browse through our extensive list of trusted doctors,<br /><center> schedule your appointment hassle-free. </center></p></div>
       </div>
       <div className='grid grid-cols-3 lg:grid-cols-6 gap-2 max-w-6xl mx-auto '>
-        <Link to="/user/GeneralPhysician" style={{ textDecoration: "none" }}>
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-            className='flex flex-col items-center space-y-2'
-          >
-            <img src={cat1} className='w-20 h-20 rounded-full object-cover shadow-md' />
-            <span className='text-sm text-center text-gray-800 hover:text-[#5D6BFF]'>GeneralPhysician</span>
-          </motion.div>
-        </Link>
-        <Link to="/user/Gynecologist" style={{ textDecoration: "none" }}>
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-            className='flex flex-col items-center space-y-2'
-          >
-            <img src={cat2} className='w-20 h-20 rounded-full object-cover shadow-md' />
-            <span className='text-sm text-gray-800 hover:text-[#5D6BFF] text-center'>Gynecologist</span>
-          </motion.div>
-        </Link>
-        <Link to="/user/Dermatologist" style={{ textDecoration: "none" }}>
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-            className='flex flex-col items-center space-y-2'
-          >
-            <img src={cat3} className='w-20 h-20 rounded-full object-cover shadow-md' />
-            <span className='text-sm text-gray-800 hover:text-[#5D6BFF] text-center'>Dermatologist</span>
-          </motion.div>
-        </Link>
-        <Link to="/user/Pediatricians" style={{ textDecoration: "none" }}>
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-            className='flex flex-col items-center space-y-2'
-          >
-            <img src={cat4} className='w-20 h-20 rounded-full object-cover shadow-md' />
-            <span className='text-sm text-center text-gray-800 hover:text-[#5D6BFF]'>Pediatricians</span>
-          </motion.div>
-        </Link>
-        <Link to="/user/Neurologist" style={{ textDecoration: "none" }}>
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-            className='flex flex-col items-center space-y-2'
-          >
-            <img src={cat5} className='w-20 h-20 rounded-full object-cover shadow-md' />
-            <span className='text-sm text-center text-gray-800 hover:text-[#5D6BFF]'>Neurologist</span>
-          </motion.div>
-        </Link>
-        <Link to="/user/Gastroenterologist" style={{ textDecoration: "none" }}>
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-            className='flex flex-col items-center space-y-2'
-          >
-            <img src={cat6} className='w-20 h-20 rounded-full object-cover shadow-md' />
-            <span className='text-sm text-center text-gray-800 hover:text-[#5D6BFF]'>Gastroenterologist</span>
-          </motion.div>
-        </Link>
+        {departments.map((dept) => (
+          <Link to={`/user/${dept.departmentName.replace(/\s+/g, '')}`} key={dept._id} style={{ textDecoration: "none" }}>
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+              className='flex flex-col items-center space-y-2'
+            >
+              <img
+                src={`http://localhost:5001/uploads1/${dept.image}`}
+                className='w-20 h-20 rounded-full object-cover shadow-md'
+                alt={dept.departmentName}
+              />
+              <span className='text-sm text-center text-gray-800 hover:text-[#5D6BFF]'>{dept.departmentName}</span>
+            </motion.div>
+          </Link>
+        ))}
       </div>
+
+
+
       <div className='flex flex-col items-center justify-center py-5 mt-13'>
         <div><p className='text-3xl font-bold py-2'>Top Doctors to Book</p></div>
         <div><p className='text-xs md:text-xs font-bold m-0 lg:line-clamp-3'>Simply browse through our extensive list of trusted doctors.</p></div>

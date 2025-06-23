@@ -31,6 +31,8 @@ import AppointmentsPage from "./Pages/doctor/AllAppointments";
 import EditDoctor from "./Pages/admin/Editdoctor";
 import AddDepartment from "./Pages/admin/AddDepartment";
 import UserAppointmentsPage from "./Pages/user/AllAppointments";
+import DepartmentList from "./Pages/admin/DepartmentList";
+import EditDepartment from "./Pages/admin/EditDepartment";
 
 function App() {
   return (
@@ -55,6 +57,7 @@ function App() {
             <Route path="user/partDoc/:_id" element={<PartDoc/>} />
             <Route path="user/Editprofile" element={<EditProfile/>}></Route>
             <Route path="user/allappointments" element={<UserAppointmentsPage/>}></Route>
+
         </Route>
         {/* admin */}
           <Route path="admin/signin" element={<AdminSignIn/>}></Route>
@@ -63,6 +66,9 @@ function App() {
            <Route path="admin/EditDoctor/:id" element={<EditDoctor /> } />
           <Route path="admin/doctorlist" element={<DoctorList/>}></Route>
           <Route path="admin/adddepartment" element={<AddDepartment/>}></Route>
+          <Route path="admin/departmentlist" element={<DepartmentList />} />
+          <Route path="admin/EditDepartment/:id" element={<EditDepartment/>} />
+
           {/* doctor */}
           <Route path="doctor/addprescription" element={<AddPrescription/>}></Route>
           <Route path="doctor/prescriptionadded" element={<PrescriptionAdded/>}></Route>
