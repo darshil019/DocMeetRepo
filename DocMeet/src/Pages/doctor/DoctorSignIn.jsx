@@ -42,7 +42,7 @@ function DoctorSignIn() {
 
                     <div className="mb-4">
                         <label htmlFor="email" className="block mb-1 text-sm font-medium text-gray-700">
-                            Username
+                            Email
                         </label>
                         <input
                             type="text"
@@ -50,7 +50,7 @@ function DoctorSignIn() {
                             value={adminUser.doctorEmail}
                             onChange={(e) => setAdminUser({ ...adminUser, doctorEmail: e.target.value })}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5D6BFF]"
-                            placeholder="Enter username"
+                            placeholder="Enter Email"
                             required
                         />
                     </div>
@@ -60,12 +60,13 @@ function DoctorSignIn() {
                             Password
                         </label>
                         <input
-                            type="doctorPassword"
+                        
+                            type="password"
                             id="doctorPassword"
                             value={adminUser.doctorPassword}
                             onChange={(e) => setAdminUser({ ...adminUser, doctorPassword: e.target.value })}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5D6BFF]"
-                            placeholder="Enter password"
+                            placeholder="Enter Password"
                             required
                         />
                     </div>

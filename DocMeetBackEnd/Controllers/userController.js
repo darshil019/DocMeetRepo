@@ -318,4 +318,6 @@ const getAppointmentsForHide = async (req,res) => {
 
 
 
-module.exports = {getAllUsers, updateUserProfile, getDoctorImages, getPediatriciansDoctors, getDermatologistDoctors, getGynecologistDoctors, getGeneralPhysician, getNeurologist, getGastroenterologist, userDashboardName, verifyUser, allDoctors, partDoc, getFullUserData,getUser,bookAppointment,getUserAppointments }
+
+
+module.exports = {getAppointmentsForHide,getAllUsers, updateUserProfile, getDoctorImages, getPediatriciansDoctors, getDermatologistDoctors, getGynecologistDoctors, getGeneralPhysician, getNeurologist, getGastroenterologist, userDashboardName, verifyUser, allDoctors, partDoc, getFullUserData,getUser,bookAppointment,getUserAppointments }

@@ -98,7 +98,7 @@ function PartDoc() {
         .filter(val => {
           return val.status === "approved" &&
             val.slotDate === formattedSlotDate &&
-            val.doctorID._id && storeDoctorData._id && val.doctorID._id === storeDoctorData._id
+            val.doctorID?._id && storeDoctorData?._id && val.doctorID?._id === storeDoctorData?._id
         })
         .map(val => val.slotTime);
 
@@ -108,7 +108,7 @@ function PartDoc() {
         .filter(val => {
           return val.status === "pending" &&
             val.slotDate === formattedSlotDate &&
-            val.doctorID._id && storeDoctorData._id && val.doctorID._id === storeDoctorData._id
+            val.doctorID?._id && storeDoctorData?._id && val.doctorID?._id === storeDoctorData?._id
         })
         .map(val => val.slotTime);
 
