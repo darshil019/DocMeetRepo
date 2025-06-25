@@ -6,36 +6,35 @@ import info from '../../assets/images/information.png'
 import { AuthContext } from '../../Components/Common/AuthContext';
 
 function PartDoc() {
-  const { currencySymbol,token,userData } = useContext(AuthContext);
-  const { _id } = useParams()
-  const [storeDoctorData, setStoreDoctorData] = useState(null)
-  const [storeUserData,setStoreUserData] = useState(null)
-  const [totalDays, setTotalDays] = useState([])
-  const [time, setTime] = useState([])
-  const [selectedFullDay,setSelectedFullDay] = useState(null)
-  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const { currencySymbol, token, userData } = useContext(AuthContext);
+  const { _id } = useParams();
+  const [storeDoctorData, setStoreDoctorData] = useState(null);
+  const [storeUserData, setStoreUserData] = useState(null);
+  const [totalDays, setTotalDays] = useState([]);
+  const [time, setTime] = useState([]);
+  const [selectedFullDay, setSelectedFullDay] = useState(null);
+  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null)
-  const [appointment,setAppointment] = useState({})
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false); 
 
-  useEffect(()=>{
-    setStoreUserData(userData)
-  },[userData])
+  useEffect(() => {
+    setStoreUserData(userData);
+  }, [userData]);
 
   useEffect(() => {
     axios.get(`http://localhost:5001/docmeet/user/partDoc/${_id}`)
       .then((res) => {
-        setStoreDoctorData(res.data.data)
+        setStoreDoctorData(res.data.data);
       })
       .catch((err) => {
-        console.log("Err", err)
-      })
-  }, [_id])
+        console.log("Err", err);
+      });
+  }, [_id]);
 
   useEffect(() => {
     if (storeDoctorData?.doctorTimmings || storeDoctorData?.slotDuration) {
-
       const slots = [];
 
       const [startHour, startMin] = storeDoctorData.doctorTimmings?.doctorStart.split(":").map(Number);
@@ -57,14 +56,12 @@ function PartDoc() {
         });
 
         slots.push(timeStr);
-
         current.setMinutes(current.getMinutes() + storeDoctorData.slotDuration);
       }
 
       setTime(slots);
     }
   }, [storeDoctorData]);
-
 
   useEffect(() => {
     if (storeDoctorData?.doctorAvailableDays) {
@@ -77,7 +74,7 @@ function PartDoc() {
 
         const dayName = daysOfWeek[date.getDay()];
         if (storeDoctorData.doctorAvailableDays.includes(dayName)) {
-          const formattedDate = `${dayName} - ${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}`
+          const formattedDate = `${dayName} - ${date.getDate()} ${date.toLocaleString('default', { month: 'short' })}`;
           nextAvailableDays.push(formattedDate);
         }
       }
@@ -94,14 +91,22 @@ function PartDoc() {
         slotDate: selectedDate,
         slotDay: selectedDay
       };
-  
+
       try {
         const response = await axios.post(
           `http://localhost:5001/docmeet/user/appintmentBooking`,
           appointmentData
         );
-        setSelectedTime(null)
-        setSelectedFullDay(null)
+
+        setSelectedTime(null);
+        setSelectedFullDay(null);
+        setShowSuccess(true); 
+
+        // ✅ Hide after 3s
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 3000);
+
         console.log(response.data.appointBooked);
       } catch (err) {
         console.log(err);
@@ -166,12 +171,12 @@ function PartDoc() {
                     key={index}
                     onClick={() => {
                       const [day1, date1] = day.split(" - ");
-                      setSelectedDay(day1)
-                      setSelectedDate(date1)
-                      setSelectedFullDay(day)
+                      setSelectedDay(day1);
+                      setSelectedDate(date1);
+                      setSelectedFullDay(day);
                     }}
                     className={`px-4 py-2 rounded-full text-sm shadow-sm cursor-pointer transition-all 
-                    ${selectedFullDay === day ? 'bg-[#3b4ae0] text-white scale-105' : 'bg-gradient-to-br from-[#e0e7ff] to-[#f0f4ff] shadow-xl text-black'}`}
+                      ${selectedFullDay === day ? 'bg-[#3b4ae0] text-white scale-105' : 'bg-gradient-to-br from-[#e0e7ff] to-[#f0f4ff] shadow-xl text-black'}`}
                   >
                     {day}
                   </span>
@@ -181,6 +186,7 @@ function PartDoc() {
               )}
             </div>
           </div>
+
           <div className='sm:ml-72 sm:pl-4 mt-8 font-medium text-gray-700 '>
             <div className='flex gap-3 flex-wrap p-2'>
               {time.length > 0 ? (
@@ -189,7 +195,7 @@ function PartDoc() {
                     onClick={() => setSelectedTime(val)}
                     key={index}
                     className={`px-4 py-2 rounded-full text-sm shadow-sm cursor-pointer transition-all 
-                      ${selectedTime === val ? 'bg-[#3b4ae0] text-white scale-105' : 'bg-gradient-to-br from-[#e0e7ff] to-[#f0f4ff] shadow-xl text-black'}`}         
+                      ${selectedTime === val ? 'bg-[#3b4ae0] text-white scale-105' : 'bg-gradient-to-br from-[#e0e7ff] to-[#f0f4ff] shadow-xl text-black'}`}
                   >
                     {val}
                   </span>
@@ -200,24 +206,26 @@ function PartDoc() {
             </div>
             <div className="mt-6 p-2">
               <button
-                onClick={() => {
-                  handleOnClick()
-                }}
+                onClick={handleOnClick}
                 className="bg-[#5D6BFF] hover:bg-[#4a5ce3] text-white font-medium px-6 py-2 !rounded-lg shadow transition duration-200"
               >
                 Book Appointment
               </button>
             </div>
           </div>
-          
         </>
       ) : (
         <div className="text-center mt-10 text-gray-600">Loading doctor details...</div>
       )}
 
       
+      {showSuccess && (
+        <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50 transition-all">
+          ✅ Appointment booked successfully!
+        </div>
+      )}
     </div>
-  )
+  );
 }
 
-export default PartDoc
+export default PartDoc;

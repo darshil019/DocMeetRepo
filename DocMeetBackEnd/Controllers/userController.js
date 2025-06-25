@@ -289,5 +289,18 @@ const getUserAppointments = async (req,res) => {
   }
   }
 
+  const getAllUsers = async (req, res) => {
+    try {
+        const data = await userSignUpModel.find(); // find all users
+        res.send({
+            users: data
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ error: "Internal server error" });
+    }
+};
 
-module.exports = { updateUserProfile, getDoctorImages, getPediatriciansDoctors, getDermatologistDoctors, getGynecologistDoctors, getGeneralPhysician, getNeurologist, getGastroenterologist, userDashboardName, verifyUser, allDoctors, partDoc, getFullUserData,getUser,bookAppointment,getUserAppointments }
+
+
+module.exports = {getAllUsers, updateUserProfile, getDoctorImages, getPediatriciansDoctors, getDermatologistDoctors, getGynecologistDoctors, getGeneralPhysician, getNeurologist, getGastroenterologist, userDashboardName, verifyUser, allDoctors, partDoc, getFullUserData,getUser,bookAppointment,getUserAppointments }
