@@ -30,7 +30,8 @@ const appointmentSchema = new mongoose.Schema({
     cancelledByUser : {
         type : Boolean,
         default: false
-    }
+    },
+    
 },{ timestamps: true })
 
 appointmentModel = mongoose.model('appointmentModel',appointmentSchema)

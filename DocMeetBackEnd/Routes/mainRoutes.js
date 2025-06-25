@@ -85,7 +85,7 @@ const storage2 = multer.diskStorage({
 
 const storage3 = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads1/'); // make sure this folder exists
+    cb(null, './uploads1/');
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname);
@@ -126,6 +126,7 @@ router.get('/user/getUser', protect, userController.getUser)
 router.put('/user/updateUserProfile', upload2.single('myfile'), userController.updateUserProfile);
 router.post('/user/appintmentBooking', userController.bookAppointment)
 router.get('/user/getUserAppointments/:_id', protect, userController.getUserAppointments)
+router.get('/user/appointmentShowForHide',userController.getAppointmentsForHide)
 
 //DoctorRoutes
 router.post('/doctor/addPrescription', upload1.single('prescriptionImage'), doctorController.addPrescription)
