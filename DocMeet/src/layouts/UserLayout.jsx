@@ -9,7 +9,7 @@ function UserLayout() {
       <Navbar />
       <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-4">
             <Outlet />
-            <Footer/>
+      <Footer/>
       </main>
       
     </>

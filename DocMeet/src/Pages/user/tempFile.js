@@ -19,7 +19,6 @@ function PartDoc() {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [disableSlot, setDisableSlot] = useState(null)
 
   useEffect(() => {
     axios.get(`http://localhost:5001/docmeet/user/appointmentShowForHide`)
@@ -40,13 +39,7 @@ function PartDoc() {
   }, [_id]);
 
   useEffect(() => {
-    if (
-      storeDoctorData?.doctorTimmings &&
-      storeDoctorData?.slotDuration &&
-      selectedDate &&
-      appointmentData &&
-      selectedFullDay
-    ) {
+    if (storeDoctorData?.doctorTimmings && storeDoctorData?.slotDuration && selectedDate && appointmentData) {
       const slots = [];
       const [startHour, startMin] = storeDoctorData.doctorTimmings.doctorStart.split(":").map(Number);
       const [endHour, endMin] = storeDoctorData.doctorTimmings.doctorEnd.split(":").map(Number);
@@ -80,43 +73,17 @@ function PartDoc() {
             hour: '2-digit',
             minute: '2-digit',
             hour12: true,
-          }).trim();
+          });
           slots.push(timeStr);
         }
         current.setMinutes(current.getMinutes() + storeDoctorData.slotDuration);
       }
 
-      console.log("Generated slots:", slots);
-      console.log("Doctor ID:", storeDoctorData._id);
-
-      const formattedSlotDate = `${dateNum} ${month}`;
-      console.log("Formatted slot date:", formattedSlotDate);
-
-      console.log(storeDoctorData)
-
       const bookedSlots = appointmentData
-        .filter(val => {
-          return val.status === "approved" &&
-            val.slotDate === formattedSlotDate &&
-            val.doctorID._id && storeDoctorData._id && val.doctorID._id === storeDoctorData._id
-        })
+        .filter(val => val.status === "approved" && val.slotDate === `${dateNum} ${month}` && val.doctorID === storeDoctorData._id)
         .map(val => val.slotTime);
-
-      console.log("Booked Slots:", bookedSlots);
-
-      const bookedSlots1 = appointmentData
-        .filter(val => {
-          return val.status === "pending" &&
-            val.slotDate === formattedSlotDate &&
-            val.doctorID._id && storeDoctorData._id && val.doctorID._id === storeDoctorData._id
-        })
-        .map(val => val.slotTime);
-
-      console.log("Booked Slots1:", bookedSlots1);
-      setDisableSlot(bookedSlots1)
 
       const availableSlots = slots.filter(time => !bookedSlots.includes(time));
-      console.log("Available slots after filtering:", availableSlots);
       setTime(availableSlots);
     }
   }, [storeDoctorData, selectedDate, selectedFullDay, appointmentData]);
@@ -152,22 +119,10 @@ function PartDoc() {
 
       try {
         const response = await axios.post(`http://localhost:5001/docmeet/user/appintmentBooking`, appointmentData);
-        setDisableSlot(prev => [...prev, selectedTime]);
         setSelectedTime(null);
         setSelectedFullDay(null);
         setShowSuccess(true);
         setTimeout(() => setShowSuccess(false), 3000);
-
-        if (
-          storeDoctorData?.doctorTimmings &&
-          storeDoctorData?.slotDuration &&
-          selectedDate &&
-          appointmentData &&
-          selectedFullDay
-        ) {
-        
-        }
-
       } catch (err) {
         console.log(err);
       }
@@ -228,24 +183,13 @@ function PartDoc() {
           <div className='sm:ml-72 sm:pl-4 mt-8 font-medium text-gray-700 '>
             <div className='flex gap-3 flex-wrap p-2'>
               {time.length > 0 ? (
-                time.map((val, index) => {
-                  const isDisabled = disableSlot.includes(val);
-
-                  return (
-                    <span
-                      key={index}
-                      onClick={() => {
-                        if (!isDisabled) setSelectedTime(val);
-                      }}
-                      className={`px-4 py-2 rounded-full text-sm shadow-sm cursor-pointer transition-all 
-                      ${selectedTime === val ? 'bg-[#3b4ae0] text-white scale-105' :
-                          isDisabled ? 'bg-gray-300 text-gray-500 cursor-not-allowed' :
-                            'bg-gradient-to-br from-[#e0e7ff] to-[#f0f4ff] shadow-xl text-black'}`}
-                    >
-                      {val}
-                    </span>
-                  );
-                })
+                time.map((val, index) => (
+                  <span key={index} onClick={() => setSelectedTime(val)}
+                    className={`px-4 py-2 rounded-full text-sm shadow-sm cursor-pointer transition-all 
+                      ${selectedTime === val ? 'bg-[#3b4ae0] text-white scale-105' : 'bg-gradient-to-br from-[#e0e7ff] to-[#f0f4ff] shadow-xl text-black'}`}>
+                    {val}
+                  </span>
+                ))
               ) : (
                 <p className='text-sm text-gray-500'>No available slots listed</p>
               )}

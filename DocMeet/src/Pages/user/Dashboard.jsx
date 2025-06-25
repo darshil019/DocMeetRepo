@@ -8,13 +8,6 @@ import filUploadImg from '../../assets/images/upload.png';
 import MAImg from '../../assets/images/MA.png';
 import congrats from '../../assets/images/firework.png'
 import doctorImg1 from '../../assets/images/doctor.jpg'
-import cat1 from '../../assets/images/cat1.svg'
-import cat2 from '../../assets/images/cat2.svg'
-import cat3 from '../../assets/images/cat3.svg'
-import cat4 from '../../assets/images/cat4.svg'
-import cat5 from '../../assets/images/cat5.svg'
-import cat6 from '../../assets/images/cat6.svg'
-import img from "../../assets/images/image.png";
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
