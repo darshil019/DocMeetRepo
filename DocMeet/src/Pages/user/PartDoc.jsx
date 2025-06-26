@@ -62,6 +62,7 @@ function PartDoc() {
 
       const end = new Date(slotDate);
       end.setHours(endHour, endMin, 0, 0);
+      
       if (end <= start) end.setDate(end.getDate() + 1);
 
       const now = new Date();
