@@ -275,4 +275,5 @@ const doctorSignin = async (req, res) => {
 }
 
 
+
 module.exports = { userSignUpOtp, userSignUp, userSignin, userGoogleSignin, resetpassword, verifyotp, newpassword,doctorSignin }

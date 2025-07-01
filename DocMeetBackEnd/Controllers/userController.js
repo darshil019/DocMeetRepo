@@ -287,7 +287,37 @@ const getUserAppointments = async (req,res) => {
           appointments: "NotFound"
       })
   }
+}
+
+const getAppointmentsForHide = async (req,res) => {
+    const getAppointmentsDetails = await appointmentModel.find({}).populate("doctorID").populate("userID");    
+    try{
+    if(getAppointmentsDetails){
+    res.send({
+        appointments:getAppointmentsDetails
+    })
+    }
+    }catch {
+      res.send({
+          appointments: "NotFound"
+      })
   }
+}
+
+  const getAllUsers = async (req, res) => {
+    try {
+        const data = await userSignUpModel.find(); // find all users
+        res.send({
+            users: data
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ error: "Internal server error" });
+    }
+};
 
 
-module.exports = { updateUserProfile, getDoctorImages, getPediatriciansDoctors, getDermatologistDoctors, getGynecologistDoctors, getGeneralPhysician, getNeurologist, getGastroenterologist, userDashboardName, verifyUser, allDoctors, partDoc, getFullUserData,getUser,bookAppointment,getUserAppointments }
+
+
+
+module.exports = {getAppointmentsForHide,getAllUsers, updateUserProfile, getDoctorImages, getPediatriciansDoctors, getDermatologistDoctors, getGynecologistDoctors, getGeneralPhysician, getNeurologist, getGastroenterologist, userDashboardName, verifyUser, allDoctors, partDoc, getFullUserData,getUser,bookAppointment,getUserAppointments }

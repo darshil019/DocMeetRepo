@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import img from "../../assets/images/image.png";
 import Sidebar from './Sidebar';
+import axios from 'axios';
 import {
   FaTachometerAlt,
   FaCalendarPlus,
@@ -31,14 +32,45 @@ const data = [
 ];
 
 function AdminDashboard() {
+  const [storeDoctorData, setStoreDoctorData] = useState([])
+  const [departments, setDepartments] = useState([]);
+  const [users, setUsers] = useState([]);
   let navigate = useNavigate()
+  useEffect(() => {
+    // Fetch doctors
+    axios.get(`http://localhost:5001/docmeet/user/getDoctorImages`)
+      .then((res) => {
+        setStoreDoctorData(res.data.data);
+      })
+      .catch((err) => {
+        console.log("Err", err);
+      });
+
+    axios.get('http://localhost:5001/docmeet/user/getAllUsers')
+      .then(res => {
+        setUsers(res.data.users);
+      })
+      .catch(err => {
+        console.error("Error fetching users:", err);
+      });
+
+    axios.get('http://localhost:5001/docmeet/admin/getdepartment')
+      .then((res) => {
+        setDepartments(res.data);
+      })
+      .catch((err) => {
+        console.log("Error fetching departments:", err);
+      });
+
+
+  }, []);
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-white">
 
       {/* Sidebar */}
-    
-      <Sidebar/>
-     
+
+      <Sidebar />
+
 
       {/* Main Content */}
       <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-gray-50">
@@ -51,43 +83,30 @@ function AdminDashboard() {
           <div className="bg-white shadow-md p-6 rounded-lg flex items-center gap-4">
             <FaUser className="text-3xl text-blue-500" />
             <div>
-              <p className="text-gray-600 text-sm">Total Patients</p>
-              <p className="text-xl font-semibold text-gray-800">120</p>
+              <p className="text-gray-600 text-sm">Total Users</p>
+              <p className="text-xl font-semibold text-gray-800">{users.length}</p>
             </div>
           </div>
           <div className="bg-white shadow-md p-6 rounded-lg flex items-center gap-4">
             <FaUserMd className="text-3xl text-green-500" />
             <div>
               <p className="text-gray-600 text-sm">Total Doctors</p>
-              <p className="text-xl font-semibold text-gray-800">25</p>
+              <p className="text-xl font-semibold text-gray-800">{storeDoctorData.length}</p>
             </div>
           </div>
+         
+
           <div className="bg-white shadow-md p-6 rounded-lg flex items-center gap-4">
             <FaCalendarCheck className="text-3xl text-purple-500" />
             <div>
-              <p className="text-gray-600 text-sm">Appointments</p>
-              <p className="text-xl font-semibold text-gray-800">75</p>
+              <p className="text-gray-600 text-sm">Total Departments</p>
+              <p className="text-xl font-semibold text-gray-800">{departments.length}</p>
             </div>
           </div>
         </div>
 
-        {/* Bar Chart */}
-        <div className="bg-white shadow-md rounded-lg p-4 sm:p-6">
-          <h2 className="text-lg sm:text-xl font-semibold mb-4 text-gray-700 text-center sm:text-left">
-            Monthly Appointments
-          </h2>
-          <div className="w-full h-72 sm:h-80 md:h-[350px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="appointments" fill="#5D6BFF" radius={[5, 5, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+
+
       </main>
     </div>
   );
