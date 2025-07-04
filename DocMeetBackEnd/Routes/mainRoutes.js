@@ -135,8 +135,11 @@ router.post('/doctor/addMedicine', doctorController.addMedicine);
 router.post('/doctor/signin', authController.doctorSignin)
 router.get('/doctor/doctordashboardName', protect1, doctorController.doctorDashboardName)
 router.get('/doctor/getAppointments', protect1, doctorController.getAppointments)
+router.get('/doctor/filterbypast', protect1, doctorController.getAppointmentsPast)
 router.get('/doctor/getAppointmentstoday', protect1, doctorController.getAppointmentsToday)
 router.put('/doctor/updatestatuspostive', protect1, doctorController.updatestatuspostive)
 router.put('/doctor/updatestatusnegative', protect1, doctorController.updatestatusnegative)
+router.get('/doctor/filterbymonth/:filtermonth',protect1,doctorController.filterMonth)
+router.get('/doctor/filterbystatus/:filterstatus',protect1,doctorController.filterStatus)
 
 module.exports = router

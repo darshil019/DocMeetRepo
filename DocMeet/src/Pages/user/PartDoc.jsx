@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import verfied from '../../assets/images/verfied.png';
 import info from '../../assets/images/information.png';
 import { AuthContext } from '../../Components/Common/AuthContext';
+import { months } from 'moment/moment';
 
 function PartDoc() {
   const { currencySymbol, token, userData } = useContext(AuthContext);
@@ -62,7 +63,7 @@ function PartDoc() {
 
       const end = new Date(slotDate);
       end.setHours(endHour, endMin, 0, 0);
-      
+
       if (end <= start) end.setDate(end.getDate() + 1);
 
       const now = new Date();
@@ -143,12 +144,25 @@ function PartDoc() {
 
   const handleOnClick = async () => {
     if (token) {
+      const months = [{ 1: "jan", 2: "Feb", 3: "Mar", 4: "April", 5: "May", 6: "Jun", 7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec" }];
+      console.log(selectedDate)
+      const monthNumArray = months.map((val, index) => {
+        for (const key in val) {
+          if (val[key] == selectedDate.split(" ")[1]) {
+            return key;
+          }
+        }
+      });
+
+      const monthNum = Number(monthNumArray.find(Boolean)); 
+
       const appointmentData = {
         userID: storeUserData._id,
         doctorID: storeDoctorData._id,
         slotTime: selectedTime,
         slotDate: selectedDate,
-        slotDay: selectedDay
+        slotDay: selectedDay,
+        monthNum: monthNum
       };
 
       try {
@@ -166,7 +180,7 @@ function PartDoc() {
           appointmentData &&
           selectedFullDay
         ) {
-        
+
         }
 
       } catch (err) {
@@ -182,6 +196,8 @@ function PartDoc() {
       {storeDoctorData ? (
         <>
           <div className='flex flex-col sm:flex-row gap-4'>
+
+            
             <div>
               <img className='bg-[#5D6BFF] w-full sm:max-w-65 rounded-xl shadow-lg border border-white/30' src={storeDoctorData.doctorImage?.imgPath} alt="Doctor" />
             </div>

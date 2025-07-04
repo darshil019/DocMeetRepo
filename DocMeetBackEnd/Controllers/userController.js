@@ -248,30 +248,49 @@ const getUser = async (req,res) => {
         console.log(err)
     }
 }
-
-const bookAppointment = async (req,res) => {
-    const { userID,doctorID,slotTime,slotDate,slotDay } = req.body
-    //console.log(slotDate)
-    try{
-        const appointData = new appointmentModel({
-            userID,
-            doctorID,
-            slotTime,
-            slotDate,
-            slotDay
-        })
-        await appointData.save()
-        res.send({
-            appointBooked:"Yes Booked !"
-        })
+const bookAppointment = async (req, res) => {
+    const { userID, doctorID, slotTime, slotDate, slotDay, monthNum } = req.body;
+  
+    try {
+      const currentYear = new Date().getFullYear();
+      const [dayStr, monthStr] = slotDate.split(" ");
+      const day = parseInt(dayStr);
+  
+      const monthMap = {
+        Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+        Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+      };
+  
+      const month = monthMap[monthStr];
+  
+      let [timePart, meridian] = slotTime.split(" ");
+      let [hours, minutes] = timePart.split(":").map(Number);
+  
+      if (meridian === "PM" && hours !== 12) hours += 12;
+      if (meridian === "AM" && hours === 12) hours = 0;
+  
+      // Directly construct Date
+      const newDate = new Date(currentYear, month, day, hours, minutes, 0, 0);
+  
+      const appointData = new appointmentModel({
+        userID,
+        doctorID,
+        slotTime,
+        slotDate,
+        slotDay,
+        monthNum,
+        newDate
+      });
+  
+      await appointData.save();
+      res.send({ appointBooked: "Yes Booked !" });
+    } catch (err) {
+      console.log(err);
+      res.send({ appointBooked: "NO Booked !" });
     }
-    catch(err){
-        console.log(err)
-        res.send({
-            appointBooked:"NO Booked !"
-        })
-    }
-}
+  };
+  
+  
 
 const getUserAppointments = async (req,res) => {
     const { _id } = req.params;

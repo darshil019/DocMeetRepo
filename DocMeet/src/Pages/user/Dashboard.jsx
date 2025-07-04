@@ -154,15 +154,31 @@ function UserDashboard() {
         <div><p className='text-2xl md:text-4xl font bold'>Solution</p></div>
       </div>
       <div className='grid mx-auto grid-cols-1 lg:grid-cols-4 md:grid-cols-2 2xl:grid-cols-2 gap-5 px-20 justify-items-center'>
-        <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
-          <img src={doctorImg} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
+        <div
+          className='shadow-lg p-3 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-[#865dff] transition-all duration-500'
+          style={{
+            background: 'linear-gradient(135deg, #dbeafe, #c7d2fe, #e0e7ff)'
+          }}
+          data-aos="fade-down"
+          data-aos-easing="linear"
+          data-aos-duration="1500"
+        >
+          <img src={doctorImg} alt="Not Found" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white' />
+
           <h2 className='py-3 font-bold'>Check Doctor Profile</h2>
-          <p className=''>
+
+          <p>
             Browse through detailed doctor profiles to learn about their qualifications, areas of expertise, experience, and patient feedback — helping you make confident and informed healthcare choices tailored to your needs.
           </p>
         </div>
-        <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
-          <img src={MAImg} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
+        <div
+          className='shadow-lg p-3 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-[#865dff] transition-all duration-500'
+          style={{ background: 'linear-gradient(135deg, #dbeafe, #c7d2fe, #e0e7ff)' }}
+          data-aos="fade-down"
+          data-aos-easing="linear"
+          data-aos-duration="1500"
+        >
+          <img src={MAImg} alt="Not Found" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white' />
           <h2 className='py-3'>Book Doctor Appointment</h2>
           <p>
             Easily schedule a visit with just a few clicks.
@@ -170,8 +186,15 @@ function UserDashboard() {
             and book your appointment instantly — no long calls or waiting lines required.
           </p>
         </div>
-        <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
-          <img src={filUploadImg} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
+
+        <div
+          className='shadow-lg p-3 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-[#865dff] transition-all duration-500'
+          style={{ background: 'linear-gradient(135deg, #dbeafe, #c7d2fe, #e0e7ff)' }}
+          data-aos="fade-down"
+          data-aos-easing="linear"
+          data-aos-duration="1500"
+        >
+          <img src={filUploadImg} alt="Not Found" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white' />
           <h2 className='py-3'>Upload Your Record</h2>
           <p>
             Share your medical history securely by uploading test results,
@@ -179,8 +202,15 @@ function UserDashboard() {
             and offer more precise, personalized care.
           </p>
         </div>
-        <div className='shadow-lg p-3 bg-gray-300 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-white' data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
-          <img src={congrats} alt="Not FOund" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white'></img>
+
+        <div
+          className='shadow-lg p-3 !rounded-lg lg:w-70 lg:h-102 w-80 hover:bg-[#5D6BFF] hover:text-[#865dff] transition-all duration-500'
+          style={{ background: 'linear-gradient(135deg, #dbeafe, #c7d2fe, #e0e7ff)' }}
+          data-aos="fade-down"
+          data-aos-easing="linear"
+          data-aos-duration="1500"
+        >
+          <img src={congrats} alt="Not Found" className='w-13 h-13 object-cover shadow-md !rounded-full bg-white' />
           <h2 className='py-3'>Congrats! Booked</h2>
           <p>
             You're all set! Your appointment has been confirmed.
@@ -188,6 +218,7 @@ function UserDashboard() {
             take care of you with the attention and expertise you deserve.
           </p>
         </div>
+
       </div>
 
       <div className='flex flex-col items-center justify-center py-5 mt-12'>

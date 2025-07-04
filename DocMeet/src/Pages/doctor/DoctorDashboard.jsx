@@ -59,6 +59,7 @@ function DoctorDashboard() {
                 <tr>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Patient</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Time</th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">SlotDate</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Status</th>
                 </tr>
               </thead>
@@ -69,6 +70,7 @@ function DoctorDashboard() {
                       <tr key={index}>
                         <td className="px-6 py-4">{val.userID?.fullname}</td>
                         <td className="px-6 py-4">{val.slotTime}</td>
+                        <td className="px-6 py-4">{val.slotDate}</td>
                         <td className="px-6 py-4 text-green-600">{val.status}</td>
                       </tr>
                     </>

@@ -1,5 +1,6 @@
 const { Prescription, MedicineModel, doctorSigninModel } = require("../Models/doctorModel");
 const { appointmentModel } = require("../Models/appointmentModel")
+
 const addPrescription = async (req, res) => {
   try {
     const { patientName, patientEmail, additionalInfo } = req.body;
@@ -60,12 +61,22 @@ const doctorDashboardName = async (req, res) => {
 }
 
 const getAppointments = async (req, res) => {
+  const months = [{ 1: "jan", 2: "Feb", 3: "Mar", 4: "April", 5: "May", 6: "Jun", 7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec" }];
   let date = new Date();
   let dateNumber = date.getDate();
   let monthName = date.toLocaleString('default', { month: 'short' });
-
+  const monthNumArray = months.map((val, index) => {
+    for (const key in val) {
+      if (val[key] == monthName) {
+        return key;
+      }
+    }
+  });
+  const monthNumCheck = Number(monthNumArray.find(Boolean)); 
+  console.log(monthName)
   let fullDate = dateNumber + " " + monthName;
-  const getAppointmentsDetails = await appointmentModel.find({ doctorID: req.doctor._id, slotDate: { $gt: fullDate } }).populate("doctorID").populate("userID")
+  const getAppointmentsDetails = await appointmentModel.find({ doctorID: req.doctor._id, newDate: { $gt: date },monthNum : {$gte : monthNumCheck} }).populate("doctorID").populate("userID")
+  
   try {
     if (getAppointmentsDetails) {
       res.send({
@@ -78,6 +89,88 @@ const getAppointments = async (req, res) => {
     })
   }
 }
+
+// const getAppointmentsPast = async (req, res) => {
+//   const months = [{ 1: "jan", 2: "Feb", 3: "Mar", 4: "April", 5: "May", 6: "Jun", 7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec" }];
+//   let date = new Date();
+//   let dateNumber = date.getDate();
+//   let monthName = date.toLocaleString('default', { month: 'short' });
+//   const monthNumArray = months.map((val, index) => {
+//     for (const key in val) {
+//       if (val[key] == monthName) {
+//         return key;
+//       }
+//     }
+//   });
+//   const monthNumCheck = Number(monthNumArray.find(Boolean)); 
+  
+//   console.log(monthName)
+//   let fullDate = dateNumber + " " + monthName;
+  
+//   const getAppointmentsDetails = await appointmentModel.find({ doctorID: req.doctor._id, newDate: { $lt: date }}).populate("doctorID").populate("userID")
+  
+//   try {
+//     if (getAppointmentsDetails) {
+//       res.send({
+//         appointments: getAppointmentsDetails
+//       })
+//     }
+//   } catch {
+//     res.send({
+//       appointments: "NotFound"
+//     })
+//   }
+// }
+
+const getAppointmentsPast = async (req, res) => {
+  try {
+    const currentDate = new Date(); // Current system time
+    console.log("System Local Time:", currentDate);
+    console.log("System UTC Time:", currentDate.toISOString());
+
+    // Confirm doctorID type handling
+    const doctorIdString = req.doctor._id.toString();
+
+    // Fetch all appointments for doctor for sanity check
+    const allAppointments = await appointmentModel.find({
+      doctorID: doctorIdString
+    });
+    console.log("Total Appointments for Doctor:", allAppointments.length);
+
+    allAppointments.forEach((app, index) => {
+      console.log(
+        `${index + 1}) slotDate: ${app.slotDate}, newDate: ${app.newDate ? app.newDate.toISOString() : "N/A"}`
+      );
+    });
+    
+
+    // Fetch past appointments
+    const getAppointmentsDetails = await appointmentModel
+      .find({
+        doctorID: req.doctor._id,
+        newDate: { $lt: currentDate } // Past appointments
+      })
+      .populate("doctorID")
+      .populate("userID");
+
+    console.log("Past Appointments Found:", getAppointmentsDetails.length);
+
+    if (getAppointmentsDetails && getAppointmentsDetails.length > 0) {
+      res.send({
+        aRes: getAppointmentsDetails
+      });
+    } else {
+      res.send({ aRes: [] });
+    }
+  } catch (err) {
+    console.log("Error Occurred:", err);
+    res.send({
+      aRes: "Error Occurred"
+    });
+  }
+};
+
+
 
 const getAppointmentsToday = async (req, res) => {
   let date = new Date();
@@ -147,6 +240,42 @@ const updatestatusnegative = async (req, res) => {
   }
 }
 
+const filterMonth = async (req,res) => {
+    const { filtermonth } = req.params;
+    console.log(filterMonth)
+    try{
+      const filterData = await appointmentModel.find({monthNum : filtermonth}).populate("userID")
+      if(filterData){
+        res.send({
+          filter:filterData
+        })
+      }
+    }
+    catch {
+      res.send({
+        msg: "Not"
+      })
+    }
+}
+
+const filterStatus = async (req,res) => {
+  const { filterstatus } = req.params;
+  console.log(filterstatus)
+  try{
+    const filterData = await appointmentModel.find({status : {$eq:filterstatus}}).populate("userID")
+    if(filterData){
+      res.send({
+        filter:filterData
+      })
+    }
+  }
+  catch {
+    res.send({
+      msg: "Not"
+    })
+  }
+}
 
 
-module.exports = { addPrescription, addMedicine, doctorDashboardName, getAppointments, updatestatuspostive, updatestatusnegative, getAppointmentsToday };
+
+module.exports = { getAppointmentsPast,filterStatus,filterMonth, addPrescription, addMedicine, doctorDashboardName, getAppointments, updatestatuspostive, updatestatusnegative, getAppointmentsToday };
